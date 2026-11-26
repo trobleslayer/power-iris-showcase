@@ -1,0 +1,31 @@
+{
+  "mode": "live",
+  "config": {
+    "goal": "新型电力系统断面潮流控制：兼顾时效性、准确性、泛化性与可解释性，在实时运行和极端天气场景强化断面阻塞决策、确保安全裕度并适应电网动态演化。",
+    "directions": [
+      "实时安全与资源筛选",
+      "极端天气与尾部风险",
+      "拓扑演化与迁移",
+      "分区协同与通信",
+      "静态与动态安全边界",
+      "可解释性与证据校验"
+    ],
+    "refinements": 0,
+    "max_depth": 3,
+    "exploration": 1.414,
+    "seed": 42,
+    "top_chunks": 12,
+    "retrieval": {
+      "base_url": "https://api.deepseek.com/v1",
+      "model": "deepseek-flash",
+      "key_env": "RETRIEVAL_API_KEY"
+    },
+    "ideation": {
+      "base_url": "https://api.deepseek.com/v1",
+      "model": "deepseek-flash",
+      "key_env": "IDEATION_API_KEY"
+    }
+  },
+  "nodes": 6,
+  "note": "模型评分不是物理仿真或专家验证"
+}

@@ -1,0 +1,61 @@
+{
+  "goal": "新型电力系统断面潮流控制：兼顾时效性、准确性、泛化性与可解释性，在实时运行和极端天气场景强化断面阻塞决策、确保安全裕度并适应电网动态演化。",
+  "directions": [
+    "实时安全与资源筛选",
+    "极端天气与尾部风险",
+    "拓扑演化与迁移",
+    "分区协同与通信",
+    "静态与动态安全边界",
+    "可解释性与证据校验"
+  ],
+  "reference_guided": true,
+  "academic_search": {
+    "enabled": true,
+    "providers": [
+      "crossref"
+    ],
+    "target_total_papers": 199,
+    "required_seed_papers": 6,
+    "target_external_papers": 193,
+    "initial_recall_target": 1000,
+    "results_per_query": 100,
+    "queries_per_direction": 4,
+    "max_search_rounds": 5,
+    "min_relevance_score": 6.0,
+    "preserve_seed_papers": true,
+    "adaptive_query_expansion": true,
+    "require_abstract_or_fulltext": true,
+    "cache_enabled": true,
+    "strict_target": true,
+    "search_workers": 4,
+    "llm_workers": 4,
+    "review_batch_size": 16,
+    "screen_per_round": 360
+  },
+  "reference_control": {
+    "enabled": true,
+    "lock_research_directions": true,
+    "lock_core_mechanisms": true,
+    "preserve_original_submission": true,
+    "min_consistency_score": 9.0
+  },
+  "initial_candidates_per_direction": 3,
+  "refinements": 3,
+  "max_depth": 5,
+  "exploration": 1.414,
+  "seed": 42,
+  "top_chunks": 30,
+  "target_score": 8.5,
+  "min_dimension_score": 7.0,
+  "early_stop": false,
+  "retrieval": {
+    "base_url": "https://api.deepseek.com/v1",
+    "model": "deepseek-flash",
+    "key_env": "RETRIEVAL_API_KEY"
+  },
+  "ideation": {
+    "base_url": "https://api.deepseek.com/v1",
+    "model": "deepseek-flash",
+    "key_env": "IDEATION_API_KEY"
+  }
+}

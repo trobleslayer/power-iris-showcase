@@ -1,0 +1,53 @@
+E001
+文献名称：基于正负综合灵敏度的输电断面双层优化潮流控制策略
+作者：谢大为；王博欣；王京景；彭伟；马英浩；张大波
+来源：电力工程技术，42(1)：107–115
+年份：2023
+DOI或公开链接：https://doi.org/10.12158/j.2096-3203.2023.01.013
+文献摘要：针对灵敏度法精度不足和直接优化计算量较大的问题，提出正负综合灵敏度指标，考虑节点对过载与重载线路的整体调节作用。第一层通过多目标优化筛选调度节点，第二层优化节点出力调整量，在IEEE 39节点及某省级电网算例中验证方法的快速性与准确性。
+关键内容：直接支撑：调控应同时考虑过载线路消除与其他重载线路风险，控制节点筛选可以缩小优化空间；可作为双层优化和灵敏度法对比基线。可迁移推论：灵敏度可用于学习策略的候选动作筛选和解释校验。证据边界：原文未验证强化学习、大模型或极端天气风险调控。
+
+E002
+文献名称：A Generic Approach for Solving Nonlinear-Discrete Security-Constrained Optimal Power Flow Problems in Large-Scale Systems
+作者：Ludovic Platbrood; Florin Capitanescu; Christian Merckx; Horia Crisciu; Louis Wehenkel
+来源：IEEE Transactions on Power Systems，29(3)：1194–1203
+年份：2014
+DOI或公开链接：https://doi.org/10.1109/TPWRS.2013.2289990
+文献摘要：提出结合故障筛选和网络压缩的迭代算法，降低大规模安全约束最优潮流计算复杂度。在故障前后采用非线性交流模型，联合处理有功、无功及离散变量，并在2563节点、1297个故障以及9241节点、12000个故障的系统上开展验证。
+关键内容：直接支撑：利用起约束作用的故障集合和网络压缩降低SCOPF规模，保留交流物理约束与离散控制要求。可迁移推论：可将学习候选解与显式可行性修正组合。证据边界：故障筛选结果不等于对所有未建模故障的安全保证；原文不是强化学习安全投影方法。
+
+E003
+文献名称：An Efficient Universal AC/DC Branch Model for Optimal Power Flow Studies in Hybrid AC/DC Systems
+作者：Mahmoud Shahbazi
+来源：IEEE Transactions on Power Systems，40(4)：3211–3221
+年份：2025
+DOI或公开链接：https://doi.org/10.1109/TPWRS.2024.3514815
+文献摘要：提出用于混合交直流系统最优潮流的通用支路模型SADRA，在统一框架中表达交流、直流、VSC及其接口元件、移相和调压变压器，并支持电压与功率控制。通过大型交直流系统算例对其通用性与计算性能进行比较。
+关键内容：直接支撑：为交直流联合调控建立一致的稳态潮流、换流损耗与控制约束模型。可迁移推论：可用作交直流智能调控的仿真和动作校核基础。证据边界：稳态OPF不能证明暂态稳定、低电压穿越或变流器控制动态安全；正式卷期年份为2025，在线发表时间为2024年12月。
+
+E004
+文献名称：Continuation Power Flow Model for Interconnected Systems Considering the Electricity Market Influence and Its Corresponding Distributed Algorithm
+作者：Chong Ding; Wei Yan; Zhouyang Ren; Ruifeng Zhao; Wei-Jen Lee; Xinyan Tang
+来源：IEEE Access，7：75910–75924
+年份：2019
+DOI或公开链接：https://doi.org/10.1109/ACCESS.2019.2922173
+文献摘要：针对市场环境下多区域互联系统的连续潮流分析，建立考虑区域间定向交易有功约束及电压控制行为的模型，采用多平衡机策略与分块矩阵分布式计算，实现区域分解和协调。算例比较其精度、收敛性与计算速度。
+关键内容：直接支撑：断面可输送能力受区域交换约束、无功调节和静态电压稳定边界共同影响；连续潮流可为静态电压裕度提供参考标签。可迁移推论：可以构造随工况更新的断面静态安全边界。证据边界：连续潮流计算的是指定增长方向下的静态边界，不能等同于暂态或小信号稳定极限。
+
+E005
+文献名称：Proximal Jacobian Distribution Optimal Power Flow in a Distributed Cyber-Physical Environment
+作者：Miguel Carrasco; Fernando Mancilla-David; Alejandro Angulo; Jorge Weston; P. Papantoni-Kazakos
+来源：IEEE Journal on Emerging and Selected Topics in Circuits and Systems，7(2)：319–328
+年份：2017
+DOI或公开链接：https://doi.org/10.1109/JETCAS.2017.2703907
+文献摘要：提出基于近端Jacobian分布式优化的变流器配电系统调度方法，并设计相应信息通信架构。通过数值实验分析收敛行为、计算和通信开销以及系统分区和网络拓扑对可扩展性的影响。
+关键内容：直接支撑：分布式调度的实时性由计算与通信共同决定，分区和通信网络直径影响协调代价。可迁移推论：输电断面多区域调控可研究基于风险的通信触发机制。证据边界：原文对象为配电系统，推广到大电网、多智能体强化学习及丢包环境需要重新验证。
+
+E006
+文献名称：High-Performance Optimal Power Flow Estimation for EV-Interfaced Microgrids With Standardized Grid Services
+作者：Jingping Nie; Liwei Zhou; Margaret Frances Kaye; Christine Cecilia Silveira; Afam Nwokolo; Xiaofan Jiang; Matthias Preindl
+来源：IEEE Transactions on Industry Applications，59(1)：1199–1211
+年份：2023
+DOI或公开链接：https://doi.org/10.1109/TIA.2022.3206734
+文献摘要：针对电动汽车和分布式资源接入下量测不完整的问题，提出基于交流潮流的约束优化求解器恢复电网信息。在IEEE 9、30、57、118节点系统上进行仿真，并加入依据IEEE 1547构建的无功服务约束，分析服务模式与网络物理特征的关系。
+关键内容：直接支撑：不完全观测下可利用交流物理约束恢复状态，并考虑资源无功能力和控制服务模式的影响。可迁移推论：可构造受物理约束的状态表征与观测质量筛查。证据边界：微电网案例与标准适用范围不能直接推广为输电网规范；未直接证明跨拓扑泛化或风险校准能力。

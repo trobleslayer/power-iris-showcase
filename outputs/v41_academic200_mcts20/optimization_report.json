@@ -1,0 +1,41 @@
+{
+  "initial_mean": 8.940000000000001,
+  "final_mean": 8.940000000000001,
+  "improvement": 0.0,
+  "candidate_count": 21,
+  "completed_refinements": 3,
+  "comparison": [
+    {
+      "direction": "实时安全与资源筛选",
+      "initial_score": 9.09,
+      "final_score": 9.09
+    },
+    {
+      "direction": "可解释性与证据校验",
+      "initial_score": 8.950000000000001,
+      "final_score": 8.950000000000001
+    },
+    {
+      "direction": "极端天气与尾部风险",
+      "initial_score": 8.940000000000001,
+      "final_score": 8.940000000000001
+    },
+    {
+      "direction": "拓扑演化与迁移",
+      "initial_score": 8.91,
+      "final_score": 8.91
+    },
+    {
+      "direction": "分区协同与通信",
+      "initial_score": 8.900000000000002,
+      "final_score": 8.900000000000002
+    },
+    {
+      "direction": "静态与动态安全边界",
+      "initial_score": 8.85,
+      "final_score": 8.85
+    }
+  ],
+  "targets_met": 6,
+  "note": "初始分为各方向初始候选最高奖励；参考引导属于逆向重构，搜索内评分不等于独立验证"
+}

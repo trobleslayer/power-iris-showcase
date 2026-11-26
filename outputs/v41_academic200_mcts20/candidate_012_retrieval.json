@@ -1,0 +1,264 @@
+{
+  "context": {
+    "goal": "新型电力系统断面潮流控制：兼顾时效性、准确性、泛化性与可解释性，在实时运行和极端天气场景强化断面阻塞决策、确保安全裕度并适应电网动态演化。",
+    "direction": "分区协同与通信",
+    "action": "generate",
+    "previous": {},
+    "feedback": {},
+    "candidate_id": 12,
+    "reference_logic": {
+      "mechanism": "该假设的逻辑是：边界信息对协同调控的价值随断面安全裕度变化而非恒定；裕度充足时，周期性交换边界电压、联络线功率和支撑区间的边际收益较低，接近约束时新信息更能改变协同动作。因此以预测断面裕度变化和边界功率不一致作为风险信号触发通信，并设置最大静默时间，可在压低消息总量的同时限制关键边界状态的信息龄期和风险检测延迟，从而降低通信负担并控制越限风险。需要区分该收益是否真正来自风险选择性通信，而非单纯降低控制频率或更多启用本地备用。",
+      "evidence_needs": "需要独立证据证明：多区域输电断面场景下事件触发消息机制能改善通信量与安全执行的权衡；现有分区、通信网络与分布式优化证据只能说明计算通信耦合和多区域边界协调的必要性，不能直接证明多智能体事件触发策略有效，配电对象结论迁移至输电场景须另行验证。还需通信量、P95全流程时延、边界一致性误差、断面违反率、调节成本、信息龄期和风险检测延迟的配套测量；等消息预算随机触发、固定周期、全通信及单区域控制/分布式优化基线的对照；延迟、丢包和突发丢包下的降级证据；以及通过消融或预算匹配排除“仅降频”或“仅多用备用”解释的证据。",
+      "verification": "可在118节点系统划分三个电气区域，在仿真中加入离散事件消息队列和统一时间戳统计；比较全通信、固定周期、等消息预算随机触发和风险触发，并加入单区域控制与分布式优化基线。扫描0%、1%、5%、10%丢包率和跨0至一个控制周期的时延，设置相关突发丢包；统一记录有效消息、超龄回退、计算通信时延和P95时延，检验信息龄期、风险检测延迟与断面违反率的关系。采用同一策略权重减少学习差异，预注册非劣效违反率容差；只有在消息量和通信引起时延下降且违反率在容差内、等预算下风险触发更快发现风险变化时，才支持该机制。持续完全失联仅检验降级能力，不宣称全局最优或绝对安全。",
+      "gaps": "待改进包括：触发阈值和最大静默时间缺乏先验整定依据，需做敏感性分析；风险信号定义可能受预测误差影响；等消息预算随机基线的公平性和统计功效需明确；信息龄期的中介效应需因果式检验而非仅相关分析；通信模型可能简化时间同步、协议开销、消息丢失相关性和跨区带宽竞争；失联处置规则与本地备用容量对成本和安全结果的贡献需分离；配电到输电的迁移有效性未验证；非劣效容差和P95时延统计口径需预注册；训练中注入延迟丢包与在线统一潮流校核的一致性需检查；不能从仿真结果外推为绝对安全保证。"
+    },
+    "core_mechanism_constraint": "假设安全裕度充足时边界信息的边际价值较低，而接近约束边界时新信息直接影响协同动作；风险触发将通信集中于高价值时刻，在降低总消息量的同时控制关键状态陈旧性。",
+    "existing_titles": [
+      "风险选择性边界通信对多区域断面协同调控时效性与安全裕度的影响假设",
+      "断面裕度风险触发与信息龄期上限约束的分区边界通信协同假设"
+    ]
+  },
+  "queries": [
+    "多区域输电断面 事件触发通信 风险触发 通信预算 信息龄期 安全裕度 潮流控制 分布式优化 等消息预算 随机触发 基线 对照",
+    "event-triggered communication multi-area transmission cross-section power flow control risk-based triggering communication volume information age safety margin packet loss delay distributed optimization",
+    "断面阻塞决策 极端天气 拓扑变化 N-1 故障 风险检测延迟 断面违反率 调节成本 本地备用 降级 可解释性 泛化性 实时运行",
+    "risk-aware distributed control cross-section congestion extreme weather topology change N-1 contingency security margin interpretability generalization real-time operation",
+    "事件触发 阈值 最大静默时间 敏感性 预测误差 通信模型 时间同步 协议开销 消息丢失相关性 跨区带宽竞争 配电 输电 迁移 非劣效容差 消融 因果中介 P95时延"
+  ],
+  "hits": [
+    {
+      "id": "E001-p1-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "敏度分析方法将节点有功注入与线路有功 潮流间的非线性关系简化为线性关系 ， 当仅依靠灵 敏度关系通过多个控制节点来调整线路潮流时误 差较大 ， 难以达到实际电网的潮流控制精度要求 。 在输电断面潮流控制策略中 ， 文献 ［ 14 ］ 对比了灵敏 度分析方法和粒子群优化算法 ， 验证了基于粒子群 算法的输电断面潮流越限控制方法可以消除因简 化的灵敏度线性关系导致的潮流误差 ， 并且调节效 率高 。 直接优化类方法 ［ 15-18 ］ 直接利用潮流计算建 立数学模型 ， 充分考虑符合电力系统安全运行的各 类要求 ， 得到的潮流控制策略有较好的安全性和经 701"
+    },
+    {
+      "id": "E001-p5-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 1 IEEE 39 节点系统拓扑 Fig．1 The topology of IEEE 39-bus system 备用容量 ， 以满足高比例新能源电力系统的备用需 求 。 在该运行方式下 ， 对 IEEE 39 节点系统的机组 有功出力限值进行修正 ， 设置机组 G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 参与潮流控制的有功 出力上限分别为 290 MW 、 300 MW 、 220 MW 、 240 MW 、 300 MW 、 450 MW 、 450 MW 、 530 MW 、 1 100 MW 。 采用文献 ［ 24-25 ］ 提出的基于拓扑聚合的输电 断面搜索方法对当前运行方式下的 IEEE 39 节点系 统进行关键输电断面辨识 ， 确定当前存在内部线路 过载的输电断面为线路 l 1 — 39 、 l 2 — 3 、 l 17 — 27 的集合 。 该 输电断面内的过载线路 l 以及重载线路 m 的潮流分 布情况如表 1 所示 。 从表 1 可以看出 ， 过载线路 l 1 — 39 的潮流越限量为 72．40 MW ， 潮流控制策略的目 的是将过载线路 l 1 — 39 的有功潮流控制在 250 MW 以 下 ， 同时系统中其他线路不产生新的潮流越限 。 表 1 关键线路集的潮流运行情况 Table 1 Power flow operation of key line set 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L 1 — 39 322．40 250 1．289 6 M 1 — 2 275．84 300 0．919 5 2 — 3 611．08 630 0．970 0 8 — 9 426．38 450 0．947 5 9 — 39 502．61 550 0．913 8 选取可以参与消除输电断面潮流越限的机组 节点 ( G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 ) 和执行切负荷操作的负荷节点 ( D4 、 D7 、 D20 、 D21 、 D24 、 D27 ) 。 负荷节点分为 3 类 ， 第 1 类为 D7 、 D24 ， 第 2 类为 D21 、 D27 ， 第 3 类为 D4 、 D20 ， 其对应 的"
+    },
+    {
+      "id": "E001-p8-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， ZHANG Shang ， WANG Tao ， et al． Optimization control strategy for active power correction from perspective of security region ［ J ］ ． Automation of Electric Power Systems ， 2017 ， 41 ( 18 ) : 17-24． ［ 8 ］ 程临燕 ， 郝治国 ， 张保会 ， 等 ． 基于内点法消除输电断面过载 的实时控制算法 ［ J ］ ． 电力系统自动化 ， 2011 ， 35 ( 17 ) : 51-55． CHENG Linyan ， HAO Zhiguo ， ZHANG Baohui ， et al． Fast elimi- nation of overload in transmission line section based on simplified primal-dual interior point method ［ J ］ ． Automation of Electric Power Systems ， 2011 ， 35 ( 17 ) : 51-55． ［ 9 ］ 袁晓丹 ， 张会强 ． 多支路开断潮流转移识别及防连锁过载策 略研究 ［ J ］ ． 现代电力 ， 2014 ， 31 ( 5 ) : 74-79． YUAN Xiaodan ， ZHANG Huiqiang． Study on power flow trans- ferring identification of multi-line tripping and the strategy to prevent cascading overload strategy ［ J ］ ． Modern Electric Po- wer ， 2014 ， 31 ( 5 ) : 74-79． ［ 10 ］ 甘德树 ， 冯伯庚 ， 蒋芳玉 ， 等 ． 基于功率灵敏度分析的断面 潮流安全控制方法 ［ J ］ ． 陕西电力 ， 2017 ， 45 ( 1 ) : 82-85． GAN Deshu ， FENG Bogeng ， JIANG Fangyu ， et al． Security control method for interface power flow based on power sensi- tivity analysis ［ J ］ ． Shaanxi Electric Power ， 2017 ， 45 ( 1 ) : 82-85． ［ 11 ］ 徐岩 ， 郅静 ． 基于功率灵敏度的线路过载划区域紧急"
+    },
+    {
+      "id": "E001-p7-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 3 输电断面 T1 的有功潮流 Fig．3 Active power flow of transmission section T1 路 l 5307 、 l 5308 的有功潮流增加到 1 336 MW 、 1 337 MW ， 超过其线路自身的热稳定功率极限 ; 与此同 时 ， 输电断面 T1 传输的有功潮流增加到 3 470 MW ， 超过其自身的极限传输功率 ( 3 400 MW ) ， 造成输电 断面潮流越限 ， 潮流越限量为 70 MW 。 输电断面 T1 内过载线路以及重载线路的潮流分布情况见表 5 。 表 5 实际电网中关键线路的潮流运行状态 Table 5 Power flow operation of key lines in the actual power grid 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L l 5307 1 336 1 250 1．068 8 l 5308 1 337 1 250 1．069 6 M l 5703 278 300 0．926 7 l 5367 517 550 0．940 0 l 5368 516 550 0．938 2 切除过载线路会引发输电断面连锁过载 ， 因 此 ， 采用文中方法对输电断面 T1 进行潮流越限调 整 ， 制定的潮流控制策略如表 6 所示 。 表 6 潮流控制方案 Table 6 Power flow control scheme MW 调度节点 初始 有功功率 调整后 有功功率 出力 调整量 有功 出力上限 G42 784 983 +199 1 260 G34 637 835 +198 1 260 G40 500 104 －396 1 000 由表 6 可知 ， 文中方法制定的潮流控制策略要 调度的机组节点为 G42 、 G34 、 G40 ， 符合机组节点 G42 、 G34 、 G40 对关键线路潮流调整效果较好的实 际情况 。 而且 G42 、 G34 的出力增加调整量近似等 于 G40 的出力减少调整量 ， 总出力调整量为 793 MW ， 有效避免平衡机组过度参与潮流调整 。 通过 制定的潮流控制策略对潮流越限的输电断面 T1 进 行调整控制 ， 得到的线路潮流调整结果如表 7 所示 。 表 7 实际电网中关键线路调整结果 Table 7 Adjustm"
+    },
+    {
+      "id": "E001-p2-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "济性 。 但随着系统规模的扩大 ， 该类方法的控制变 量逐步增加 ， 会导致维数灾 ， 计算时间过长 ， 难以满 足电网实时潮流控制的要求 。 针对灵敏度分析方法精确度不高和直接优化 类方法计算量过大的缺点 ， 文中提出一种基于正负 综合灵敏度的输电断面双层优化潮流控制策略 。 首先根据节点对过载及重载线路潮流的整体调节 作用 ， 提出节点的正负综合灵敏度指标 ， 剔除对关 键线路集潮流控制效果较差的节点 。 然后通过双 层优化方法快速制定潮流控制策略 ， 第一步构建第 一层调度节点多目标筛选优化模型 ， 根据模糊满意 度优选评价方法 ， 选择参与潮流控制的调度节点 ; 第二步通过第二层潮流调控优化模型计算所选调 度节点的精确出力调整量 ， 快速制定潮流控制策 略 。 文中制定的潮流控制策略首先确定参与潮流 控制的调度节点 ， 能极大降低优化搜索空间维度 ， 再优化少量调度节点的出力调整量 ， 满足输电断面 潮流越限的在线调度要求 。 1 节点对关键线路集的综合灵敏度计算 1．1 节点对线路的有功灵敏度计算 系统运行中线路有功潮流不满足安全约束时 ， 须适当调整节点有功出力使线路有功潮流恢复到 正常运行状态 。 文中以直流潮流模型为基础 ， 建立 线路有功潮流对节点有功注入的灵敏度数学 模型 ［ 19 ］ : Δ P = B · Δ θ Δ P a = Δ θ a /x a S a ， i = Δ P a / Δ P i { ( 1 ) 式中 : Δ P 为系统线路有功潮流变化量的列向量 ; B 为系统电纳矩阵 ; Δ θ 为系统线路电压相角差的列向 量 ; Δ P a 为线路 a 的有功潮流变化量 ; Δ θ a 为线路 a 首末两端节点的电压相位差 ; x a 为线路 a 的电抗 ; Δ P i 为节点 i 的有功注入变化量 ; S a ， i 为线路 a 有功 潮流对节点 i 有功注入的灵敏度 。 S a ， i 的物理意义 为 : 节点 i 增加单位有功功率 ， 相应平衡机组减少单 位有功功率时线路 a 的有功潮流变化量 。 1．2 正负综合灵敏度指标 为了使消除线路过载的调度节点出力调整量 最少 ， 应优先调度对过载线路有功灵敏度较大的节 点 。 与此同时 ， 在调度过程中应保证其他线路不出 现过载情况 ， 尤其是重载线路不过载 。 为此 ， 考虑 到对过"
+    },
+    {
+      "id": "E001-p9-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "ons based on topology converg- ing adjacency matrix ［ J ］ ． IEEE Access ， 2020 ( 8 ) : 108235- 108246． ［ 25 ］ 张大波 ， 王博欣 ， 郭怀新 ， 等 ． 基于拓扑聚合的输电断面辨 识方法与断面传输极限的研究 ［ J ］ ． 电力系统保护与控制 ， 2022 ， 50 ( 5 ) : 33-42． ZHANG Dabo ， WANG Boxin ， GUO Huaixin ， et al． A method of identifying a transmission section based on topology aggregation and the transmission limit of the section ［ J ］ ． Power System Protection and Control ， 2022 ， 50 ( 5 ) : 33-42． 作者简介 : 谢大为 谢大为 ( 1978 ) ， 男 ， 硕士 ， 高级工程师 ， 从 事电力系统分析控制相关工作 ( E-mail : dwxie @ 163．com ) ; 王博欣 ( 1996 ) ， 男 ， 硕士 ， 从事电网智能调 度相关工作 ; 王京景 ( 1983 ) ， 男 ， 博士 ， 高级工程师 ， 从 事电网调度相关工作 。 Double layer optimal power flow control strategy of transmission section based on positive and negative comprehensive sensitivity XIE Dawei 1 ， WANG Boxin 2 ， 3 ， WANG Jingjing 1 ， PENG Wei 1 ， MA Yinghao 2 ， ZHANG Dabo 2 ( 1． State Grid Anhui Electric Power Co． ， Ltd． ， Hefei 230022 ， China ; 2． Anhui Province Key Laboratory of Ｒenewable Energy Utilization and Energy Saving ( Hefei University of Technology ) ， Hefei 230009 ， China ; 3． State Grid Ｒongcheng Power Supply Company of Shandong Electric Power Company ， Ｒongcheng 264"
+    },
+    {
+      "id": "E001-p1-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "DOI : 10．12158 /j．2096-3203．2023．01．013 2023 年 1 月 Electric Power Engineering Technology 第 42 卷 第 1 期 基于正负综合灵敏度的输电断面双层优化潮流控制策略 谢大为 1 ， 王博欣 2 ， 3 ， 王京景 1 ， 彭伟 1 ， 马英浩 2 ， 张大波 2 ( 1． 国网安徽省电力有限公司 ， 安徽 合肥 230022 ; 2． 新能源利用与节能安徽省重点实验室 ( 合肥工业大学 ) ， 安徽 合肥 230009 ; 3． 国网山东省电力公司荣成市供电公司 ， 山东 荣成 264300 ) 摘 要 : 过载线路故障跳闸会使潮流转移到关联输电断面内其他线路上 ， 造成连锁跳闸事故 。 快速制定合理有效 的潮流控制策略 ， 消除线路过载 ， 是防止发生连锁跳闸事故的关键 。 针对灵敏度分析方法精度不高和直接优化类 方法计算量过大等缺陷 ， 文中提出基于正负综合灵敏度的输电断面双层优化潮流控制策略 。 考虑节点对过载和重 载线路潮流的整体调节作用 ， 提出正负综合灵敏度指标 ， 然后通过双层优化方法快速制定潮流控制策略 。 为防止 搜索空间过大导致计算量激增 ， 建立第一层调度节点多目标筛选优化模型 ， 优选参与调整的调度节点 。 在此基础 上构建第二层潮流调控优化模型 ， 得到调度节点的精确出力调整量 ， 从而实现对输电断面潮流越限的精准调度 。 利用 IEEE 39 节点系统和某省级电网的仿真分析验证了所提方法的快速性和准确性 。 关键词 : 线路过载 ; 输电断面 ; 连锁跳闸 ; 潮流控制 ; 正负综合灵敏度指标 ; 双层优化 中图分类号 : TM73 文献标志码 : A 文章编号 : 2096-3203 ( 2023 ) 01-0107-09 收稿日期 : 2022-06-30 ; 修回日期 : 2022-09-25 基金项目 : 安徽省自然科学基金资助项目 ( 2108085UD08 ) 0 引言 高比例接入电网的风电 、 光伏等新能源具有间 歇性 ， 使得电网传输功率波动频繁 ， 容易造成线路 过载运行 。 过载线路故障跳闸会使潮流转移到关 联输电断面内其他线路上 ， 造成输电断面发生潮流 过载 ， 引起过载保护装置动作 ， 导致电网发生大规 模连锁跳闸事故 ， 严"
+    },
+    {
+      "id": "E001-p7-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "调整量近似等 于 G40 的出力减少调整量 ， 总出力调整量为 793 MW ， 有效避免平衡机组过度参与潮流调整 。 通过 制定的潮流控制策略对潮流越限的输电断面 T1 进 行调整控制 ， 得到的线路潮流调整结果如表 7 所示 。 表 7 实际电网中关键线路调整结果 Table 7 Adjustment results of key lines in the actual power grid MW 线路编号 调整前功率 调整后功率 热稳定功率极限 5307 1 336 1 249 1 250 5308 1 337 1 246 1 250 5703 278 276 300 5367 517 445 500 5368 516 444 500 由表 7 可知 ， 根据文中方法制定的潮流控制策 略 ， 在 09 : 27 开始对输电断面 T1 进行潮流调整 。 经 过潮流调整后 ， 输电断面 T1 内的过载线路 l 5307 、 l 5308 的有功潮流分别由越限时的 1 336 MW 、 1 337 WM 逐渐调整为 1 249 MW 、 1 246 WM ; 09 : 30 ， 输电断面 T1 的有功潮流调整为 3 390 MW ， 低于其自身的极 限传输功率 ， 潮流越限量被消除 ; 09 : 40 左右 ， 调度 节点的潮流调整结束 。 通过潮流调整 ， 输电断面 T1 在其极限传输功率的范围内安全运行 ， 且所有线路 的有功潮流均在热稳定功率极限内 ， 可实现电网的 安全稳定运行 。 通过 IEEE 39 节点系统和某省级电网的输电断 面潮流控制分析可以看出 : 文中提出的基于正负综 合灵敏度的输电断面双层优化潮流控制方法能够 快速制定出符合调度目标的潮流越限控制策略 ， 完 成对过载线路的有功安全校正 ， 实现对输电断面潮 流越限的精准调度 。 6 结论 针对灵敏度分析方法精确度不高以及直接优 化类方法计算速度过慢等缺陷 ， 文中提出一种基于 正负综合灵敏度的输电断面双层优化潮流控制策 略 ， 该方法具有以下优点 : ( 1 ) 该方法充分考虑节点对过载及重载线路潮 流的整体控制作用 ， 提出节点的正负综合灵敏度指 标 。 同时为减少计算量 ， 剔除对关键线路集潮流控 制效果较差的节点 。 ( 2 ) 该方法采用双层优化思想 ， 首先构建第一 层调度节点多目标筛选优化模型 ， 快速选择参与潮 流控制的调度节点 ， 有效避免搜索空间过大导致计 算量激增的问题 。 然后构建第二层潮流调控优化 模型 ， 计算所选调度节点的精确出力调整量 ， 实现 对输电断面潮流越限的精准调度 。 致 谢 本文得到国网安徽省电力有限公司科技项目 ( B31200200005 "
+    },
+    {
+      "id": "E001-p9-c5",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "ion method． In order to prevent the surge of computation caused by too large search space ， a multi-objective selecting optimization model of the first layer scheduling nodes is established to optimize the scheduling nodes involved in the adjustment． On this basis ， the second layer power flow regulation optimization model is constructed to obtain the accurate output adjustment of the scheduling nodes． The above model realizes the accurate dispatching of power flow out of limit on the transmission section． The simulation results of IEEE 39-bus system and a provincial power grid verify the rapidity and accuracy of the proposed method． Keywords : line overload ; transmission section ; cascading trips ; power flow control ; positive and negative comprehensive sensiti- vity index ; double layer optimization ( 编辑 方晶 ) 511 谢大为 等 : 基于正负综合灵敏度的输电断面双层优化潮流控制策略"
+    },
+    {
+      "id": "E001-p1-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "5UD08 ) 0 引言 高比例接入电网的风电 、 光伏等新能源具有间 歇性 ， 使得电网传输功率波动频繁 ， 容易造成线路 过载运行 。 过载线路故障跳闸会使潮流转移到关 联输电断面内其他线路上 ， 造成输电断面发生潮流 过载 ， 引起过载保护装置动作 ， 导致电网发生大规 模连锁跳闸事故 ， 严重威胁电力系统的安全稳定运 行 ［ 1-4 ］ 。 因此 ， 当电网面临切除过载线路引发输电 断面连锁过载的风险时 ， 调度人员应快速制定有效 的潮流控制策略 ， 紧急消除线路过载 ， 使电网恢复 到安全运行状态 ［ 5-7 ］ 。 目前消除线路过载的主要措 施为紧急调整发电机组出力和切负荷操作 。 潮流 控制策略主要包括灵敏度分析方法 ［ 8-13 ］ 和直接优化 类方法 ［ 14-18 ］ 。 文献 ［ 8-9 ］ 提出的灵敏度分析方法无须迭代 ， 不存在收敛性问题 ， 可以快速得到潮流控制策略 。 但是该方法仅考虑过载线路与调度节点之间的灵 敏度关系 ， 而电网具有高度非线性特征 ， 调度节点 会对其他线路的潮流有不同程度的影响 ， 可能会导 致新的线路发生过载 ， 须进行多次潮流校验 。 文献 ［ 10 ］ 基于交流潮流模型 ， 得到支路有功潮流对节点 有功注入的灵敏度 ， 通过节点有功灵敏度和负载率 等指标对输电断面潮流越限进行调度指导 。 但是 该方法仅提供调度人员指导建议 ， 没有给出消除输 电断面潮流越限的实际调度方案 。 文献 ［ 11 ］ 充分 考虑节点对过载及重载线路潮流的整体控制作用 ， 将综合灵敏度定义为节点对过载及重载线路灵敏 度的加权和 。 文献 ［ 12-13 ］ 提出基于综合灵敏度分 析的潮流越限切负荷调度方案 ， 但违背了机组出力 调整的优先级高于切负荷操作的原则 ， 会对供电可 靠性产生不利影响 ， 在实际电力系统调度中的应用 合理性有待检验 。 由于电力系统的非线性因素 ， 调 整发电机组出力以降低某些线路载荷的同时会增 加其他线路的载荷 。 如果不加筛选地利用综合灵 敏度指标来控制线路潮流 ， 可能出现某些机组节点 对群体线路的整体作用与对局部线路的作用相反 ， 部分控制节点被划分到出力调整效果加剧过载线 路越限的节点集合中 ， 导致优化算法需要更多的机 组节点参与调度以平抑不同机组的相互反作用 ， 不 利于潮流策略的制定 。 灵敏度分析方法将节点有功注入与线路有功 潮流间的非线性关系简化为线性关系 ， 当仅依靠灵 敏度关系通过多个控制节点来调整线路潮流时误 差较大 ， 难以达到实际电网的潮流控制精度要求 。 在输电断面潮流控制策略中 ， 文献 ［ 14 ］ 对比了灵敏 度分析方法和粒子群优化算法 ， 验证了基于粒子群 算法"
+    },
+    {
+      "id": "E001-p6-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， 低于其热稳定功率极限 。 文中方法不会产生 潮流误差的原因在于 : 文中采用双层优化思想 ， 首 先构建第一层调度节点多目标筛选优化模型 ， 确定 参与潮流控制的调度节点 ， 再通过第二层潮流调控 优化模型计算所选调度节点的精确出力调整量 ， 所 得的调整方法能够保证过载线路 l 1 — 39 在调整后有 功潮流低于其热稳定功率极限 ， 实现消除线路越限 的精准调度 。 而且 ， 文中方法仅调度 4 台机组 ， 灵敏 度分析方法则须调度 5 台机组 ， 对发电厂的既定发 电计划影响较大 。 直接优化类方法制定的潮流控制策略能够保 证过载线路 l 1 — 39 的有功潮流由过载时的 322．40 MW 下降为 248．23 MW ， 低于其热稳定功率极限 ， 不会产 生潮流误差 。 但是 ， 该方法将节点是否参与调度的 0-1 变量以及对应的出力调整量作为控制变量 ， 控 制策略的制定变为复杂的非线性潮流规划 ， 搜索空 间过大 ， 计算量激增 ， 很有可能无法在过载线路热 稳定功率极限的耐受时间内得到潮流控制策略 ， 导 致大规模连锁跳闸停电事故 。 将文中方法与文献 ［ 11 ］ 提出的综合灵敏度分 析方法进行比较 。 采用文献 ［ 11 ］ 的方法 ， 计算机组 节点 G30 、 G33 、 G37 、 G38 对过载及重载线路的综合 灵敏度分别为 0．501 1 、 0．055 3 、 0．361 6 、 0．292 9 ， 与 对应过载线路的灵敏度指标相反 ， 这使得机组节点 G30 、 G33 、 G37 、 G38 被划分到出力减少节点集合 ， 与 节点实际情况相反 ， 导致仅通过机组节点无法消除 线路过载 ， 负荷节点 D4 被迫执行切负荷操作 。 但 实际上 ， 通过文中方法得到的潮流控制策略只需机 组节点 G30 、 G34 、 G37 、 G39 参与调度控制 ， 验证了 文献 ［ 11 ］ 提出的综合灵敏度分析方法有可能导致 负荷节点被迫执行切负荷操作 ， 降低供电可靠性 。 5．2 某省级电网潮流越限调整仿真分析 为进一步验证文中方法制定的潮流控制策略 的有效性 ， 以某省级电网 5 月 6 号 08 : 00 — 10 : 00 时 的潮流运行为例进行分析 。 如图 2 所示 ， 省级电网 输电断面 T1 发生潮流越限 ， 图中红色曲线途径的 线路集合为发生潮流越限的输电断面 T1 ， 节点间的 双线代表双回线路 ， 箭头指向代表潮流方向 。 输电 断面 T1 在 5 月 6 号 08 : 00 — 10 : 00 的有功潮流见 图 3 。 图 2 输电断面 T1 位置示意 Fig．2 Schematic diagram of p"
+    },
+    {
+      "id": "E001-p9-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "化调度 ［ J ］ ． 电工电能新技术 ， 2019 ， 38 ( 12 ) : 19-27． ZHANG Jun ， WANG Hongmin ， LIU Tingzhang． Multi-objective optimization scheduling of microgrid based on improved cuckoo algorithm ［ J ］ ． Advanced Technology of Electrical Engineering and Energy ， 2019 ， 38 ( 12 ) : 19-27． ［ 22 ］ 李超 ， 苗世洪 ， 盛万兴 ， 等 ． 考虑动态网络重构的主动配电 网优化运行策略 ［ J ］ ． 电工技术学报 ， 2019 ， 34 ( 18 ) : 3909- 3919． LI Chao ， MIAO Shihong ， SHENG Wanxing ， et al． Optimization operation strategy of active distribution network considering dy- namic network reconfiguration ［ J ］ ． Transactions of China Ele- trotechnical Society ， 2019 ， 34 ( 18 ) : 3909-3919． ［ 23 ］ 杨智超 ， 孙磊 ， 丁明 ． 计及关键恢复路径的机组启动次序优 化策略 ［ J ］ ． 电力建设 ， 2019 ， 40 ( 10 ) : 28-35． YANG Zhichao ， SUN Lei ， DING Ming． Optimization strategy for start-up sequence of generation units considering critical restoration paths ［ J ］ ． Electric Power Construction ， 2019 ， 40 ( 10 ) : 28-35． ［ 24 ］ ZHANG D B ， WANG N J ， YANG H J ， et al． Fast search algo- rithm for key transmission sections based on topology converg- ing adjacency matrix ［ J ］ ． IEEE Access ， 2020 ( 8 ) : 108235- 108246． ［ 25 ］ 张大波 ， 王博欣 ， 郭怀新 ， 等 ． 基于拓扑聚合的输电断面辨 识方法与断"
+    },
+    {
+      "id": "E044-p0-c1",
+      "paper": "E044",
+      "file": "Preventive Security-Constrained Optimal Power Flow Considering UPFC Control Modes",
+      "text": "The successful application of the unified power flow controller (UPFC) provides a new control method for the secure and economic operation of power system. In order to make the full use of UPFC and improve the economic efficiency and static security of a power system, a preventive security-constrained power flow optimization method considering UPFC control modes is proposed in this paper. Firstly, an iterative method considering UPFC control modes is deduced for power flow calculation. Taking into account the influence of different UPFC control modes on the distribution of power flow after N-1 contingency, the optimization model is then constructed by setting a minimal system operation cost and a maximum static security margin as the objective. Based on this model, the particle swarm optimization (PSO) algorithm is utilized to optimize power system operating parameters and UPFC control modes simultaneously. Finally, a standard IEEE 30-bus system is utilized to demonstrate that the prop",
+      "source_type": "abstract",
+      "doi": "10.3390/en10081199",
+      "url": "https://doi.org/10.3390/en10081199"
+    },
+    {
+      "id": "E162-p0-c1",
+      "paper": "E162",
+      "file": "Cyber‐Resilient Distributed Energy Resource Control Algorithms for Smart Distribution Grids",
+      "text": "ABSTRACT This paper focuses on the development of cyber‐resilient gradient‐based optimisation algorithms and theoretical proof for grid‐interactive distributed energy resource (DER) control to enable two grid services of virtual power plants (VPPs) dispatch and grid voltage regulation, considering the communication and security impacts. Firstly, the combined DER dispatch and voltage regulation as a real‐time gradient‐based optimisation problem is recapped. Thereafter, we consider a probabilistic traffic model to characterise packet delays and loss in a communication network, and study how the delays enter the process of information exchange among the grid measurement units, local DER controllers and the grid control centre that execute this control algorithm in a coordinated manner. Then, a strategy combining delay thresholds and message update rules is proposed to immunity the asynchrony resulting from the communications traffic and it avoids possible numerical instabilities and sensi",
+      "source_type": "abstract",
+      "doi": "10.1049/cps2.70032",
+      "url": "https://doi.org/10.1049/cps2.70032"
+    },
+    {
+      "id": "E146-p0-c1",
+      "paper": "E146",
+      "file": "Event‐triggered communication in wide‐area damping control: a limited output feedback‐based approach",
+      "text": "A conceptual design methodology is proposed for event‐triggered based communication for wide‐area damping controller in power systems. The event‐triggering mechanism is adopted to reduce the communication burden between the origin of the remote signal and the wide‐area damping controller (WADC) location. The remote signal is transmitted to the WADC only when an event‐triggering condition based on a predefined system output, is satisfied. The triggering condition is derived from a stability criterion, and is monitored continuously by a separate event‐monitoring unit located at the origin of the remote signal. The stability of the resulting closed‐loop system is guaranteed via the input‐to‐state stability technique. The proposed event‐triggered WADC is implemented on two typical test power systems – two area four machine and IEEE 39‐bus 10‐machine. The validation of proposed mechanism is carried out through non‐linear simulation studies on MATLAB/Simulink platform. The numerical results ",
+      "source_type": "abstract",
+      "doi": "10.1049/iet-gtd.2016.0466",
+      "url": "https://doi.org/10.1049/iet-gtd.2016.0466"
+    },
+    {
+      "id": "E192-p0-c1",
+      "paper": "E192",
+      "file": "Distributed Event-Triggered Voltage Control with Limited Re-Active Power in Low Voltage Distribution Networks",
+      "text": "A high proportion of photovoltaic (PV) connections to a low-voltage distribution network (LVDN) causes serious voltage problems. In order to ensure voltage stability for renewable energy networks, we propose a distributed reactive voltage control strategy that is event-triggered. The voltage information of the PV nodes is transmitted to the upper layer of the communication network, where the agent calculates the output set value of the PV inverter. The underlying control strategy is based on the voltage sensitivity matrix, and the upper-level control strategy is based on an event-triggered consensus protocol. This strategy can accommodate the requirements for multi-time modeling and control. We verified the convergence of the event-triggered control algorithm using numerical analysis and proved the reduction of the communication times. We conducted case studies and simulation experiments to verify the effectiveness of our proposed voltage control strategies.",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics10020128",
+      "url": "https://doi.org/10.3390/electronics10020128"
+    },
+    {
+      "id": "E046-p0-c1",
+      "paper": "E046",
+      "file": "Interpretable Machine Learning‐Based Intelligent High‐Frequency Static Security Adjustment Method for Power System Operations",
+      "text": "ABSTRACT The high penetration of renewable energy exacerbates stochastic fluctuations on both the generation and demand sides. It results in spatiotemporally frequent static security violations and requires high‐frequency assessment and adjustment of the operation mode. However, conventional offline verification and manual adjustment methods fail to meet this requirement. Therefore, this paper proposes an interpretable machine learning‐based intelligent high‐frequency static security adjustment method for power system operations. First, a multitask XGBoost collaborative framework‐based static security analysis model is developed by utilising power flow characteristics under the base case ( N state) and various N − 1 contingency scenarios ( N − 1 states) as input–output features. It can efficiently and accurately evaluate the power flow violation status under both the N state and various N − 1 states. Second, when operational modes exhibit power flow violation status, an intelligent adj",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70074",
+      "url": "https://doi.org/10.1049/stg2.70074"
+    },
+    {
+      "id": "E198-p0-c1",
+      "paper": "E198",
+      "file": "Event-Triggered Transmission of Sensor Measurements Using Twin Hybrid Filters for Renewable Energy Resource Management Systems",
+      "text": "Recently, solar and wind power generation have gained attention as pathways to achieving carbon neutrality, and Renewable Energy Resource Management System (RERMS) technology has been developed to monitor and control small-scale, distributed renewable energy resources. In this work, we present an Event-Triggered Transmission (ETT) algorithm for RERMS, which transmits sensor measurements to the base station only when necessary. The ETT algorithm helps prevent congestion in the communication channel between RERMS and the base station, avoiding time delays or packet loss caused by the excessive transmission of sensor measurements. We design a hybrid state estimation algorithm that combines Kalman and Finite Impulse Response (FIR) filters to enhance the estimation performance, and we propose a new ETT algorithm based on this design. We evaluate the performance of the proposed algorithm through experiments that transmit actual sensor measurements from a photovoltaic power generation system ",
+      "source_type": "abstract",
+      "doi": "10.3390/en17225651",
+      "url": "https://doi.org/10.3390/en17225651"
+    },
+    {
+      "id": "E186-p0-c2",
+      "paper": "E186",
+      "file": "Agentic AI for edge-cloud-Aware distributed economic dispatch: Carbon-aware event-triggered optimization under feedback delays",
+      "text": "for Agentic AI in smart energy systems operating over an edge–cloud continuum. In each local optimization iteration, each node in the power system can access its local objective function with a delayed time sequence and updates its local decision-making behavior online based on information from multiple neighboring nodes, controlled by an event-triggering mechanism, to minimize the global cumulative generation cost and carbon emission cost. The research results show that, under the assumption that the time-varying balanced undirected communication topology remains connected, the designed online optimization algorithm ensures that the upper bound of static network regret grows sub-linearly, fundamentally related to feedback delays and event-triggering thresholds and scaled as O ( T ) . This work provides a foundational paradigm for Agentic AI in smart energy systems, bridging distributed optimization theory with practical constraints of modern edge-cloud infrastructures.",
+      "source_type": "abstract",
+      "doi": "10.1177/15741702261440383",
+      "url": "https://doi.org/10.1177/15741702261440383"
+    },
+    {
+      "id": "E165-p0-c1",
+      "paper": "E165",
+      "file": "A stochastic power flow-based static security assessment under uncertain scenarios",
+      "text": "With the gradual increase in the grid-connected capacity of renewable energy sources, the uncertainty in the operation of power systems has increased, posing challenges to static security assessment considering N-1 contingency scanning. To address this, this article first establishes a static security calculation model based on stochastic power flow. Then, it proposes stochastic component-level safety indexes and system-level safety indexes. Finally, using the analytic hierarchy process to analyze the obtained weighting coefficients, the article establishes a system of static security assessment indexes for power systems. A data-driven simulation method based on extreme gradient boosting (XGBoost) is proposed to tackle the high time consumption of multi-scenario static security assessment, which brings difficulties in model debugging and application. Case studies based on the IEEE 39-bus system demonstrate the effectiveness of the proposed model and the rapidity of the data-driven appr",
+      "source_type": "abstract",
+      "doi": "10.3389/fenrg.2024.1429160",
+      "url": "https://doi.org/10.3389/fenrg.2024.1429160"
+    },
+    {
+      "id": "E109-p0-c1",
+      "paper": "E109",
+      "file": "Resilient Event‐Triggered Load Frequency Control for Interconnected Renewable Power Systems Considering Parameter Uncertainties",
+      "text": "ABSTRACT Though the integration of renewable energy sources into power grids increases, their inherent intermittency and uncertainty may undermine the effectiveness of conventional load frequency control (LFC) strategies. Distributed LFC (DLFC) has emerged as a promising solution by leveraging distributed control architectures and advanced communication technologies. However, existing DLFC approaches face two major limitations: (1) inaccuracies in small‐signal modelling due to shifts in the system's steady‐state operating point and (2) inefficiencies in conventional event‐triggered control mechanisms, which fail to adapt dynamically to system fluctuations. To address these challenges, this work presents a resilient memory‐based event‐triggered LFC method and explicitly considers parameter uncertainties in interconnected renewable power systems. First, an enhanced small‐signal LFC model that incorporates an uncertain but bounded matrix, is developed. Second, an advanced event‐triggered ",
+      "source_type": "abstract",
+      "doi": "10.1049/rpg2.70266",
+      "url": "https://doi.org/10.1049/rpg2.70266"
+    },
+    {
+      "id": "E180-p0-c1",
+      "paper": "E180",
+      "file": "Distributed event-triggered consensus protocols for discrete-time multiagent systems",
+      "text": "Abstract This paper focuses on leader-following and leaderless consensus problems of discrete-time multiagent systems. A distributed observer-based consensus protocol is proposed to investigate the consensus problem for multiagent systems of general discrete-time linear dynamics. By means of the observer, the distributed control law of each agent is designed using local information to guarantee consensus, and the corresponding sufficient conditions are obtained by exploiting graph and control theory approach. A modified distributed event-triggered consensus protocol is designed to reduce communication congestion. Detailed analysis of the leaderless and the leader-following consensus is presented for both observer-based and full-information protocols. Finally, two simulation examples are provided to demonstrate the effectiveness and capabilities of the established theories.",
+      "source_type": "abstract",
+      "doi": "10.1093/imamci/dnab023",
+      "url": "https://doi.org/10.1093/imamci/dnab023"
+    },
+    {
+      "id": "E121-p0-c1",
+      "paper": "E121",
+      "file": "Extreme Weather Loading Risk Model of Overhead Transmission Line",
+      "text": "Power grid suffers tremendous economic loss in extreme ice disaster weather, suggesting that it lacks immediate precautionary system. On the basis of the standards of Q/GDW179-2008 and IEC60826-2003, the curve of transmission line design loads is built up. In view of ransom character for load-strength of transmission line, according to load-strength interference theory, a short-term wind and ice loading risk model is established, which is a time-dependent wind and ice loading model, and can be calculated unreliability probability and fault rate, showing risks about cluster fault and common fault. Furthermore, wind and ice loads are divided into five states, which show risk margin of loads. It also can provide precautionary information for operator, and can present risk measurement on time scale.",
+      "source_type": "abstract",
+      "doi": "10.4028/www.scientific.net/amr.383-390.2005",
+      "url": "https://doi.org/10.4028/www.scientific.net/amr.383-390.2005"
+    },
+    {
+      "id": "E054-p0-c1",
+      "paper": "E054",
+      "file": "Dynamic reactive power optimization and cooperative control for distribution and transmission power grids based on multi-agent deep reinforcement learning",
+      "text": "The high time-variability and multi-dimensional coupling characteristics of distribution and transmission power grids impose severe challenges on conventional reactive power optimization methods, which generally fail to balance real-time response performance and global optimality, thereby easily causing voltage limit violations and excessive network power losses. To address this issue, this paper proposes a dynamic reactive power optimization and collaborative control framework based on multi-agent deep reinforcement learning (MADRL). A constrained collaborative optimization model is established with the objectives of minimizing network loss and regulation cost, while satisfying power flow balance, voltage magnitude and line transmission security constraints. The multi-agent interactive learning process is formulated as a Markov game, where an attention communication module is embedded to reduce information interaction overhead, and an adversarial perturbation framework is introduced t",
+      "source_type": "abstract",
+      "doi": "10.3389/fphy.2026.1833425",
+      "url": "https://doi.org/10.3389/fphy.2026.1833425"
+    },
+    {
+      "id": "E028-p0-c2",
+      "paper": "E028",
+      "file": "Power Flow Coupling Characteristics Analysis and Coordinated Optimization Strategy for AC/DC Hybrid Transmission Sections",
+      "text": "low security, a novel AC-like AC/DC power flow coordinated optimization strategy is proposed. Based on phase angle coordinated control, the autonomous response capability of the DC system is leveraged to perform real-time control and optimization of transmission power on lines, maximizing the capacity utilization of AC/DC hybrid transmission section while satisfying security and stability requirements. Finally, simulation studies based on a transmission network containing two four-machine AC systems verify that the proposed strategy fully meets the security and stability requirements of AC/DC hybrid power grids, providing reliable technical support for the coordinated development of future AC/DC grids.",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15010066",
+      "url": "https://doi.org/10.3390/electronics15010066"
+    },
+    {
+      "id": "E107-p0-c1",
+      "paper": "E107",
+      "file": "N − k Static Security Assessment for Power Transmission System Planning Using Machine Learning",
+      "text": "This paper presents a methodology for static security assessment of transmission network planning using machine learning (ML). The objective is to accelerate the probabilistic risk assessment of the Hydro-Quebec (HQ) TransÉnergie transmission grid. The model takes the expected power supply and the status of the elements in a N−k contingency scenario as inputs. The output is the reliability metric Expecting Load Shedding Cost (ELSC). To train and test the regression model, stochastic data are performed, resulting in a set of N−k and k=1,2,3 contingency scenarios used as inputs. Subsequently, the output is computed for each scenario by performing load shedding using an optimal power flow algorithm, with the objective function of minimizing ELSC. Experimental results on the well-known IEEE-39 bus test system and PEGASE-1354 system demonstrate the potential of the proposed methodology in generalizing ELSC during an N−k contingency. For up to k=3 the coefficient of determination R2 obtained",
+      "source_type": "abstract",
+      "doi": "10.3390/en17020292",
+      "url": "https://doi.org/10.3390/en17020292"
+    },
+    {
+      "id": "E197-p0-c1",
+      "paper": "E197",
+      "file": "Design and Implementation of an Energy Management System with Event-Triggered Distributed Secondary Control in DC Microgrids",
+      "text": "In this paper, an event-triggered distributed secondary control, along with an energy management algorithm, was developed to ensure the voltage stability and power management of a DC microgrid containing batteries and renewable energy sources, such as PV systems and wind turbines. The energy management algorithm, employing fuzzy logic control, governs power flow based on the generation status of sources and the charging rate of the battery. Consequently, the control algorithm shields the battery from overcharging and over-discharging situations, simultaneously ensuring energy quality within the microgrid. Sampled-data-based event-triggered control is integrated into the proposed distributed secondary control to alleviate communication burdens between controllers, effectively avoiding Zeno behavior. To demonstrate the efficacy of the proposed control algorithm, several experimental studies were conducted on a real DC microgrid prototype. The results obtained confirmed the controller’s e",
+      "source_type": "abstract",
+      "doi": "10.3390/en17030662",
+      "url": "https://doi.org/10.3390/en17030662"
+    },
+    {
+      "id": "E168-p0-c1",
+      "paper": "E168",
+      "file": "Event‐triggered distributed optimisation for multi‐agent systems with transmission delay",
+      "text": "In this study, the authors discuss the event‐triggered distributed optimisation algorithm for multi‐agent systems with sampled‐data and transmission delay. Each agent only knows its local objective function and exchanges information with its connected neighbours through the network. Firstly, they present sufficient conditions of exponential stability for a class of hybrid non‐linear systems by using continuous and discrete analysis. Then, based on these conditions, a distributed optimisation algorithm is proposed such that a multi‐agent system achieves consensus and optimality. Finally, a simulation example is provided to verify the effectiveness of the theoretical results.",
+      "source_type": "abstract",
+      "doi": "10.1049/iet-cta.2018.6307",
+      "url": "https://doi.org/10.1049/iet-cta.2018.6307"
+    },
+    {
+      "id": "E055-p0-c1",
+      "paper": "E055",
+      "file": "Online multi-agent deep reinforcement learning platform for distributed real-time dynamic control of power systems",
+      "text": "Abstract In recent years, multi-agent deep reinforcement learning (MADRL) has made significant strides in power system decision-making and control. However, there is a scarcity of high-fidelity, real-time platforms for testing various DRL control algorithms in detailed power systems. Motivated by EtherCAT communication and DRL features, this study presents a MADRL online testing platform for distributed real-time dynamic control of power systems. The platform utilizes the Opal-RT real-time simulator for real-time simulation of dynamic power system environments and uses multiple AI workstations for the implementation of MADRL control algorithms. The proposed platform facilitates real-time interaction among AI workstations and the Opal-RT real-time simulator by leveraging the EtherCAT communication protocol to transmit system information and control signals. It enables the online and real-time training of distributed MADRL algorithms for power system dynamic control. The effectiveness an",
+      "source_type": "abstract",
+      "doi": "10.1007/s00521-024-10488-5",
+      "url": "https://doi.org/10.1007/s00521-024-10488-5"
+    },
+    {
+      "id": "E016-p0-c1",
+      "paper": "E016",
+      "file": "Adversarial Self‐Improvement for Resilient Smart Grid Dispatch Control Under Extreme N‐2 Contingencies",
+      "text": "ABSTRACT Deploying AI‐enabled dispatch controllers in smart grids demands quantifiable resilience against contingencies beyond the conventional N‐1 design basis. We present AG2CDT + , an adversarial self‐improvement framework that hardens offline‐trained dispatch controllers through iterative stress testing and corrective fine‐tuning. A grid adversary generates targeted N‐1, N‐2 and compound contingencies from critical transmission corridors. A safety oracle combining PTDF‐based preaction thermal screening, an advisory AC Jacobian voltage‐sensitivity predictor and duration‐aware poststep voltage enforcement identifies violations and generates corrected actions via line search; a special protection scheme (SPS) controller invokes targeted load shedding and line‐bridge switching whenever AC power flow diverges turning previously‐fatal scenarios into recoverable ones. Empirical measurement shows that the agent's active‐power dispatch moves monitored bus voltages by p.u./MW—two orders of m",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70090",
+      "url": "https://doi.org/10.1049/stg2.70090"
+    }
+  ]
+}

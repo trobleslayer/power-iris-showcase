@@ -1,0 +1,76 @@
+Multiple definitions in dictionary at byte 0x8ba94 for key /MediaBox
+[Academic] retrieved 2400 records; 690 unique abstracts
+[Academic] screened 64 | 35/194 qualified
+[Academic] screened 128 | 61/194 qualified
+[Academic] screened 192 | 86/194 qualified
+[Academic] screened 256 | 114/194 qualified
+[Academic] screened 320 | 137/194 qualified
+[Academic] screened 360 | 148/194 qualified
+[Academic] round 1: 2400 records | 690 unique abstracts | 148 qualified
+[Academic] retrieved 4800 records; 1195 unique abstracts
+[Academic] screened 424 | 173/194 qualified
+[Academic] screened 488 | 197/194 qualified
+[Academic] round 2: 4800 records | 1195 unique abstracts | 197 qualified
+[Index] 724 chunks
+
+[Candidate 1] 实时安全与资源筛选 | generate
+[Evidence] 15 verified excerpts
+[Review] 8.88/10 | fatal=False
+  novelty: 8.8
+  physics: 9.0
+  feasibility: 8.8
+  falsifiability: 9.2
+  evidence: 8.6
+  relevance: 9.3
+  latency: 8.9
+  accuracy: 8.9
+  generalization: 8.5
+  interpretability: 8.8
+
+[Candidate 2] 实时安全与资源筛选 | generate
+[Evidence] 9 verified excerpts
+[Review] 8.95/10 | fatal=False
+  novelty: 8.9
+  physics: 9.0
+  feasibility: 8.6
+  falsifiability: 9.2
+  evidence: 8.7
+  relevance: 9.4
+  latency: 8.8
+  accuracy: 9.0
+  generalization: 8.8
+  interpretability: 9.1
+
+[Candidate 3] 实时安全与资源筛选 | generate
+[Evidence] 13 verified excerpts
+[Review] 9.09/10 | fatal=False
+  novelty: 8.9
+  physics: 9.2
+  feasibility: 8.8
+  falsifiability: 9.4
+  evidence: 8.7
+  relevance: 9.6
+  latency: 9.1
+  accuracy: 9.1
+  generalization: 8.9
+  interpretability: 9.2
+
+[Candidate 4] 实时安全与资源筛选 | generate
+Traceback (most recent call last):
+  File "C:\keyanjiashe\Power-IRIS\run.py", line 729, in <module>
+    main()
+  File "C:\keyanjiashe\Power-IRIS\run.py", line 670, in main
+    candidates = [generate(d,root,'generate') for _ in range(cfg.get('initial_candidates_per_direction',1))]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\keyanjiashe\Power-IRIS\run.py", line 670, in <listcomp>
+    candidates = [generate(d,root,'generate') for _ in range(cfg.get('initial_candidates_per_direction',1))]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\keyanjiashe\Power-IRIS\run.py", line 549, in generate
+    q = checked(a,QUERY_PROMPT,context,lambda r: isinstance(r,dict) and isinstance(r.get('queries'),list) and 3<=len(r['queries'])<=5 and all(nonempty(x) for x in r['queries']),'Query')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\keyanjiashe\Power-IRIS\run.py", line 455, in checked
+    result = client.ask(
+             ^^^^^^^^^^^
+  File "C:\keyanjiashe\Power-IRIS\power_iris\core.py", line 213, in ask
+    raise RuntimeError(
+RuntimeError: 缺少真实API缓存: 05a93e9b83d18628309287eff56f821ab0f5c42b86620c5b5bd71b328db2e6c5

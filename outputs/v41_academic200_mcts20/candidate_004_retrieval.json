@@ -1,0 +1,261 @@
+{
+  "context": {
+    "goal": "新型电力系统断面潮流控制：兼顾时效性、准确性、泛化性与可解释性，在实时运行和极端天气场景强化断面阻塞决策、确保安全裕度并适应电网动态演化。",
+    "direction": "极端天气与尾部风险",
+    "action": "generate",
+    "previous": {},
+    "feedback": {},
+    "candidate_id": 4,
+    "reference_logic": {
+      "mechanism": "该假设的因果链条可逆向拆解为四步。第一步是相关结构保留：联合场景生成器同时刻画高温或台风下新能源送出下降、负荷抬升与线路可用度及热限额下降的共现与尾部相依，替代把各类扰动独立抽样或统一降额的处理。第二步是风险映射：在经验分布邻域构成的模糊集内，对最坏分布施加CVaR约束，使优化目标从平均成本转向对低频高损失尾部的约束，模糊集半径与风险预算仅由训练和验证数据标定。第三步是决策中介：风险约束在同等总备用下改变备用的空间分布与时限安排，把储能与可调资源前置到对关键断面潮流转移最敏感、故障后仍可提供受端支撑的位置，并以限发作为最后手段。第四步是损失收敛：故障前备用分布改善与受端可用支撑提升，降低断面越限持续时间和故障后失供电量，最终表现为测试集损失CVaR0.95下降。机制成立的关键判别条件是收益必须来自相关性与空间配置，而不是来自备用总量增加或弃电扩大；在独立场景中不应复现同等收益。",
+      "evidence_needs": "需要以下几类证据：（1）天气与运行数据的联合可识别性证据，包括新能源出力、负荷、线路可用性与热限额的共现频率、尾部相依度量及跨事件稳定性，需说明数据来源或合成生成器的可审计性；（2）断面过载与潮流转移可能诱发连锁风险的机理支撑（对应E001），以及故障后安全约束建模依据（E002）、交直流功率平衡与设备约束依据（E003）；（3）分布鲁棒CVaR与模糊集半径选择的方法学依据，以及半径与风险预算仅用训练/验证数据确定的程序化说明；（4）仿真参数校准依据，含故障率、保护延迟、级联规则与热限额随气象变化的映射；（5）基线可比性证据，即固定保守裕度与确定性SCOPF的参数设定；（6）统计证据需求，含按整次事件划分的训练/验证/测试设计、事件强度外推集、尾部样本量与置信区间的估计稳定性判据；（7）中介效应证据，即联合尾部覆盖率、故障前备用分布与受端可用支撑的可测量代理量。须明确标注：天气相关分布、分布鲁棒CVaR及其效果属于拟研究扩展，所引文献不提供直接实证。",
+      "verification": "在118节点系统上构造热浪与台风两类时序事件，采用因素实验：场景建模（联合场景与独立场景）×风险准则（期望值、经验CVaR、分布鲁棒CVaR）×模糊集半径若干档；基线为统一固定保守裕度与确定性SCOPF。数据按整次天气事件划分，另留强度外推集用于漂移检验，并报告模糊集对测试漂移的覆盖率。测试不少于1000条轨迹，报告尾部样本数、bootstrap置信区间，并逐步增加样本直至CVaR0.95估计稳定。除主效应外须做机制判别检验：在固定总备用与弃电水平的约束下比较收益是否仍存在；检查独立场景中是否复现同等收益，若复现则否定或收缩相关性机制；对备用空间分布、联合尾部覆盖率、受端可用支撑做中介分析。敏感性分析覆盖模糊集半径、风险预算、调控提前量与备用容量上限。故障与级联部分须报告概率模型、级联规则与保护延迟设定；若未配置动态模型，只能表述为稳态级联近似，不得表述为安全性保证。",
+      "gaps": "待改进问题包括：（1）联合天气分布的可识别性与样本稀缺性未解决，合成轨迹生成器可能把结论内生化，需以真实气象与运行统计校准并做生成器误配检验；（2）模糊集半径与风险预算的选择缺乏理论保证，结果对其敏感性尚未量化，存在半径过大导致过度保守、平均成本上升的风险；（3）滚动交流安全约束调度的计算可扩展性与节点级备用的精细表示之间的张力，可能使空间配置机制难以被真实刻画；（4）级联与保护动作仅为稳态近似，缺少动态与保护时序建模，尾部损失的物理真实性受限；（5）CVaR0.95在千条量级轨迹下尾部样本少、估计方差大，尾部结论的稳健性需更强证据；（6）调控提前量5至30分钟与预报不确定性之间的耦合未量化，提前量选择可能主导结果；（7）成本与韧性的权衡未分离，弃电与备用扩张可能冒充韧性收益，需专门的控制变量设计；（8）无法给出对未见灾害的安全保证，外推集仅能提供有限漂移证据；（9）尚缺实际部署级验证，仿真结论不可作为真实灾害应对依据。"
+    },
+    "core_mechanism_constraint": "假设相较独立扰动建模，联合场景能保留送出下降、需求上升和可用通道减少的共现关系，风险约束促使备用提前配置到对关键断面有效的位置，从而降低低频高损失事件的尾部损失。",
+    "existing_titles": []
+  },
+  "queries": [
+    "极端天气下新能源出力、负荷与线路热限额的联合尾部相依建模及断面阻塞风险：joint tail dependence modeling of renewable output, load, and line thermal limits for transmission section congestion under extreme weather",
+    "滚动交流安全约束断面潮流调度中的分布鲁棒CVaR与模糊集半径标定：distributionally robust CVaR and ambiguity-set radius calibration for rolling AC security-constrained transmission congestion dispatch",
+    "热浪/台风时序事件中保护延迟、故障率与稳态级联近似对故障后潮流转移和断面越限持续时间的影响：protection delay, outage rate, and steady-state cascading approximation in heatwave/typhoon sequential events for post-contingency flow redistribution",
+    "固定总备用与弃电水平下备用空间配置、联合尾部覆盖率与受端支撑对断面阻塞尾部损失的中介效应：mediation effects of reserve spatial allocation, joint tail coverage, and receiving-end support on tail losses under fixed total reserve and curtailment",
+    "极端事件样本稀缺下CVaR0.95的事件级划分、bootstrap置信区间、生成器误配与外推漂移检验：event-wise split, bootstrap confidence intervals, generator misspecification, and extrapolation drift tests for CVaR0.95 under scarce extreme events"
+  ],
+  "hits": [
+    {
+      "id": "E001-p1-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "5UD08 ) 0 引言 高比例接入电网的风电 、 光伏等新能源具有间 歇性 ， 使得电网传输功率波动频繁 ， 容易造成线路 过载运行 。 过载线路故障跳闸会使潮流转移到关 联输电断面内其他线路上 ， 造成输电断面发生潮流 过载 ， 引起过载保护装置动作 ， 导致电网发生大规 模连锁跳闸事故 ， 严重威胁电力系统的安全稳定运 行 ［ 1-4 ］ 。 因此 ， 当电网面临切除过载线路引发输电 断面连锁过载的风险时 ， 调度人员应快速制定有效 的潮流控制策略 ， 紧急消除线路过载 ， 使电网恢复 到安全运行状态 ［ 5-7 ］ 。 目前消除线路过载的主要措 施为紧急调整发电机组出力和切负荷操作 。 潮流 控制策略主要包括灵敏度分析方法 ［ 8-13 ］ 和直接优化 类方法 ［ 14-18 ］ 。 文献 ［ 8-9 ］ 提出的灵敏度分析方法无须迭代 ， 不存在收敛性问题 ， 可以快速得到潮流控制策略 。 但是该方法仅考虑过载线路与调度节点之间的灵 敏度关系 ， 而电网具有高度非线性特征 ， 调度节点 会对其他线路的潮流有不同程度的影响 ， 可能会导 致新的线路发生过载 ， 须进行多次潮流校验 。 文献 ［ 10 ］ 基于交流潮流模型 ， 得到支路有功潮流对节点 有功注入的灵敏度 ， 通过节点有功灵敏度和负载率 等指标对输电断面潮流越限进行调度指导 。 但是 该方法仅提供调度人员指导建议 ， 没有给出消除输 电断面潮流越限的实际调度方案 。 文献 ［ 11 ］ 充分 考虑节点对过载及重载线路潮流的整体控制作用 ， 将综合灵敏度定义为节点对过载及重载线路灵敏 度的加权和 。 文献 ［ 12-13 ］ 提出基于综合灵敏度分 析的潮流越限切负荷调度方案 ， 但违背了机组出力 调整的优先级高于切负荷操作的原则 ， 会对供电可 靠性产生不利影响 ， 在实际电力系统调度中的应用 合理性有待检验 。 由于电力系统的非线性因素 ， 调 整发电机组出力以降低某些线路载荷的同时会增 加其他线路的载荷 。 如果不加筛选地利用综合灵 敏度指标来控制线路潮流 ， 可能出现某些机组节点 对群体线路的整体作用与对局部线路的作用相反 ， 部分控制节点被划分到出力调整效果加剧过载线 路越限的节点集合中 ， 导致优化算法需要更多的机 组节点参与调度以平抑不同机组的相互反作用 ， 不 利于潮流策略的制定 。 灵敏度分析方法将节点有功注入与线路有功 潮流间的非线性关系简化为线性关系 ， 当仅依靠灵 敏度关系通过多个控制节点来调整线路潮流时误 差较大 ， 难以达到实际电网的潮流控制精度要求 。 在输电断面潮流控制策略中 ， 文献 ［ 14 ］ 对比了灵敏 度分析方法和粒子群优化算法 ， 验证了基于粒子群 算法"
+    },
+    {
+      "id": "E001-p1-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "DOI : 10．12158 /j．2096-3203．2023．01．013 2023 年 1 月 Electric Power Engineering Technology 第 42 卷 第 1 期 基于正负综合灵敏度的输电断面双层优化潮流控制策略 谢大为 1 ， 王博欣 2 ， 3 ， 王京景 1 ， 彭伟 1 ， 马英浩 2 ， 张大波 2 ( 1． 国网安徽省电力有限公司 ， 安徽 合肥 230022 ; 2． 新能源利用与节能安徽省重点实验室 ( 合肥工业大学 ) ， 安徽 合肥 230009 ; 3． 国网山东省电力公司荣成市供电公司 ， 山东 荣成 264300 ) 摘 要 : 过载线路故障跳闸会使潮流转移到关联输电断面内其他线路上 ， 造成连锁跳闸事故 。 快速制定合理有效 的潮流控制策略 ， 消除线路过载 ， 是防止发生连锁跳闸事故的关键 。 针对灵敏度分析方法精度不高和直接优化类 方法计算量过大等缺陷 ， 文中提出基于正负综合灵敏度的输电断面双层优化潮流控制策略 。 考虑节点对过载和重 载线路潮流的整体调节作用 ， 提出正负综合灵敏度指标 ， 然后通过双层优化方法快速制定潮流控制策略 。 为防止 搜索空间过大导致计算量激增 ， 建立第一层调度节点多目标筛选优化模型 ， 优选参与调整的调度节点 。 在此基础 上构建第二层潮流调控优化模型 ， 得到调度节点的精确出力调整量 ， 从而实现对输电断面潮流越限的精准调度 。 利用 IEEE 39 节点系统和某省级电网的仿真分析验证了所提方法的快速性和准确性 。 关键词 : 线路过载 ; 输电断面 ; 连锁跳闸 ; 潮流控制 ; 正负综合灵敏度指标 ; 双层优化 中图分类号 : TM73 文献标志码 : A 文章编号 : 2096-3203 ( 2023 ) 01-0107-09 收稿日期 : 2022-06-30 ; 修回日期 : 2022-09-25 基金项目 : 安徽省自然科学基金资助项目 ( 2108085UD08 ) 0 引言 高比例接入电网的风电 、 光伏等新能源具有间 歇性 ， 使得电网传输功率波动频繁 ， 容易造成线路 过载运行 。 过载线路故障跳闸会使潮流转移到关 联输电断面内其他线路上 ， 造成输电断面发生潮流 过载 ， 引起过载保护装置动作 ， 导致电网发生大规 模连锁跳闸事故 ， 严"
+    },
+    {
+      "id": "E001-p5-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 1 IEEE 39 节点系统拓扑 Fig．1 The topology of IEEE 39-bus system 备用容量 ， 以满足高比例新能源电力系统的备用需 求 。 在该运行方式下 ， 对 IEEE 39 节点系统的机组 有功出力限值进行修正 ， 设置机组 G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 参与潮流控制的有功 出力上限分别为 290 MW 、 300 MW 、 220 MW 、 240 MW 、 300 MW 、 450 MW 、 450 MW 、 530 MW 、 1 100 MW 。 采用文献 ［ 24-25 ］ 提出的基于拓扑聚合的输电 断面搜索方法对当前运行方式下的 IEEE 39 节点系 统进行关键输电断面辨识 ， 确定当前存在内部线路 过载的输电断面为线路 l 1 — 39 、 l 2 — 3 、 l 17 — 27 的集合 。 该 输电断面内的过载线路 l 以及重载线路 m 的潮流分 布情况如表 1 所示 。 从表 1 可以看出 ， 过载线路 l 1 — 39 的潮流越限量为 72．40 MW ， 潮流控制策略的目 的是将过载线路 l 1 — 39 的有功潮流控制在 250 MW 以 下 ， 同时系统中其他线路不产生新的潮流越限 。 表 1 关键线路集的潮流运行情况 Table 1 Power flow operation of key line set 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L 1 — 39 322．40 250 1．289 6 M 1 — 2 275．84 300 0．919 5 2 — 3 611．08 630 0．970 0 8 — 9 426．38 450 0．947 5 9 — 39 502．61 550 0．913 8 选取可以参与消除输电断面潮流越限的机组 节点 ( G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 ) 和执行切负荷操作的负荷节点 ( D4 、 D7 、 D20 、 D21 、 D24 、 D27 ) 。 负荷节点分为 3 类 ， 第 1 类为 D7 、 D24 ， 第 2 类为 D21 、 D27 ， 第 3 类为 D4 、 D20 ， 其对应 的"
+    },
+    {
+      "id": "E001-p7-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 3 输电断面 T1 的有功潮流 Fig．3 Active power flow of transmission section T1 路 l 5307 、 l 5308 的有功潮流增加到 1 336 MW 、 1 337 MW ， 超过其线路自身的热稳定功率极限 ; 与此同 时 ， 输电断面 T1 传输的有功潮流增加到 3 470 MW ， 超过其自身的极限传输功率 ( 3 400 MW ) ， 造成输电 断面潮流越限 ， 潮流越限量为 70 MW 。 输电断面 T1 内过载线路以及重载线路的潮流分布情况见表 5 。 表 5 实际电网中关键线路的潮流运行状态 Table 5 Power flow operation of key lines in the actual power grid 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L l 5307 1 336 1 250 1．068 8 l 5308 1 337 1 250 1．069 6 M l 5703 278 300 0．926 7 l 5367 517 550 0．940 0 l 5368 516 550 0．938 2 切除过载线路会引发输电断面连锁过载 ， 因 此 ， 采用文中方法对输电断面 T1 进行潮流越限调 整 ， 制定的潮流控制策略如表 6 所示 。 表 6 潮流控制方案 Table 6 Power flow control scheme MW 调度节点 初始 有功功率 调整后 有功功率 出力 调整量 有功 出力上限 G42 784 983 +199 1 260 G34 637 835 +198 1 260 G40 500 104 －396 1 000 由表 6 可知 ， 文中方法制定的潮流控制策略要 调度的机组节点为 G42 、 G34 、 G40 ， 符合机组节点 G42 、 G34 、 G40 对关键线路潮流调整效果较好的实 际情况 。 而且 G42 、 G34 的出力增加调整量近似等 于 G40 的出力减少调整量 ， 总出力调整量为 793 MW ， 有效避免平衡机组过度参与潮流调整 。 通过 制定的潮流控制策略对潮流越限的输电断面 T1 进 行调整控制 ， 得到的线路潮流调整结果如表 7 所示 。 表 7 实际电网中关键线路调整结果 Table 7 Adjustm"
+    },
+    {
+      "id": "E001-p4-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "o 前沿解集后 ， 采用模糊满意度 优选评价方法 ， 计算非支配解的 Ｒ h 值 ， 选取 Ｒ h 值最 大的非支配解作为最优解 ， 将最优解中的节点作为 参与潮流控制的调度节点 。 ( 6 ) 得到参与消除线路潮流过载的调度节点 后 ， 构建第二层潮流调控优化模型 ， 通过 Cplex 求解 器计算出所选调度节点的精确出力调整量 。 ( 7 ) 根据上述优化结果 ， 得到参与潮流控制的 调度节点和对应出力调整量 ， 从而快速制定潮流控 制方案 ， 实现输电断面潮流越限的精准调度 。 5 算例分析 5．1 IEEE 39 节点系统潮流越限调整仿真分析 为验证文中方法的有效性 ， 采用某一运行方式 下的 IEEE 39 节点系统作为算例进行仿真分析 。 IEEE 39 节点系统拓扑如图 1 所示 。 为应对新能源出力的波动性 ， 设置系统机组的 011"
+    },
+    {
+      "id": "E001-p8-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， ZHANG Shang ， WANG Tao ， et al． Optimization control strategy for active power correction from perspective of security region ［ J ］ ． Automation of Electric Power Systems ， 2017 ， 41 ( 18 ) : 17-24． ［ 8 ］ 程临燕 ， 郝治国 ， 张保会 ， 等 ． 基于内点法消除输电断面过载 的实时控制算法 ［ J ］ ． 电力系统自动化 ， 2011 ， 35 ( 17 ) : 51-55． CHENG Linyan ， HAO Zhiguo ， ZHANG Baohui ， et al． Fast elimi- nation of overload in transmission line section based on simplified primal-dual interior point method ［ J ］ ． Automation of Electric Power Systems ， 2011 ， 35 ( 17 ) : 51-55． ［ 9 ］ 袁晓丹 ， 张会强 ． 多支路开断潮流转移识别及防连锁过载策 略研究 ［ J ］ ． 现代电力 ， 2014 ， 31 ( 5 ) : 74-79． YUAN Xiaodan ， ZHANG Huiqiang． Study on power flow trans- ferring identification of multi-line tripping and the strategy to prevent cascading overload strategy ［ J ］ ． Modern Electric Po- wer ， 2014 ， 31 ( 5 ) : 74-79． ［ 10 ］ 甘德树 ， 冯伯庚 ， 蒋芳玉 ， 等 ． 基于功率灵敏度分析的断面 潮流安全控制方法 ［ J ］ ． 陕西电力 ， 2017 ， 45 ( 1 ) : 82-85． GAN Deshu ， FENG Bogeng ， JIANG Fangyu ， et al． Security control method for interface power flow based on power sensi- tivity analysis ［ J ］ ． Shaanxi Electric Power ， 2017 ， 45 ( 1 ) : 82-85． ［ 11 ］ 徐岩 ， 郅静 ． 基于功率灵敏度的线路过载划区域紧急"
+    },
+    {
+      "id": "E001-p7-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "调整量近似等 于 G40 的出力减少调整量 ， 总出力调整量为 793 MW ， 有效避免平衡机组过度参与潮流调整 。 通过 制定的潮流控制策略对潮流越限的输电断面 T1 进 行调整控制 ， 得到的线路潮流调整结果如表 7 所示 。 表 7 实际电网中关键线路调整结果 Table 7 Adjustment results of key lines in the actual power grid MW 线路编号 调整前功率 调整后功率 热稳定功率极限 5307 1 336 1 249 1 250 5308 1 337 1 246 1 250 5703 278 276 300 5367 517 445 500 5368 516 444 500 由表 7 可知 ， 根据文中方法制定的潮流控制策 略 ， 在 09 : 27 开始对输电断面 T1 进行潮流调整 。 经 过潮流调整后 ， 输电断面 T1 内的过载线路 l 5307 、 l 5308 的有功潮流分别由越限时的 1 336 MW 、 1 337 WM 逐渐调整为 1 249 MW 、 1 246 WM ; 09 : 30 ， 输电断面 T1 的有功潮流调整为 3 390 MW ， 低于其自身的极 限传输功率 ， 潮流越限量被消除 ; 09 : 40 左右 ， 调度 节点的潮流调整结束 。 通过潮流调整 ， 输电断面 T1 在其极限传输功率的范围内安全运行 ， 且所有线路 的有功潮流均在热稳定功率极限内 ， 可实现电网的 安全稳定运行 。 通过 IEEE 39 节点系统和某省级电网的输电断 面潮流控制分析可以看出 : 文中提出的基于正负综 合灵敏度的输电断面双层优化潮流控制方法能够 快速制定出符合调度目标的潮流越限控制策略 ， 完 成对过载线路的有功安全校正 ， 实现对输电断面潮 流越限的精准调度 。 6 结论 针对灵敏度分析方法精确度不高以及直接优 化类方法计算速度过慢等缺陷 ， 文中提出一种基于 正负综合灵敏度的输电断面双层优化潮流控制策 略 ， 该方法具有以下优点 : ( 1 ) 该方法充分考虑节点对过载及重载线路潮 流的整体控制作用 ， 提出节点的正负综合灵敏度指 标 。 同时为减少计算量 ， 剔除对关键线路集潮流控 制效果较差的节点 。 ( 2 ) 该方法采用双层优化思想 ， 首先构建第一 层调度节点多目标筛选优化模型 ， 快速选择参与潮 流控制的调度节点 ， 有效避免搜索空间过大导致计 算量激增的问题 。 然后构建第二层潮流调控优化 模型 ， 计算所选调度节点的精确出力调整量 ， 实现 对输电断面潮流越限的精准调度 。 致 谢 本文得到国网安徽省电力有限公司科技项目 ( B31200200005 "
+    },
+    {
+      "id": "E001-p6-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， 低于其热稳定功率极限 。 文中方法不会产生 潮流误差的原因在于 : 文中采用双层优化思想 ， 首 先构建第一层调度节点多目标筛选优化模型 ， 确定 参与潮流控制的调度节点 ， 再通过第二层潮流调控 优化模型计算所选调度节点的精确出力调整量 ， 所 得的调整方法能够保证过载线路 l 1 — 39 在调整后有 功潮流低于其热稳定功率极限 ， 实现消除线路越限 的精准调度 。 而且 ， 文中方法仅调度 4 台机组 ， 灵敏 度分析方法则须调度 5 台机组 ， 对发电厂的既定发 电计划影响较大 。 直接优化类方法制定的潮流控制策略能够保 证过载线路 l 1 — 39 的有功潮流由过载时的 322．40 MW 下降为 248．23 MW ， 低于其热稳定功率极限 ， 不会产 生潮流误差 。 但是 ， 该方法将节点是否参与调度的 0-1 变量以及对应的出力调整量作为控制变量 ， 控 制策略的制定变为复杂的非线性潮流规划 ， 搜索空 间过大 ， 计算量激增 ， 很有可能无法在过载线路热 稳定功率极限的耐受时间内得到潮流控制策略 ， 导 致大规模连锁跳闸停电事故 。 将文中方法与文献 ［ 11 ］ 提出的综合灵敏度分 析方法进行比较 。 采用文献 ［ 11 ］ 的方法 ， 计算机组 节点 G30 、 G33 、 G37 、 G38 对过载及重载线路的综合 灵敏度分别为 0．501 1 、 0．055 3 、 0．361 6 、 0．292 9 ， 与 对应过载线路的灵敏度指标相反 ， 这使得机组节点 G30 、 G33 、 G37 、 G38 被划分到出力减少节点集合 ， 与 节点实际情况相反 ， 导致仅通过机组节点无法消除 线路过载 ， 负荷节点 D4 被迫执行切负荷操作 。 但 实际上 ， 通过文中方法得到的潮流控制策略只需机 组节点 G30 、 G34 、 G37 、 G39 参与调度控制 ， 验证了 文献 ［ 11 ］ 提出的综合灵敏度分析方法有可能导致 负荷节点被迫执行切负荷操作 ， 降低供电可靠性 。 5．2 某省级电网潮流越限调整仿真分析 为进一步验证文中方法制定的潮流控制策略 的有效性 ， 以某省级电网 5 月 6 号 08 : 00 — 10 : 00 时 的潮流运行为例进行分析 。 如图 2 所示 ， 省级电网 输电断面 T1 发生潮流越限 ， 图中红色曲线途径的 线路集合为发生潮流越限的输电断面 T1 ， 节点间的 双线代表双回线路 ， 箭头指向代表潮流方向 。 输电 断面 T1 在 5 月 6 号 08 : 00 — 10 : 00 的有功潮流见 图 3 。 图 2 输电断面 T1 位置示意 Fig．2 Schematic diagram of p"
+    },
+    {
+      "id": "E001-p4-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "后的隶属度函数 Ｒ h 为 : Ｒ h = ∑ N obj c = 1 Ｒ c ， h ∑ H h = 1 ∑ N obj c = 1 Ｒ c ， h ( 12 ) 式中 : H 、 N obj 分别为非支配解集中解的数量和子目 标函数的数量 。 通过模糊满意度优选评价方法 ， 在非支配解集 中选择 Ｒ h 值最大的解作为最优解 ， 将最优解中的节 点作为参与消除线路过载的调度节点 。 3 最优出力调整量的确定 3．1 第二层潮流调控优化模型的构建 确定参与消除线路过载的调度节点后 ， 得到调 度节点的精确出力调整量是制定输电断面潮流控 制策略的关键 。 为减少对调度节点出力的调整 ， 文 中以调度节点的总出力调整量最少为优化目标 ， 构 建第二层潮流调控优化模型 ， 计算出所选调度节点 的精确出力调整量 。 该模型的目标函数为 : min f = ∑ i ∈ N' Δ P i ( 13 ) 式中 : N' 为参与潮流控制的调度节点集合 ; Δ P i 为第 i 个调度节点的出力调整量 。 等式约束条件为系统交流模型下的潮流方程 : P G i － P D i － U i ∑ j ∈ N' U j ( G ij cos δ ij + B ij sin δ ij ) = 0 Q G i － Q D i － U i ∑ j ∈ N' U j ( G ij sin δ ij － B ij cos δ ij ) = 0 { ( 14 ) 式中 : P G i 、 Q G i 分别为节点 i 的有功出力和无功出力 ; P D i 、 Q D i 分别为节点 i 的有功负荷和无功负荷 ; U i 为 节点 i 的电压幅值 ; G ij 、 B ij 、 δ ij 分别为节点 i 、 j 之间的 电导 、 电纳和相位差 。 不等式约束条件分别为发电机有功出力约束 、 无功出力约束 、 节点电压幅值约束以及线路有功潮 流约束 ， 表达式为 : P min G i ＜ P G i ＜ P max G i Q min G i ＜ Q G i ＜ Q max G i U min i ＜ U i ＜ U max i P a = U i U j ( G ij sin δ ij － B ij cos δ ij ) － U 2 i G ij ≤ P max a        ("
+    },
+    {
+      "id": "E001-p8-c5",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": " ］ 徐正清 ， 肖艳炜 ， 李群山 ， 等 ． 基于灵敏度及粒子群算法的 输电断面功率越限控制方法对比研究 ［ J ］ ． 电力系统保护 与控制 ， 2020 ， 48 ( 15 ) : 177-186． XU Zhengqing ， XIAO Yanwei ， LI Qunshan ， et al． Comparative study based on sensitivity and particle swarm optimization algo- rithm for power flow over-limit control method of transmission section ［ J ］ ． Power System Protection and Control ， 2020 ， 48 ( 15 ) : 177-186． ［ 15 ］ 徐岩 ， 郅静 ， 樊世通 ． 基于功率灵敏度和经济补偿最小化的 线路过负荷紧急控制方法 ［ J ］ ． 电力自动化设备 ， 2017 ， 37 ( 1 ) : 118-123． XU Yan ， ZHI Jing ， FAN Shitong． Line overload emergency control based on power sensitivity and minimized economic compensation ［ J ］ ． Electric Power Automation Equipment ， 2017 ， 37 ( 1 ) : 118-123． ［ 16 ］ ＲEDDY S S． Multi-objective based congestion management u- sing generation rescheduling and load shedding ［ J ］ ． IEEE Transactions on Power Systems ， 2017 ， 32 ( 2 ) : 852-863． ［ 17 ］ 王健 ， 李国平 ． 基于改进和声搜索算法线路过载控制策略 研究 ［ J ］ ． 电气传动 ， 2021 ， 51 ( 12 ) : 23-27． WANG Jian ， LI Guoping． Ｒesearch on line overload control strategy based on improved harmony search algorithm ［ J ］ ． E- lectric Drive ， 2021 ， 51 ( 12 ) : 23-27． ［ 18 ］ 孙淑琴 ， 颜文丽 ， 吴晨悦 ， 等 ． 基于原 - 对偶内点法的输电断 面有功安"
+    },
+    {
+      "id": "E001-p7-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "标筛选优化模型 ， 快速选择参与潮 流控制的调度节点 ， 有效避免搜索空间过大导致计 算量激增的问题 。 然后构建第二层潮流调控优化 模型 ， 计算所选调度节点的精确出力调整量 ， 实现 对输电断面潮流越限的精准调度 。 致 谢 本文得到国网安徽省电力有限公司科技项目 ( B31200200005 ) 资助 ， 谨此致谢 ! 311 谢大为 等 : 基于正负综合灵敏度的输电断面双层优化潮流控制策略"
+    },
+    {
+      "id": "E001-p1-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "敏度分析方法将节点有功注入与线路有功 潮流间的非线性关系简化为线性关系 ， 当仅依靠灵 敏度关系通过多个控制节点来调整线路潮流时误 差较大 ， 难以达到实际电网的潮流控制精度要求 。 在输电断面潮流控制策略中 ， 文献 ［ 14 ］ 对比了灵敏 度分析方法和粒子群优化算法 ， 验证了基于粒子群 算法的输电断面潮流越限控制方法可以消除因简 化的灵敏度线性关系导致的潮流误差 ， 并且调节效 率高 。 直接优化类方法 ［ 15-18 ］ 直接利用潮流计算建 立数学模型 ， 充分考虑符合电力系统安全运行的各 类要求 ， 得到的潮流控制策略有较好的安全性和经 701"
+    },
+    {
+      "id": "E022-p0-c1",
+      "paper": "E022",
+      "file": "Uncertainty‐Aware Coordinated Transmission‐Distribution Dispatch via GNN‐Augmented Distributionally Robust Optimal Power Flow",
+      "text": "ABSTRACT This paper proposes a Learning‐Augmented Distributionally Robust OPF (LA‐DROPF) framework for coordinated transmission‐distribution dispatch under deep uncertainty. The framework embeds GNN‐derived power flow sensitivities within Wasserstein‐metric DRO, where surrogate errors are absorbed by an inflated ambiguity radius. A hybrid Benders‐ADMM decomposition maintains inter‐operator privacy with convergence guarantees, and a CVaR layer controls tail voltage‐security risk. Finite‐sample guarantees ensure exponential decay of out‐of‐sample constraint violations, and an online mirror‐descent mechanism adapts the ambiguity set in real time. Experiments on 217‐bus and 630‐bus coupled systems—including tests with heterogeneous distribution feeder topologies—show that LA‐DROPF reduces DS‐level worst‐case cost by 33% relative to stochastic OPF and eliminates voltage violations that afflict deterministic and GNN‐only methods. A controlled ablation isolating the CVaR and radius‐inflation ",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70094",
+      "url": "https://doi.org/10.1049/stg2.70094"
+    },
+    {
+      "id": "E077-p0-c2",
+      "paper": "E077",
+      "file": "Research on power grid operation risk assessment methods under extreme weather scenarios",
+      "text": "heavy rainfall uses a triple-threshold mechanism and a flood derating state machine driven by instantaneous and cumulative precipitation to reflect persistence and recovery. A vectorized Monte Carlo simulation produces unified reliability metrics (EDNS, LOLP, ELO), complemented by weather-specific indicators (EOAW, EHLD). Absolute risk grading and 95% bootstrap confidence intervals are provided. Results enable comparable risk quantification and mechanistic interpretation across weather types, supporting contingency planning and reserve allocation.",
+      "source_type": "abstract",
+      "doi": "10.1088/1742-6596/3269/1/012035",
+      "url": "https://doi.org/10.1088/1742-6596/3269/1/012035"
+    },
+    {
+      "id": "E077-p0-c1",
+      "paper": "E077",
+      "file": "Research on power grid operation risk assessment methods under extreme weather scenarios",
+      "text": "Abstract Extreme weather affects power grid reliability via load perturbations, equipment outages, and network constraints, and these impacts are amplified by renewable variability. This paper proposes a scenario-based risk assessment framework for extreme weather. A tail-enhanced meteorological generator is developed to capture clustering and heavy-tailed extremes, using storm-persistence blocks with heavy-tail pulses for strong wind and heavy rainfall, and a trend-plus-stochastic model for persistent cold events. Weather-specific impact mappings are then established: low temperature is represented by load growth and outage-sensitivity functions; strong wind adopts a dual-threshold mechanism near the cut-out region to model capacity forced outages and reserve call limitations, coupled with wind power curves to quantify wind curtailment; heavy rainfall uses a triple-threshold mechanism and a flood derating state machine driven by instantaneous and cumulative precipitation to reflect pe",
+      "source_type": "abstract",
+      "doi": "10.1088/1742-6596/3269/1/012035",
+      "url": "https://doi.org/10.1088/1742-6596/3269/1/012035"
+    },
+    {
+      "id": "E066-p0-c3",
+      "paper": "E066",
+      "file": "A Physics-Constrained Probabilistic Forecasting Method for Wind–PV–Load Systems Under Extreme Weather Based on Extreme-Event Awareness and Uncertainty Calibration",
+      "text": "bstantially improves extreme-scenario generation quality. Meanwhile, LSTM+CQR achieves overall prediction interval coverage probability at a nominal 90% coverage level (PICP90) values of 0.895 and 0.893 for PV and wind power, respectively, while under extreme weather the corresponding coverage reaches 0.704 and 0.635. The controlled augmentation experiment further shows improvements in extreme-weather forecasting accuracy and interval reliability. These results demonstrate that the proposed framework integrates extreme-state identification, joint uncertainty modeling, physics-constrained scenario generation, and uncertainty calibration for probabilistic renewable-power forecasting under extreme weather.",
+      "source_type": "abstract",
+      "doi": "10.3390/eng7100537",
+      "url": "https://doi.org/10.3390/eng7100537"
+    },
+    {
+      "id": "E182-p0-c2",
+      "paper": "E182",
+      "file": "Context‐Aware Probabilistic Numerical Framework for Solar PV Grid Stability Under Extreme Weather Conditions",
+      "text": "t. TAILOR uses differentiable CVaR‐based optimization to calibrate and control severe tail behaviors. Finally, context‐hardware in‐the‐loop validation (C‐HIL VERTEX) validates C‐HIL tests’ whole probabilistic loop during real‐time playback, retaining posterior distributions. These phases cut irradiance prediction errors by 30%–40%, voltage/frequency changes by 25%–30%, and tail‐risk calibration by 1%. This system uses data‐driven context learning and physically grounded stochastic solvers for real‐time grid dependability to establish a probabilistic foundation for adaptive, robust PV‐grid operation under climate variability in process.",
+      "source_type": "abstract",
+      "doi": "10.1155/er/5218772",
+      "url": "https://doi.org/10.1155/er/5218772"
+    },
+    {
+      "id": "E092-p0-c1",
+      "paper": "E092",
+      "file": "State-Adaptive and Tail-Risk-Aware Rolling Control of Wind–Solar–VRFB Systems with Experimentally Calibrated Power Envelopes",
+      "text": "State-adaptive risk-aware rolling model predictive control (SA-RR-MPC) links experimentally calibrated battery action limits to grid-side tracking and ramp-risk costs in wind–solar–vanadium redox flow battery (VRFB) regulation. Protocol-matched PNNL cycling observations supply power envelopes conditioned on a continuous charge reference and measured capacity, while Mendeley pressure–flow measurements supply the normalized pump-loss shape. Pump-corrected net injection connects admitted stack actions to scenario conditional value at risk (CVaR). A two-pass linear program selects dispatch requests, and current-state projection provides minimum-correction execution with an explicit bound on the resulting ramp-risk perturbation. Whole-cycle calibration checks give 89.95% Q90 coverage, and the local power labels change by at most 0.205% under the common charge-reference comparison. A causal 184-day NSRDB/WIND Toolkit replay evaluates a nominal 20 MW/80 MWh VRFB under common empirical-envelop",
+      "source_type": "abstract",
+      "doi": "10.3390/batteries12110448",
+      "url": "https://doi.org/10.3390/batteries12110448"
+    },
+    {
+      "id": "E066-p0-c1",
+      "paper": "E066",
+      "file": "A Physics-Constrained Probabilistic Forecasting Method for Wind–PV–Load Systems Under Extreme Weather Based on Extreme-Event Awareness and Uncertainty Calibration",
+      "text": "With the increasing penetration of renewable energy into power systems, wind and photovoltaic (PV) power generation exhibit substantial uncertainty due to meteorological variability, which becomes more pronounced under extreme weather conditions. The scarcity of extreme samples, complex dependencies among wind power, PV power, and load, and degraded prediction-interval reliability further increase the difficulty of probabilistic forecasting. To address these challenges, this study proposes a physics-constrained probabilistic forecasting framework for wind–PV–load systems under extreme weather. First, extreme value theory (EVT) is employed to characterize the tail behavior of meteorological variables, while extreme operating states are identified by jointly considering meteorological anomalies and renewable power responses. Second, a full-covariance mixture density network (MDN) is developed to model the joint probability distribution of wind power, PV power, and load while preserving t",
+      "source_type": "abstract",
+      "doi": "10.3390/eng7100537",
+      "url": "https://doi.org/10.3390/eng7100537"
+    },
+    {
+      "id": "E100-p0-c2",
+      "paper": "E100",
+      "file": "Physics-Informed Smart Grid Dispatch Under Renewable Uncertainty: Dynamic Graph Learning, Privacy-Aware Multi-Agent Reinforcement Learning, and Causal Intervention Analysis",
+      "text": "regularized multi-agent reinforcement learning scheme improves cooperative task allocation under renewable fluctuations. Federated optimization with Rényi differential privacy is introduced to protect sensitive local operational information during training. In addition, a structural causal module provides intervention-based interpretation of how wind variation, load escalation, and line stress affect dispatch cost, congestion risk, and renewable curtailment. Experiments on a public-trace-driven benchmark based on a modified IEEE 30-bus system show that the proposed method achieves the best overall performance among the compared baselines, reducing dispatch-cost RMSE to 3.82, locational-price MAE to 2.95, renewable curtailment to 4.8%, and the constraint-violation rate to 0.30%. Overall, the framework shows favorable performance on the test benchmark, provides post hoc intervention-based interpretation of dispatch outcomes, and is evaluated under a reproducible benchmark construction and assessment protocol.",
+      "source_type": "abstract",
+      "doi": "10.3390/pr14081274",
+      "url": "https://doi.org/10.3390/pr14081274"
+    },
+    {
+      "id": "E129-p0-c1",
+      "paper": "E129",
+      "file": "Security Constrained Optimal Power Flow on A 132 kV Line with Service Potential Transformer Substations: A Case Study of Juja-Rabai Line",
+      "text": "The frequent power outages in transmission lines have been associated with generation station expansion to meet growing power demand without corresponding transmission infrastructure development, leading to exceeded loadability limits and system outages. This paper utilized PowerWorld simulator and a modeled Juja-Rabai power network to analyze secure optimal power flow conditions of a 132 kV transmission line with installed Service Potential Transformer (SPT) substations that address power demand from scattered villages near high voltage lines. The study focused on economic load dispatch of three thermal power plants (Thika, Rabai, and Kipevu) supplying power via conventional and non-conventional substations. Security constrained economic load dispatch, optimal power flow, and security constrained optimal power flow were analyzed under both pre-contingency and post-contingency states, including forced contingency scenarios. The results revealed that generating stations successfully adj",
+      "source_type": "abstract",
+      "doi": "10.62777/pec.v2i2.66",
+      "url": "https://doi.org/10.62777/pec.v2i2.66"
+    },
+    {
+      "id": "E022-p0-c2",
+      "paper": "E022",
+      "file": "Uncertainty‐Aware Coordinated Transmission‐Distribution Dispatch via GNN‐Augmented Distributionally Robust Optimal Power Flow",
+      "text": " OPF and eliminates voltage violations that afflict deterministic and GNN‐only methods. A controlled ablation isolating the CVaR and radius‐inflation effects—including a fair comparison against exact‐sensitivity DRO augmented with the same CVaR layer and equivalent total radius—confirms that the combined mechanism yields up to 7% worst‐case cost reduction under heavy‐tailed uncertainty beyond what the Wasserstein radius alone provides. Benders‐ADMM convergence to within 1% optimality gap and AC power flow feasibility are verified explicitly across all test systems.",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70094",
+      "url": "https://doi.org/10.1049/stg2.70094"
+    },
+    {
+      "id": "E124-p0-c2",
+      "paper": "E124",
+      "file": "Real‑Time Dynamic Dispatch Strategy for High‑Penetration Wind‑Solar Power Systems Based on Deep Reinforcement Learning",
+      "text": "inated thermal generation adjustment, battery charging and discharging, and interruptible load response. Experiments are conducted on a modified IEEE 118-bus system, where MATPOWER is used for AC power-flow verification and Python is used to build the reinforcement learning environment. PPO, DDPG, and rolling economic dispatch are selected as comparative methods. The results show that SAC reduces the daily operation cost to 45,820 USD, decreases the renewable curtailment rate to 4.82%, and lowers load shedding to 0.71 MWh under 70% wind-solar penetration. It also effectively controls branch-overload events in most medium forecast-error scenarios. These results indicate that deep reinforcement learning can form a stable dispatch balance among economic efficiency, renewable accommodation, and security constraints, providing a feasible computational solution for real-time control in high-renewable smart grids.",
+      "source_type": "abstract",
+      "doi": "10.54254/2755-2721/2026.36888",
+      "url": "https://doi.org/10.54254/2755-2721/2026.36888"
+    },
+    {
+      "id": "E098-p0-c1",
+      "paper": "E098",
+      "file": "Risk-Adaptive Hierarchical Coordination for Supply Security in Renewable-Dominated Multi-Area Power Systems",
+      "text": "Against the background of high penetration of renewable energy, multi-area power systems are exposed to risks arising from renewable generation variability, load forecast deviations, and multi-factor supply–demand disturbances under extreme conditions. To enhance power supply security and interregional mutual-support capability, this paper proposes a risk-adaptive hierarchical coordination method for power supply assurance and develops a progressive coordination framework described as “local self-balancing–intra-regional flexibility sharing–wide-area emergency support.” Based on the typical forecast values of load, wind power, and photovoltaic generation, stochastic source–load scenarios are generated using the Monte Carlo method, and CVaR is employed to quantify the tail risk of power supply. On this basis, the coordination scope is dynamically determined and cross-regional resources are optimally allocated. Case studies on a four-area interconnected system demonstrate that the propos",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15204754",
+      "url": "https://doi.org/10.3390/electronics15204754"
+    },
+    {
+      "id": "E100-p0-c1",
+      "paper": "E100",
+      "file": "Physics-Informed Smart Grid Dispatch Under Renewable Uncertainty: Dynamic Graph Learning, Privacy-Aware Multi-Agent Reinforcement Learning, and Causal Intervention Analysis",
+      "text": "High-penetration renewable energy significantly increases uncertainty, dynamic network coupling, and the need for secure and coordinated smart-grid dispatch. To address the limitations of conventional forecasting-based and static graph-based methods, this paper proposes a unified dispatch framework that integrates topology-informed dynamic graph learning, privacy-aware multi-agent symbiotic reinforcement learning, and structural causal intervention analysis. The dispatch problem is formulated as a constrained partially observable stochastic game, in which multiple agents coordinate generation adjustment, reserve allocation, and congestion-aware corrective actions under engineering constraints. A physics-informed dynamic graph convolutional module captures both fixed physical topology and stress-dependent operational couplings, while a KL-regularized multi-agent reinforcement learning scheme improves cooperative task allocation under renewable fluctuations. Federated optimization with R",
+      "source_type": "abstract",
+      "doi": "10.3390/pr14081274",
+      "url": "https://doi.org/10.3390/pr14081274"
+    },
+    {
+      "id": "E080-p0-c1",
+      "paper": "E080",
+      "file": "Multi‐Resolution Weather‐Index‐Guided Monthly Hydro‐Wind‐PV Joint Scenario Generation Under Extreme Drought",
+      "text": "ABSTRACT Reliable hydro‐wind‐PV joint scenarios under extreme drought are essential for assessing renewable power adequacy and operational flexibility in renewable‐dominant power systems. However, existing studies on joint hydro‐wind‐PV modelling often lack detailed weather‐process representation, adequate temporal resolution and consideration of cumulative drought effects, limiting their applicability to monthly scenario generation at hourly resolution during extreme droughts. To address this issue, this study develops a multi‐resolution variable‐alignment conditional diffusion model (TXDM) for monthly hydro‐wind‐PV joint scenario generation under extreme drought conditions. Unlike conventional methods, the proposed framework incorporates multi‐resolution weather indices to characterise drought‐related impacts on monthly hourly renewable power generation. Case studies in Sichuan demonstrate that TXDM improves deterministic and probabilistic accuracy, preserves spatio‐temporal dependen",
+      "source_type": "abstract",
+      "doi": "10.1049/rpg2.70340",
+      "url": "https://doi.org/10.1049/rpg2.70340"
+    },
+    {
+      "id": "E124-p0-c1",
+      "paper": "E124",
+      "file": "Real‑Time Dynamic Dispatch Strategy for High‑Penetration Wind‑Solar Power Systems Based on Deep Reinforcement Learning",
+      "text": "High-penetration wind and photovoltaic integration is driving smart grids from conventional deterministic dispatch toward real-time dynamic dispatch under random fluctuation and fast response requirements. Wind and solar outputs are strongly affected by weather conditions, and forecast errors may lead to rapid net-load ramping, insufficient reserve capacity, branch overload, and limited renewable accommodation. To address the operational requirements of high-penetration wind-solar power systems, a real-time dynamic dispatch strategy based on deep reinforcement learning is constructed. Nodal load, wind-solar forecast errors, conventional generator output, battery state of charge, branch loading ratio, and real-time electricity price are incorporated into the state space, while the SAC algorithm outputs continuous dispatch actions for coordinated thermal generation adjustment, battery charging and discharging, and interruptible load response. Experiments are conducted on a modified IEEE ",
+      "source_type": "abstract",
+      "doi": "10.54254/2755-2721/2026.36888",
+      "url": "https://doi.org/10.54254/2755-2721/2026.36888"
+    },
+    {
+      "id": "E094-p0-c2",
+      "paper": "E094",
+      "file": "Coordinated Dispatch for Partitioned Power Grids Under Extreme Weather with a Flexibility Supply–Demand Balance Approach",
+      "text": "egulation capability envelopes, in order to co-optimize generation costs, demand response, and expected flexibility insufficiency penalties. Then, inter-zone power exchange and spatiotemporal unit commitment dynamics are introduced to optimally redistribute spatial generation surpluses and load deficits, so that a system-wide flexibility supply–demand balance is enabled. Finally, simulations are conducted on the real-world Guangdong 500 kV transmission network under typhoon, heatwave, and rainstorm scenarios, and the results demonstrate the effectiveness of the proposed method in eliminating flexibility deficits, reducing total dispatch costs, and capturing distinct weather-adaptive operational patterns.",
+      "source_type": "abstract",
+      "doi": "10.3390/inventions11040086",
+      "url": "https://doi.org/10.3390/inventions11040086"
+    },
+    {
+      "id": "E085-p0-c1",
+      "paper": "E085",
+      "file": "The Coordinated Voltage Support Emergency Control Strategy of the Renewable Energy Plants Under Extreme Weather",
+      "text": "To address the security and stability requirements of renewable energy clusters under extreme weather conditions, this study investigates the coordinated voltage support mechanisms between grid-following and grid-forming converters. This paper proposes an emergency control strategy suitable for such scenarios. First, a reactive power-voltage control architecture for new energy units is constructed to clarify the information interaction process. A mode-based coordinated strategy is designed: during steady-state voltage support, grid-following units adopt reactive power-voltage droop control for voltage regulation, while grid-forming units achieve autonomous support based on the virtual synchronous generator algorithm. During low-voltage ride-through, both types of units are controlled to output corresponding reactive power according to the depth of voltage drop until the voltage is restored. Hardware-in-the-loop simulation verification shows that under steady-state conditions, the strat",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics14214244",
+      "url": "https://doi.org/10.3390/electronics14214244"
+    },
+    {
+      "id": "E128-p0-c1",
+      "paper": "E128",
+      "file": "Mobile power sources pre‐allocation and dispatch strategy in power‐transportation coupled network under extreme weather",
+      "text": "Abstract This study introduces a strategy for the pre‐allocation and dispatch of mobile power sources (MPSs) within a power‐transportation coupled network, targeting efficient distribution network fault recovery under extreme weather conditions. The strategy incorporates the Dijkstra algorithm and blind number theory to analyse the MPS driving path and generate fault scenarios respectively, considering the effects of extreme weather on traffic capacity and distribution network fault rate. The MPS pre‐allocation model, formulated to minimize the load outage loss, MPS investment, and driving fuel cost, provides a foundation for optimization of the dispatch process. The dispatch optimization model adapts to dynamic information from the power‐transportation coupled network to make decisions on load restoration sequencing and MPS driving path. The effectiveness of the proposed strategy is demonstrated through an application to the IEEE 33‐node distribution system and a corresponding 33‐node",
+      "source_type": "abstract",
+      "doi": "10.1049/rpg2.12872",
+      "url": "https://doi.org/10.1049/rpg2.12872"
+    }
+  ]
+}

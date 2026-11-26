@@ -1,0 +1,264 @@
+{
+  "context": {
+    "goal": "新型电力系统断面潮流控制：兼顾时效性、准确性、泛化性与可解释性，在实时运行和极端天气场景强化断面阻塞决策、确保安全裕度并适应电网动态演化。",
+    "direction": "可解释性与证据校验",
+    "action": "generate",
+    "previous": {},
+    "feedback": {},
+    "candidate_id": 18,
+    "reference_logic": {
+      "mechanism": "把解释的可信度分解为三层并分别约束：第一层是依据可追溯，即对文献按段落与证据边界建索引，对运行参数按版本建独立知识，使每条解释都附带来源，从而压低无依据陈述；第二层是动作忠实，即文献检索只能保证“有出处”，不能保证解释与当前动作的实际电气效应一致，因此对关键动作构造可行的反事实（在保持功率平衡与设备边界的前提下替换或撤销动作，再重算交流潮流并比较关键支路），把解释中的方向描述与仿真里的动作效应绑定；第三层是人员效益，即解释是否真正帮助识别错误方案与缩短复核。中介路径为：有效证据覆盖与不适用规则过滤→解释方向与仿真一致→错误方案识别与复核效率。该机制的作用范围限于仿真内的动作效应检验，并明确不声称识别现实因果或提供安全保证；证据不足时输出“无法支持”，缺平衡资源的反事实判为不可检验。",
+      "evidence_needs": "需要四类可核查材料：(1) 带可追溯段落与合法访问来源的文献索引，用于支撑灵敏度方向、约束校验与交直流动作重算等具体断言；(2) 版本化的运行知识与拓扑配置，用以标记过期规则并支持知识版本过滤；(3) 固定候选方案集，须覆盖正确方案、方向错误、潜在新过载、过期拓扑规则和不可检验反事实五类，并配套统一潮流仿真与可用的平衡资源；(4) 双人独立标注及其一致性统计，以及人工复核时间与随机交叉顺序的实验记录。需要强调的是，文献只能支撑底层电气关系与约束校验，检索忠实性、反事实解释的增量作用和人工复核收益属于待检验命题，不能当作既有证据引用；引用支持率、方向一致率等指标本身也需在标注协议中先定义。",
+      "verification": "采用分层对照：至少200个固定候选方案的盲测集，按文档与拓扑分组留出以避免泄漏；对比无检索、仅检索、检索加反事实三组，并增设纯数值校核作为额外基线，以区分“解释起了作用”与“安全校核直接给出答案”。指标分别报告引用支持率、解释与仿真方向一致率、错误方案识别的精确率与召回率（在等误报率下比较召回）、解释延迟与人工复核时间。阴性判据预先设定：若引用支持率上升但忠实性无改善，或解释仅复述安全校核结论，则不成立反事实解释的增量贡献。人工部分采用随机交叉顺序控制学习效应，报告标注者间一致性，并在未完成人工实验时仅声明自动指标结论。",
+      "gaps": "(1) 反事实依赖可行替代平衡资源，缺失时判为不可检验，导致可检验样本比例下降并可能引入选择性偏差；(2) 文献仅6篇，过期规则与拓扑不一致情形的覆盖偏窄，过滤率的估计不稳定；(3) 方向一致率是忠实性的代理指标，其构念效度未单独论证，且引用支持率与忠实性若由同一标注者判定存在混淆风险，需盲法与分人标注；(4) 固定动作集虽隔离了解释效应，但限制了对其他调控场景的外推；(5) 解释异步生成与独立安全校核并行的时序影响（如解释滞后导致的决策等待）未被量化为独立变量；(6) 未进入闭环下发，仅离线评估，生态效度与真实调度压力下的表现未知；(7) 人工复核收益受审核者背景影响，样本量与个体差异需要更大规模实验才能区分组间差异与噪声。"
+    },
+    "core_mechanism_constraint": "假设文献检索减少无依据陈述，但仅检索不能保证解释忠实于当前动作；反事实潮流干预将说明与实际电气效应绑定，从而揭示错误方向、过期规则或遗漏受影响线路。该干预用于检验仿真内的动作作用，不宣称识别所有现实因果效应。",
+    "existing_titles": [
+      "断面调控解释的反事实潮流忠实性假设：证据版本过滤与交流重算对错误方案识别的增益",
+      "断面调控解释的“证据版本过滤—反事实交流重算”双校验忠实性假设"
+    ]
+  },
+  "queries": [
+    "counterfactual explanation faithfulness evaluation for power system operational decision support: distinguishing explanation benefit from numerical security-check baseline, false-positive/recall trade-off under equal false alarm rate, and blind annotation protocols with inter-annotator agreement",
+    "AC power flow recalculation for counterfactual corrective control actions: branch flow sensitivity factors, preventive and corrective redispatch, overload identification after action substitution or withdrawal, and balance-resource feasibility screening",
+    "versioned operation knowledge and obsolete topology rule detection in power system alarm/decision support: model version management, topology change tracking, rule expiry filtering, and traceability of evidence paragraphs",
+    "human-in-the-loop evaluation of explainable AI in control rooms: operator review time, error-scheme identification, trust calibration, randomized crossover design, and annotation background effects on explanation benefit",
+    "grounding LLM-generated explanations with citation attribution and retrieval evidence in power system operation: citation support rate, hallucination reduction, construct validity of faithfulness proxies, and independent blind labeling versus numerical verification"
+  ],
+  "hits": [
+    {
+      "id": "E002-p2-c5",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "tors of equality and inequality constraints, is the vector of changes in con- trol variables due to the automatic control of the system fol- lowing the th contingency, is the time allowed to reach a feasible post-contingency state (equal to 0 in “preventive only” approach) and is the vector of rate of change of controls (e.g., ramp up/down rate of generator active power, transformer tap changer rate of change, etc.). To ease the comprehension of the ISCOPF-NC algorithm of Section III we introduce hereafter two of its salient features: contingency ﬁltering and network compression. B. Contingency Filtering Technique The contingencyﬁlter exploits the amount of constraints vi- olation obtained after simulating all contingencies with a clas- sical loadﬂow program. The ﬁlter uses the non-dominated contingency (NDC) ap- proach [8]. According to the latter a contingencyis dominated by contingency if contingency leads to a larger or equal vi- olation for every constraint than contingency , and a strictly larger violation for at least oneconstraint. Hence, a contingency is non-dominated if no other contingency dominates it. The principle of t"
+    },
+    {
+      "id": "E002-p8-c2",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "gniﬁcantly the computational time offering a national system operator the possibility to use the al- gorithm not only in day-ahead but also in intra-day and close to real-time operation contexts. Although small violations may occur, they are only allowed in post-contingency states, where network reduction applies, but not in the pre-contingency state which is modeled using the whole grid model. This is a reasonable controllable risk since, if a contingency really occurs its effects can be also counteracted by other last resort control means (e.g., load shedding). The algorithm offers the possibility to set the tolerance ac- cepted on post-contingency constraints violations. In particular, if one looks for a solution without violations of post-contin- gency constraints then the full model of the contingency states is used, at the expense of larger computational time, and provided that memory requirements are met. The algorithm has been de- vised to provideﬂexible choices to satisfy the trade-off between (post-contingency) constraints satisfaction accuracy and com- putational speed, within available computer memory limit. For this gri"
+    },
+    {
+      "id": "E002-p1-c4",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": " Luxem- bourg (e-mail: fcapitanescu@yahoo.com). L. Wehenkel is with the University of Liege, Electrical Engineering and Com- puter Science, Liege 4000, Belgium (e-mail: l.wehenkel@ulg.ac.be). Color versions of one or more of theﬁgures in this paper are available online at http://ieeexplore.ieee.org. Digital Object Identiﬁer 10.1109/TPWRS.2013.2289990 and discrete variables [1]–[4]. The efﬁcient solution of SCOPF problems is crucial for system operators, in the context of planning, operational planning and real-time operation. SCOPF problems have been formulated in the “preventive only” mode [1] and in the “corrective also” mode [2], the difference be- tween these modes being that the former does not consider the possibility of re-scheduling controls in post-contingency states, except for automatic system response to contingencies (e.g., generators participation in frequency control,a u t o m a t i c tap-changers, etc.). One of the main challenges of SCOPF problems is their huge size, especially when they are formulated for large-scale sys- tems and/or when a large number of contingencies have to be considered [3], [4]. Obtaining the"
+    },
+    {
+      "id": "E001-p9-c4",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "ei University of Technology ) ， Hefei 230009 ， China ; 3． State Grid Ｒongcheng Power Supply Company of Shandong Electric Power Company ， Ｒongcheng 264300 ， China ) Abstract : Fault trip of overload line transfers the power flow to other lines in the associated transmission section ， which results in interlocking tripping accident． The key to prevent cascading tripping accidents is to quickly formulate a reasonable and effective power flow control strategy to eliminate line overload． In view of the defects of low accuracy of sensitivity method and too much calculation of optimization method ， a double-layer optimal power flow control strategy of transmission section based on positive and negative comprehensive sensitivity is proposed． Considering the overall regulation effect of nodes on overload and heavy load line power flow ， the positive and negative comprehensive sensitivity index is proposed ， and then the power flow control strategy is quickly formulated by double-layer optimization method． In order to prevent the surge of computation caused by too large search space ， a multi-objective selecting optimization model of the firs"
+    },
+    {
+      "id": "E002-p8-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1201 Fig. 3. Generators active powers (MW) in both full case (dashed line) and com- pressed case (continuous line). general trend of the objective function is respected. The differ- ence between both solutions in terms of generators active power is of 11.4 MW in average with a maximum value of 39.6 MW. Furthermore, 57 generators out of 98 have a deviation of less than 10 MW. Hence, althoughﬁnal values of active powers are slightly different, this approximated solution can be deemed ac- ceptable especially given the number of generators involved in optimization and theirﬁnal output. We can conclude that the trade-off between accuracy and speed due to the ISCOPF-NC method approximation is accept- able as it allows reducing signiﬁcantly the computational time offering a national system operator the possibility to use the al- gorithm not only in day-ahead but also in intra-d"
+    },
+    {
+      "id": "E002-p4-c5",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "ques based on linear approximation). IV . H IGH PERFORMANCE ENVIRONMENT In this section, we describe the computational environment we used in our simulations, without claiming superiority or op- timal choices compared to the state-of-the-art, but only to inter- pret the gains obtained in computational time. Although the SA, the NC, and (in the “corrective also” mode) the PCOPF modules are used intensively during the ISCOPF-NC process, each contingency is addressed indepen- dently from the others in these modules: 1) The SA module receives the full list of contingencies but each of them is evaluated separately. 2) In corrective mode, contingencies selected by the CF lead to separate PCOPF sub-problems. 3) Potentially binding contingencies are reduced separately by the NC module. This intrinsic property has been exploited in each module in order to reach computational times compatible with TSO (Transmission System Operator) operational requirements. Two main approaches can be considered to deal with such kind of trivially parallelizable problems [22]: • either launching automatically N instances of the exe- cutable with different inpu"
+    },
+    {
+      "id": "E005-p4-c5",
+      "paper": "E005",
+      "file": "Proximal_Jacobian_Distribution_Optimal_Power_Flow_in_a_Distributed_Cyber-Physical_Environment.pdf",
+      "text": "ers {λpq[k + 1]} by performing [S2] in parallel at each control area. 6: Update k = k + 1. 7: until |xpq[k]− xqp[k]| <ϵ 8: return {pg j }, {qg j } III. A DV ANCED CONTROL INFRASTRUCTURE Realizing the distributed optimization algorithm described in Section II-B to capitalize o n the control capabilities of power converters requires the design of a suitable support- ing cyber structure, which may be termed advanced con- trol infrastructure (ACI). An schematic of the considered ACI system is shown in Fig. 5. The functionality of the SMs in AMI systems is extended to include real–time control capabilities in the ACI paradigm, and they are thus termed advanced SMs (ASMs). The ASMs contained in a control area feature bidirectional communication with their corresponding CAC. Cyber data transmitted by the ASMs, such as load levels, p d j ,q d j , and available powers from DGs, p g j,max,a r e locally processed at the corresponding CAC by performing the computations involved in step [S1]. In turn, linked CACs comprise a backbone network that enables the exchange of the boundary variable values, xpq, so that they can perform the dual update o"
+    },
+    {
+      "id": "E003-p7-c4",
+      "paper": "E003",
+      "file": "An_Efficient_Universal_AC_DC_Branch_Model_for_Optimal_Power_Flow_Studies_in_Hybrid_AC_DC_Systems.pdf",
+      "text": "w control actions can be implemented in SADRA. In the following, these systems, and their comparison against the literature are provided and the results discussed. A. The Extended 3120 Bus AC/DC Case Representing the Polish System The very large extended 3120 bus AC/DC case representing the Polish system with an interconnected 5 node MTDC grid is taken as the test case here. This system has 3120 AC and 5 DC buses, 3703 lines and 505 generators (of which 500 generators are from the system, and 5 are dummy generators used for modelling VSCs in SADRA). The data for AC and DC grids can be found at[33]. All simulations are solved in AIMMS, which is an optimization software that supports a wide range of mathematical optimization problems and provides access to multiple solvers such as IPOPT and CONOPT. AIMMS is a powerful tool for optimization and its user friendly graphical interface makes it easy to use for implementa- tion of optimization problems, with minimum coding required. A fully functional model of AC OPF and its explanation were previously published in AIMMS Academy website and is avail- able for the interested readers in[28]. "
+    },
+    {
+      "id": "E002-p6-c3",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "ltage magnitude at node in state ; • is the maximal allowed rate of change of active power of generator following a contingency; • is the maximal allowed rate of change of step position of shunt following a contingency; • is the maximal allowed rate of change of the angle of phase shifter following a contingency; • is the maximal allowed rate of change of the ratio of LTC transformer following a contingency. TABLE II SIZES OF OPF/SCOPF PROBLEMS The control variables of the problem are: generators active and reactive powers ( and ), step position of capacitor banks ( ), angle of phase shifters ( ), and ratio of trans- formers ( ). Note that the three latter types of control vari- ables are properly modeled asdiscrete variablesin (3)–(15). The equality constraints are the powerﬂow (3)–(4). The in- equality constraints are the apparent powerﬂow limits on every branch (5), voltage limits (6), bounds on the control variables (7)–(11), and coupling constraints between pre-contingency state and post-contingency state (12)–(15). The SCOPF problem is solved hereafter in “preventive only” mode. The contingencyﬁlter uses the non-domination cri"
+    },
+    {
+      "id": "E005-p5-c6",
+      "paper": "E005",
+      "file": "Proximal_Jacobian_Distribution_Optimal_Power_Flow_in_a_Distributed_Cyber-Physical_Environment.pdf",
+      "text": "es (IF) between different hierarchy levels, data rates μ pq may be associated to IF–8 (data exchanges between bays), and μcp to IF–6 (data exchange between process and bay level). These data exchanges can be classiﬁed as time–critical sampled values, which are mapped directly to a low–level link layer in the classic OSI model [43]. They may be transmitted by utilizing a wired communication protocol such as that associated with th e Ethernet—as considered in the standard—, or wireless protocols such a WiFi or WiMAX. IV . C OMPUTATIONAL RESULTS In this section, three experiments are carried out to show the performance of the proposed distributed dispatch strategy. In Section IV-A, the convergence characteristics of the parallel–distributed DOPF model explained in Section II are studied. The real–time capabilities of the ACI architecture described in Section III is evaluated in terms of cyber costs in Section IV-B. Finally, a sensitivity study with respect to the network topology is presented in Section IV-C. A. Parallel–Distributed Operation The proposed parallel–distributed DOPF model is based on a proximal Jacobian ADMM scheme whose"
+    },
+    {
+      "id": "E002-p9-c5",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "ssive round-off strategy of discrete vari- ables provides acceptable results, as the efﬁcient treatment of discrete variables is a major challenge in SCOPF [3], [4], we plan future work to evaluate the performances of other existing alternative approaches [27] for large-scale problems. Further work is also planned to develop a scalable method to pre-select a limited number of efﬁcient corrective actions to be used in the SCOPF “corrective also” mode [19]. A CKNOWLEDGMENT The authors would like to thank S. Leclerc, F. Villella, V . Sermanson, and A. Szekut for preparing optimization data and problems referred in this paper. L. Platbrood acknowledges F.-X. Bouchez for his precious help in developing the parallel version of the ISCOPF-NC algorithm. R EFERENCES [1] O. Alsac and B. Stott, “Optimal loadﬂow with steady-state security,” IEEE Trans. Power App. Syst., vol. PAS-93, no. 3, pp. 745–751, 1974. [2] A. J. Monticelli, M. V. P. Pereira, and S. Granville, “Security-con- strained optimal power ﬂow with post-contingency corrective rescheduling,” IEEE Trans. Power Syst., vol. 2, no. 1, pp. 175–182, Feb. 1987. [ 3 ] F .C a p i t a n e s c"
+    },
+    {
+      "id": "E001-p8-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， ZHANG Shang ， WANG Tao ， et al． Optimization control strategy for active power correction from perspective of security region ［ J ］ ． Automation of Electric Power Systems ， 2017 ， 41 ( 18 ) : 17-24． ［ 8 ］ 程临燕 ， 郝治国 ， 张保会 ， 等 ． 基于内点法消除输电断面过载 的实时控制算法 ［ J ］ ． 电力系统自动化 ， 2011 ， 35 ( 17 ) : 51-55． CHENG Linyan ， HAO Zhiguo ， ZHANG Baohui ， et al． Fast elimi- nation of overload in transmission line section based on simplified primal-dual interior point method ［ J ］ ． Automation of Electric Power Systems ， 2011 ， 35 ( 17 ) : 51-55． ［ 9 ］ 袁晓丹 ， 张会强 ． 多支路开断潮流转移识别及防连锁过载策 略研究 ［ J ］ ． 现代电力 ， 2014 ， 31 ( 5 ) : 74-79． YUAN Xiaodan ， ZHANG Huiqiang． Study on power flow trans- ferring identification of multi-line tripping and the strategy to prevent cascading overload strategy ［ J ］ ． Modern Electric Po- wer ， 2014 ， 31 ( 5 ) : 74-79． ［ 10 ］ 甘德树 ， 冯伯庚 ， 蒋芳玉 ， 等 ． 基于功率灵敏度分析的断面 潮流安全控制方法 ［ J ］ ． 陕西电力 ， 2017 ， 45 ( 1 ) : 82-85． GAN Deshu ， FENG Bogeng ， JIANG Fangyu ， et al． Security control method for interface power flow based on power sensi- tivity analysis ［ J ］ ． Shaanxi Electric Power ， 2017 ， 45 ( 1 ) : 82-85． ［ 11 ］ 徐岩 ， 郅静 ． 基于功率灵敏度的线路过载划区域紧急"
+    },
+    {
+      "id": "E195-p0-c2",
+      "paper": "E195",
+      "file": "Coordinating Time-Coupled Industrial Microgrid Flexibility for Resilient Distribution Network Restoration Under Extreme Events",
+      "text": "cision times are 566.2 versus 18.8 ms and 3503.0 versus 24.2 ms, respectively. A separately certified 48-scenario IEEE33 encoder comparison with training seed 2027 yields 2.79% lower mean weighted EENS after removing inter-node message passing, so the complete-controller gains are not attributed to graph message passing. A matched 48-scenario industrial-storage sensitivity study and a completed CEPP action-chain audit provide additional implementation evidence. The demonstrated guarantee remains limited to the stated active-power, topology and industrial-resource model; online voltage, reactive-power and comprehensive AC feasibility are outside its scope.",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15194540",
+      "url": "https://doi.org/10.3390/electronics15194540"
+    },
+    {
+      "id": "E124-p0-c2",
+      "paper": "E124",
+      "file": "Real‑Time Dynamic Dispatch Strategy for High‑Penetration Wind‑Solar Power Systems Based on Deep Reinforcement Learning",
+      "text": "inated thermal generation adjustment, battery charging and discharging, and interruptible load response. Experiments are conducted on a modified IEEE 118-bus system, where MATPOWER is used for AC power-flow verification and Python is used to build the reinforcement learning environment. PPO, DDPG, and rolling economic dispatch are selected as comparative methods. The results show that SAC reduces the daily operation cost to 45,820 USD, decreases the renewable curtailment rate to 4.82%, and lowers load shedding to 0.71 MWh under 70% wind-solar penetration. It also effectively controls branch-overload events in most medium forecast-error scenarios. These results indicate that deep reinforcement learning can form a stable dispatch balance among economic efficiency, renewable accommodation, and security constraints, providing a feasible computational solution for real-time control in high-renewable smart grids.",
+      "source_type": "abstract",
+      "doi": "10.54254/2755-2721/2026.36888",
+      "url": "https://doi.org/10.54254/2755-2721/2026.36888"
+    },
+    {
+      "id": "E143-p0-c2",
+      "paper": "E143",
+      "file": "Interpretable Machine Learning Models for Critical Decision Systems",
+      "text": "ailable to humans. This paper is the systematic and complete study of interpretable machine learning models of critical decision systems. We start by examining the conceptual basis behind interpretability and its significance in high risk applications. An elaborate literature review classifies the currently existing interpretability methods as intrinsic interpretability methods and post-hoc explanation methods and their strong and weak points and the appropriateness to critical systems. The suggested methodology describes a systematic approach to the selection, design and validation of interpretable ML models within real-life conditions of uncertainties of data, bias and regulatory standards. Mathematically stated representative interpretable models such as linear models, decision trees, rule-based systems and attention mechanisms are given to provide formal grounding. Examples of experimental findings of representative domains of application are presented to illustrate the trade-offs in interpretability and performance. The discussion highlights levels of interpretability, robustness, and fairness measures, and predictive accuracy.",
+      "source_type": "abstract",
+      "doi": "10.67228/3142788x/ijmlpa-2023pi9w2r",
+      "url": "https://doi.org/10.67228/3142788x/ijmlpa-2023pi9w2r"
+    },
+    {
+      "id": "E057-p0-c1",
+      "paper": "E057",
+      "file": "Deep Reinforcement Learning-Based Approach for Autonomous Power Flow Control Using Only Topology Changes",
+      "text": "With the increasing complexity of power system structures and the increasing penetration of renewable energy, driven primarily by the need for decarbonization, power system operation and control become challenging. Changes are resulting in an enormous increase in system complexity, wherein the number of active control points in the grid is too high to be managed manually and provide an opportunity for the application of artificial intelligence technology in the power system. For power flow control, many studies have focused on using generation redispatching, load shedding, or demand side management flexibilities. This paper presents a novel reinforcement learning (RL)-based approach for the secure operation of power system via autonomous topology changes considering various constraints. The proposed agent learns from scratch to master power flow control purely from data. It can make autonomous topology changes according to current system conditions to support grid operators in making e",
+      "source_type": "abstract",
+      "doi": "10.3390/en15196920",
+      "url": "https://doi.org/10.3390/en15196920"
+    },
+    {
+      "id": "E027-p0-c2",
+      "paper": "E027",
+      "file": "Forward‐Looking Risk‐Constrained Deep Reinforcement Learning for Real‐Time Dispatch of Active Distribution Networks",
+      "text": "risk‐specific, action‐conditioned safety constraints. On the modified IEEE 33‐bus system, the proposed method achieves an average daily operating cost of $1916 ± 285, a voltage compliance rate of 98.8 ± 1.2%, a renewable utilisation rate of 99.2 ± 0.7% and a prospective high‐risk ratio of 1.9 ± 3.0% over 50 testing days. A controlled matched ablation further shows that post‐action conditioning reduces the realised adverse‐event ratio from 7.21% to 2.06% relative to the state‐only counterpart, demonstrating the benefit of explicitly linking current actions with retained corrective capability.",
+      "source_type": "abstract",
+      "doi": "10.1049/rpg2.70389",
+      "url": "https://doi.org/10.1049/rpg2.70389"
+    },
+    {
+      "id": "E057-p0-c2",
+      "paper": "E057",
+      "file": "Deep Reinforcement Learning-Based Approach for Autonomous Power Flow Control Using Only Topology Changes",
+      "text": "er flow control purely from data. It can make autonomous topology changes according to current system conditions to support grid operators in making effective preventive control actions. The state-of-the-art RL algorithm—namely, dueling double deep Q-network with prioritized replay—is adopted to train effective agent for achieving the desired performance. The IEEE 14-bus system is selected to demonstrate the effectiveness and promising performance of the proposed agent controlling power network for up to a month with only nine actions affecting substation configuration.",
+      "source_type": "abstract",
+      "doi": "10.3390/en15196920",
+      "url": "https://doi.org/10.3390/en15196920"
+    },
+    {
+      "id": "E126-p0-c2",
+      "paper": "E126",
+      "file": "TimeREISE: Time Series Randomized Evolving Input Sample Explanation",
+      "text": "st, Infidelity, and Sensitivity. Concerning the continuity of an explanation, it showed superior performance while preserving the correctness of the attribution map. Additional sanity checks prove the correctness of the approach and its dependency on the model parameters. TimeREISE scales well with an increasing number of channels and timesteps. TimeREISE applies to any time series classification network and does not rely on prior data knowledge. TimeREISE is suited for any usecase independent of dataset characteristics such as sequence length, channel number, and number of classes.",
+      "source_type": "abstract",
+      "doi": "10.3390/s22114084",
+      "url": "https://doi.org/10.3390/s22114084"
+    },
+    {
+      "id": "E013-p0-c2",
+      "paper": "E013",
+      "file": "Weather‐Aware Reinforcement Learning for Power Grid Topology Control Under Extreme Events",
+      "text": "g (6D categorical type, intensity, and trend) and a weather‐conditioned graph‐attention actor–critic that learns adaptive topology actions; and (iii) a deployment‐oriented dual‐path weather inference scheme supporting the workflow of training with oracle weather codes and deploying with inferred weather codes. Experiments on Grid2Op WCCI 2022 (IEEE 118‐bus) with eight extreme‐weather categories show that LLM‐generated data is 11.7% more challenging than scaling‐based alternatives on Do‐Nothing survival; weather encoding improves extreme‐scenario performance by 18.6% over the no‐encoding baseline with scenario‐dependent behaviour in mild regimes; and LLM‐inferred weather codes achieve an 88% functional match rate to oracle performance under a 10% degradation tolerance, validating the proposed workflow for deployment.",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70099",
+      "url": "https://doi.org/10.1049/stg2.70099"
+    },
+    {
+      "id": "E195-p0-c1",
+      "paper": "E195",
+      "file": "Coordinating Time-Coupled Industrial Microgrid Flexibility for Resilient Distribution Network Restoration Under Extreme Events",
+      "text": "Extreme-event restoration requires damaged distribution feeders to coordinate sequential line repair with time-dependent support from industrial microgrids. Temporary industrial load reduction releases capacity during outages but creates recovery obligations that compete with later load restoration and storage charging. We study a topology-aware restoration controller with staged correction of discrete network decisions and continuous industrial and storage actions, followed by bounded candidate screening. The modified IEEE 33-bus and 69-bus feeders are each evaluated over 440 matched physical scenarios and three independently trained policies, giving 3960 complete 96-step cases per feeder. Mean weighted grid energy not supplied is 7.268 versus 7.863 MWh for GS-HF and GS on IEEE33 and 5.640 versus 5.800 MWh on IEEE69. Their mean online decision times are 566.2 versus 18.8 ms and 3503.0 versus 24.2 ms, respectively. A separately certified 48-scenario IEEE33 encoder comparison with train",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15194540",
+      "url": "https://doi.org/10.3390/electronics15194540"
+    },
+    {
+      "id": "E167-p0-c1",
+      "paper": "E167",
+      "file": "Multi-Stage Transmission Network Planning Considering Transmission Congestion in the Power Market",
+      "text": "The uncertainty of generation and load increases in the transmission network in the power market. Considering the transmission congestion risk caused by various uncertainties of the transmission network, the optimal operation strategies of the transmission network under various operational scenarios are decided, aiming for the maximum of social benefit for the evaluation of the degree of scenario congestion. Then, a screening method for major congestion scenario is proposed based on the shadow price theory. With the goal of maximizing the difference between the social benefits and the investment and maintenance costs of transmission lines under major congestion scenarios, a multi-stage transmission network planning model based on major congestion scenarios is proposed to determine the configuration of transmission lines in each planning stage. In this paper, the multi-stage transmission network planning is a mixed integer linear programming problem. The DC power flow model and the comm",
+      "source_type": "abstract",
+      "doi": "10.3390/en13184910",
+      "url": "https://doi.org/10.3390/en13184910"
+    },
+    {
+      "id": "E060-p0-c1",
+      "paper": "E060",
+      "file": "Rule-Based Real-Time Energy Management System for Curative Congestion Management in Low-Voltage Distribution Grids",
+      "text": "The electrification of residential demand through electric vehicles (EVs), heat pumps (HPs), photovoltaic (PV) systems, and battery energy storage systems (BESSs) creates new congestion challenges in low-voltage (LV) grids. This study evaluates a transparent, deterministic, and real-time-capable rule-based energy management system (EMS) for curative thermal congestion management within a §14a EnWG-oriented setting. The EMS is implemented in MATLAB/Simulink and tested on a representative four-feeder LV network supplying 56 households. Congestion is detected from maximum phase root-mean-square currents using conservative transformer and feeder thresholds. After a threshold is reached, the EMS first activates available BESS support and then applies simultaneous feeder-wide EV limitation, batched round-robin curtailment, or staged feeder-wide reduction toward 4.2 kW. In the uncontrolled case, the Feeder 3 and transformer overload areas are 62.84 Ah and 48.50 Ah, respectively. All controlle",
+      "source_type": "abstract",
+      "doi": "10.3390/automation7040116",
+      "url": "https://doi.org/10.3390/automation7040116"
+    },
+    {
+      "id": "E016-p0-c1",
+      "paper": "E016",
+      "file": "Adversarial Self‐Improvement for Resilient Smart Grid Dispatch Control Under Extreme N‐2 Contingencies",
+      "text": "ABSTRACT Deploying AI‐enabled dispatch controllers in smart grids demands quantifiable resilience against contingencies beyond the conventional N‐1 design basis. We present AG2CDT + , an adversarial self‐improvement framework that hardens offline‐trained dispatch controllers through iterative stress testing and corrective fine‐tuning. A grid adversary generates targeted N‐1, N‐2 and compound contingencies from critical transmission corridors. A safety oracle combining PTDF‐based preaction thermal screening, an advisory AC Jacobian voltage‐sensitivity predictor and duration‐aware poststep voltage enforcement identifies violations and generates corrected actions via line search; a special protection scheme (SPS) controller invokes targeted load shedding and line‐bridge switching whenever AC power flow diverges turning previously‐fatal scenarios into recoverable ones. Empirical measurement shows that the agent's active‐power dispatch moves monitored bus voltages by p.u./MW—two orders of m",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70090",
+      "url": "https://doi.org/10.1049/stg2.70090"
+    },
+    {
+      "id": "E137-p0-c1",
+      "paper": "E137",
+      "file": "Resilience‐based tri‐level framework for simultaneous transmission and substation expansion planning considering extreme weather‐related events",
+      "text": "In this study, a new resilience‐based framework is presented for multi‐period simultaneous transmission and substation expansion planning (ST&SEP) considering extreme weather‐related events (EWEs). The formation of the proposed planning framework falls into a tri‐level optimisation problem with the aim of strengthening power network resilience in response to the EWEs. In the lower‐level problem, short‐term remedial corrective strategies of the independent system operator (ISO) after the EWEs are determined by applying network reconfiguration and generation redispatch. In the intermediate‐level problem, an enhanced scenario‐building approach is developed to model and analyse the EWEs, as non‐random uncertain events, and their subsequent detrimental effects using the notion of the fragility curves corresponding to power network components. In the upper‐level problem, however, long‐term remedial preventive strategies of the ISO, as network planner, after the EWEs are obtained through inte",
+      "source_type": "abstract",
+      "doi": "10.1049/iet-gtd.2019.1512",
+      "url": "https://doi.org/10.1049/iet-gtd.2019.1512"
+    },
+    {
+      "id": "E052-p0-c1",
+      "paper": "E052",
+      "file": "A Distributed Optimization Algorithm for Multi-Area Power Grid Transmission Congestion Management",
+      "text": "Abstract The interconnection of power grid brings significant economic benefits, while it calls for higher requirements to the security, stability and economic operation of power system as well. With high dimensionality of its optimization problem, the whole network centralized optimal power flow (OPF) algorithm is computational inefficient. Therefore, on the basis of power grid layering and zoning, the distributed optimal power flow calculation method in interconnected power grid with multiple control centers has important realistic significance. A distributed optimization algorithm of interconnected power grid transmission congestion management is proposed in this paper. The active power constraints of inter-area transmission interfaces are considered to satisfy the trade power constraints between adjacent sub-systems. The coordination and cooperation procedure counts on the correction and updating of boundary bus equivalent injection power and voltage vector. The numerical results o",
+      "source_type": "abstract",
+      "doi": "10.1088/1755-1315/769/4/042095",
+      "url": "https://doi.org/10.1088/1755-1315/769/4/042095"
+    },
+    {
+      "id": "E095-p0-c1",
+      "paper": "E095",
+      "file": "Hierarchical AI Control and Protection for Renewable Multi-Terminal HVDC Grids",
+      "text": "General Background: The transition toward large-scale wind and solar integration requires transmission infrastructures capable of stable long-distance power delivery. Specific Background: Multi-terminal VSC-HVDC grids provide this capability but introduce complex coordination challenges in control and ultra-fast DC fault protection. Knowledge Gap: Existing studies treat advanced control and protection as separate problems, limiting system-level coordination during disturbances and contingencies. Aims: This study develops a unified hierarchical AI-driven architecture that integrates deep reinforcement learning (DRL) for primary converter control, an AI-based secondary coordinator for system-wide optimization, and a CNN-assisted hybrid protection scheme for rapid fault management. Results: Co-simulation on a modified CIGRE B4 MTDC benchmark with wind and PV sources shows 62.4% faster settling time, 62.2% lower voltage overshoot, 98.93% fault classification accuracy with 0.61 ms detection",
+      "source_type": "abstract",
+      "doi": "10.21070/acopen.11.2026.13412",
+      "url": "https://doi.org/10.21070/acopen.11.2026.13412"
+    },
+    {
+      "id": "E060-p0-c2",
+      "paper": "E060",
+      "file": "Rule-Based Real-Time Energy Management System for Curative Congestion Management in Low-Voltage Distribution Grids",
+      "text": " reduction toward 4.2 kW. In the uncontrolled case, the Feeder 3 and transformer overload areas are 62.84 Ah and 48.50 Ah, respectively. All controlled scenarios remove at least 98.70% of the feeder overload and eliminate the transformer overload within the reported numerical precision. The batched strategy requires 328.54 Ah of cumulative feeder-current reduction, compared with 977.34 Ah for simultaneous control and 816.00 Ah for staged control, and achieves the highest feeder-relief efficiency. It therefore provides a balanced trade-off between congestion relief and intervention intensity for the investigated deterministic case.",
+      "source_type": "abstract",
+      "doi": "10.3390/automation7040116",
+      "url": "https://doi.org/10.3390/automation7040116"
+    },
+    {
+      "id": "E126-p0-c1",
+      "paper": "E126",
+      "file": "TimeREISE: Time Series Randomized Evolving Input Sample Explanation",
+      "text": "Deep neural networks are one of the most successful classifiers across different domains. However, their use is limited in safety-critical areas due to their limitations concerning interpretability. The research field of explainable artificial intelligence addresses this problem. However, most interpretability methods align to the imaging modality by design. The paper introduces TimeREISE, a model agnostic attribution method that shows success in the context of time series classification. The method applies perturbations to the input and considers different attribution map characteristics such as the granularity and density of an attribution map. The approach demonstrates superior performance compared to existing methods concerning different well-established measurements. TimeREISE shows impressive results in the deletion and insertion test, Infidelity, and Sensitivity. Concerning the continuity of an explanation, it showed superior performance while preserving the correctness of the a",
+      "source_type": "abstract",
+      "doi": "10.3390/s22114084",
+      "url": "https://doi.org/10.3390/s22114084"
+    },
+    {
+      "id": "E111-p0-c1",
+      "paper": "E111",
+      "file": "Topology-Aware Graph Reinforcement Learning for Voltage-Reactive Power Control in Grid-Connected Microgrids",
+      "text": "As the global energy transition accelerates, distribution systems are integrating increasing shares of inverter-interfaced renewables, making reliable voltage support a key operational requirement. In grid-connected microgrids, especially weak radial feeders in rural and remote areas, voltage-reactive power (Volt/Var) control must coordinate multiple inverters under uncertainty from photovoltaic (PV) intermittency, load volatility, and point-of-common-coupling (PCC) disturbances. Existing droop, model-based optimization, and non-graph reinforcement learning (RL) approaches often rely on fixed rules or do not explicitly exploit electrical topology, which limits adaptive coordination. To address this gap, we propose a topology-aware graph reinforcement learning framework for voltage-reactive power control in grid-connected microgrids under uncertainty. The method encodes node states with a graph convolutional network (GCN) and learns coordinated PV/storage reactive-power actions via prox",
+      "source_type": "abstract",
+      "doi": "10.3390/electricity7020060",
+      "url": "https://doi.org/10.3390/electricity7020060"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "iteration": 1,
+    "direction": "实时安全与资源筛选",
+    "parent_id": 3,
+    "child_id": 19,
+    "parent_score": 9.09,
+    "child_score": 8.91,
+    "improvement": -0.18000000000000016
+  },
+  {
+    "iteration": 2,
+    "direction": "实时安全与资源筛选",
+    "parent_id": 2,
+    "child_id": 20,
+    "parent_score": 8.95,
+    "child_score": 8.99,
+    "improvement": 0.040000000000001146
+  }
+]

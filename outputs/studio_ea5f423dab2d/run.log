@@ -1,0 +1,330 @@
+Multiple definitions in dictionary at byte 0x8ba94 for key /MediaBox
+[Academic] retrieved 2400 records; 690 unique abstracts
+[Academic] screened 64 | 35/194 qualified
+[Academic] screened 128 | 61/194 qualified
+[Academic] screened 192 | 86/194 qualified
+[Academic] screened 256 | 114/194 qualified
+[Academic] screened 320 | 137/194 qualified
+[Academic] screened 360 | 148/194 qualified
+[Academic] round 1: 2400 records | 690 unique abstracts | 148 qualified
+[Academic] retrieved 4800 records; 1195 unique abstracts
+[Academic] screened 424 | 173/194 qualified
+[Academic] screened 488 | 197/194 qualified
+[Academic] round 2: 4800 records | 1195 unique abstracts | 197 qualified
+[Index] 724 chunks
+
+[Candidate 1] 实时安全与资源筛选 | generate
+[Evidence] 15 verified excerpts
+[Review] 8.88/10 | fatal=False
+  novelty: 8.8
+  physics: 9.0
+  feasibility: 8.8
+  falsifiability: 9.2
+  evidence: 8.6
+  relevance: 9.3
+  latency: 8.9
+  accuracy: 8.9
+  generalization: 8.5
+  interpretability: 8.8
+
+[Candidate 2] 实时安全与资源筛选 | generate
+[Evidence] 9 verified excerpts
+[Review] 8.95/10 | fatal=False
+  novelty: 8.9
+  physics: 9.0
+  feasibility: 8.6
+  falsifiability: 9.2
+  evidence: 8.7
+  relevance: 9.4
+  latency: 8.8
+  accuracy: 9.0
+  generalization: 8.8
+  interpretability: 9.1
+
+[Candidate 3] 实时安全与资源筛选 | generate
+[Evidence] 13 verified excerpts
+[Review] 9.09/10 | fatal=False
+  novelty: 8.9
+  physics: 9.2
+  feasibility: 8.8
+  falsifiability: 9.4
+  evidence: 8.7
+  relevance: 9.6
+  latency: 9.1
+  accuracy: 9.1
+  generalization: 8.9
+  interpretability: 9.2
+
+[Candidate 4] 极端天气与尾部风险 | generate
+[Query] 校验失败 1/3
+[Evidence] 16 verified excerpts
+[Review] 8.87/10 | fatal=False
+  novelty: 9.0
+  physics: 8.8
+  feasibility: 8.3
+  falsifiability: 9.4
+  evidence: 8.8
+  relevance: 9.5
+  latency: 8.2
+  accuracy: 9.0
+  generalization: 8.6
+  interpretability: 9.1
+
+[Candidate 5] 极端天气与尾部风险 | generate
+[Evidence] 17 verified excerpts
+[Review] 校验失败 1/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 8.74/10 | fatal=False
+  novelty: 9.0
+  physics: 8.8
+  feasibility: 8.2
+  falsifiability: 9.3
+  evidence: 8.3
+  relevance: 9.4
+  latency: 8.0
+  accuracy: 8.9
+  generalization: 8.5
+  interpretability: 9.0
+
+[Candidate 6] 极端天气与尾部风险 | generate
+[Evidence] 13 verified excerpts
+[Review] 8.94/10 | fatal=False
+  novelty: 9.1
+  physics: 9.0
+  feasibility: 8.8
+  falsifiability: 9.2
+  evidence: 8.8
+  relevance: 9.4
+  latency: 8.3
+  accuracy: 9.1
+  generalization: 8.7
+  interpretability: 9.0
+
+[Candidate 7] 拓扑演化与迁移 | generate
+[Evidence] 18 verified excerpts
+[Review] 8.91/10 | fatal=False
+  novelty: 8.8
+  physics: 9.0
+  feasibility: 8.7
+  falsifiability: 9.3
+  evidence: 8.6
+  relevance: 9.6
+  latency: 8.0
+  accuracy: 9.1
+  generalization: 9.2
+  interpretability: 8.8
+
+[Candidate 8] 拓扑演化与迁移 | generate
+[Evidence] 13 verified excerpts
+[Review] 校验失败 1/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 8.83/10 | fatal=False
+  novelty: 8.7
+  physics: 8.8
+  feasibility: 8.8
+  falsifiability: 9.3
+  evidence: 8.4
+  relevance: 9.5
+  latency: 8.1
+  accuracy: 8.8
+  generalization: 9.3
+  interpretability: 8.6
+
+[Candidate 9] 拓扑演化与迁移 | generate
+[Evidence] 15 verified excerpts
+[Review] 校验失败 1/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 校验失败 2/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 8.81/10 | fatal=False
+  novelty: 9.0
+  physics: 8.9
+  feasibility: 8.6
+  falsifiability: 9.3
+  evidence: 8.7
+  relevance: 9.3
+  latency: 7.6
+  accuracy: 8.9
+  generalization: 9.0
+  interpretability: 8.8
+
+[Candidate 10] 分区协同与通信 | generate
+[Evidence] 13 verified excerpts
+[Hypothesis] 校验失败 1/3
+[Review] 8.85/10 | fatal=False
+  novelty: 8.8
+  physics: 9.0
+  feasibility: 8.6
+  falsifiability: 9.2
+  evidence: 8.6
+  relevance: 9.4
+  latency: 8.8
+  accuracy: 8.6
+  generalization: 8.5
+  interpretability: 9.0
+
+[Candidate 11] 分区协同与通信 | generate
+[Query] 校验失败 1/3
+[Evidence] 14 verified excerpts
+[Review] 8.90/10 | fatal=False
+  novelty: 9.0
+  physics: 8.8
+  feasibility: 8.5
+  falsifiability: 9.3
+  evidence: 8.3
+  relevance: 9.5
+  latency: 9.0
+  accuracy: 8.9
+  generalization: 8.6
+  interpretability: 9.1
+
+[Candidate 12] 分区协同与通信 | generate
+[Evidence] 8 verified excerpts
+[Review] 8.90/10 | fatal=False
+  novelty: 8.8
+  physics: 8.7
+  feasibility: 8.8
+  falsifiability: 9.3
+  evidence: 8.6
+  relevance: 9.4
+  latency: 8.8
+  accuracy: 8.9
+  generalization: 8.5
+  interpretability: 9.2
+
+[Candidate 13] 静态与动态安全边界 | generate
+[Evidence] 18 verified excerpts
+[Review] 校验失败 1/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 校验失败 2/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 校验失败 3/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 8.64/10 | fatal=False
+  novelty: 8.7
+  physics: 8.9
+  feasibility: 8.3
+  falsifiability: 9.0
+  evidence: 8.1
+  relevance: 9.2
+  latency: 8.5
+  accuracy: 8.8
+  generalization: 8.3
+  interpretability: 8.6
+
+[Candidate 14] 静态与动态安全边界 | generate
+[Evidence] 12 verified excerpts
+[Review] 8.80/10 | fatal=False
+  novelty: 8.7
+  physics: 8.8
+  feasibility: 8.5
+  falsifiability: 9.3
+  evidence: 8.3
+  relevance: 9.5
+  latency: 8.5
+  accuracy: 8.9
+  generalization: 8.5
+  interpretability: 9.0
+
+[Candidate 15] 静态与动态安全边界 | generate
+[Evidence] 11 verified excerpts
+[Review] 校验失败 1/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 校验失败 2/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 8.85/10 | fatal=False
+  novelty: 8.9
+  physics: 9.0
+  feasibility: 8.5
+  falsifiability: 9.2
+  evidence: 8.4
+  relevance: 9.3
+  latency: 8.6
+  accuracy: 9.0
+  generalization: 8.5
+  interpretability: 9.1
+
+[Candidate 16] 可解释性与证据校验 | generate
+[Evidence] 14 verified excerpts
+[Review] 8.95/10 | fatal=False
+  novelty: 9.0
+  physics: 9.0
+  feasibility: 8.8
+  falsifiability: 9.4
+  evidence: 8.7
+  relevance: 9.4
+  latency: 8.0
+  accuracy: 9.3
+  generalization: 8.5
+  interpretability: 9.4
+
+[Candidate 17] 可解释性与证据校验 | generate
+[Evidence] 10 verified excerpts
+[Review] 8.70/10 | fatal=False
+  novelty: 8.8
+  physics: 9.0
+  feasibility: 8.5
+  falsifiability: 9.2
+  evidence: 8.3
+  relevance: 9.1
+  latency: 7.8
+  accuracy: 8.9
+  generalization: 8.1
+  interpretability: 9.3
+
+[Candidate 18] 可解释性与证据校验 | generate
+[Evidence] 10 verified excerpts
+[Review] 8.87/10 | fatal=False
+  novelty: 8.9
+  physics: 9.0
+  feasibility: 8.6
+  falsifiability: 9.2
+  evidence: 8.7
+  relevance: 9.2
+  latency: 8.1
+  accuracy: 9.0
+  generalization: 8.8
+  interpretability: 9.2
+[MCTS] 1/2
+
+[Candidate 19] 实时安全与资源筛选 | refine_review
+[Evidence] 13 verified excerpts
+[Review] 8.91/10 | fatal=False
+  novelty: 8.9
+  physics: 8.6
+  feasibility: 8.7
+  falsifiability: 9.2
+  evidence: 8.6
+  relevance: 9.4
+  latency: 8.9
+  accuracy: 8.9
+  generalization: 8.8
+  interpretability: 9.1
+[MCTS] 2/2
+
+[Candidate 20] 实时安全与资源筛选 | refine_review
+[Evidence] 17 verified excerpts
+[Review] 校验失败 1/8
+[Review Debug] 返回字段: ['scores', 'feedback']
+[Review Debug] 缺失维度: []
+[Review] 8.99/10 | fatal=False
+  novelty: 8.9
+  physics: 9.0
+  feasibility: 8.9
+  falsifiability: 9.4
+  evidence: 8.8
+  relevance: 9.5
+  latency: 8.7
+  accuracy: 8.9
+  generalization: 8.8
+  interpretability: 9.0
+[Done] 20 candidates | 8.94 -> 8.94 | C:\keyanjiashe\Power-IRIS\outputs\studio_ea5f423dab2d

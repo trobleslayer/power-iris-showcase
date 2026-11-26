@@ -1,0 +1,299 @@
+{
+  "context": {
+    "goal": "新型电力系统断面潮流控制：兼顾时效性、准确性、泛化性与可解释性，在实时运行和极端天气场景强化断面阻塞决策、确保安全裕度并适应电网动态演化。",
+    "direction": "实时安全与资源筛选",
+    "action": "refine_review",
+    "previous": {
+      "Hypothesis_Title": "基于候选筛选召回门限与线性化残差触发交流修正的断面实时阻塞调控假设",
+      "Scenario": "面向高比例新能源与交直流并联运行场景的输电断面实时有功阻塞调控：在秒级至分钟级滚动周期内，根据断面有功越限风险与指定N-1支路有功约束，对可调机组、储能及直流功率调制进行候选筛选并生成初始调节动作；测试覆盖正常天气、新能源强波动和极端天气预测误差放大场景，但仅限稳态与指定N-1安全校核，不延伸至动态稳定结论。",
+      "Research_Object": "断面实时阻塞调控中的候选有功调节资源池及其交流可执行动作；对象包括送受端可调机组、储能和直流功率调制资源，约束包括断面有功传输限值、支路视在功率/热稳约束、节点电压约束、机组爬坡与调节能力以及指定N-1支路有功安全约束。",
+      "Key_Variables": "自变量：候选筛选召回门限ρ（或保留候选比例k）、交流修正触发阈值τ（由预测线性化残差与安全裕度构造）、修正迭代预算B；因变量：交流约束违反率及幅值、断面过载积分、全流程P95时延、调节成本、不可解率与超时回退率、N-1遗漏复核命中数；中介变量：候选维数、修正幅度、修正迭代次数、筛选召回率；控制变量：新能源预测误差水平、负荷水平、N-1故障集合、拓扑状态、机组爬坡能力与通信时延设置。",
+      "Method": "构建候选筛选—策略初解—残差触发交流修正—N-1复核—超时回退的仿真流程。候选筛选采用正负综合灵敏度与置信度排序，并以ρ控制保留集合；策略初解可使用已有SAC或规则策略作为被修正对象（不作为创新点）。对初解执行一次AC潮流或局部Jacobian估计，计算断面/支路功率预测残差与安全裕度，若超过τ则启动非凸交流修正（AC OPF或序贯二次/线性搜索），并显式校核支路视在功率、电压和指定N-1；超时则回退到保守再调度。实验采用2×2消融（有无召回门限筛选、有无残差触发修正）加ρ与τ网格扫描，在IEEE 39、IEEE 118及公开参数交直流扩展系统上按运行日与拓扑划分训练/测试，多随机种子和配对场景，比较原始SAC、全候选全修正、双层优化、AC SCOPF基线；记录估计、推理、通信、修正、校核与回退时延分解，报告95%配对自助法置信区间。",
+      "Mechanism": "核心机制是：候选筛选通过压缩候选维数降低在线策略与修正求解负担；但筛选会引入遗漏风险，使线性灵敏度近似误差和策略输出误差在AC非线性约束下放大。以预测线性化残差与安全裕度共同构造修正触发阈值，可在残差大或裕度小时才支付交流修正成本，在残差小且裕度足时保持快速初解。ρ与τ的联动改变候选维数、修正幅度和迭代次数，从而在同一计算预算下影响交流约束违反率、断面过载积分、P95时延与调节成本；该协同收益是待检验推论，不是既成结论。",
+      "Conditions": "预期改善条件：候选筛选对有效资源召回率足够高；线性化残差与真实AC越限风险正相关；交流修正能在预算内收敛到可行或低违反解；N-1集合与断面限额给定且复核可执行；机组爬坡和调节容量足以覆盖越限；新能源预测误差处于测试覆盖范围。可能不成立条件：筛选门限过高导致有效资源被漏选且修正无法补偿；残差估计失真或拓扑变化使触发阈值失效；非凸交流修正陷入局部解或超时；N-1筛选遗漏关键故障且未复核；通信时延、资源不足或极端天气误差超出训练分布；需要动态稳定/暂态裕度时，本假设的稳态AC修正不能替代动态安全分析。",
+      "Prediction": "待检验的定量目标（非已获得结果）：在预注册容差下，相较无残差触发修正的候选筛选方案，交流约束违反率相对下降不低于30%，断面过载积分不增加，全流程P95时延不高于全候选全修正方案的70%；相较无候选筛选方案，候选维数中位数下降不低于50%，且N-1复核遗漏关键故障数不增加。若ρ增大时召回率下降并由修正幅度和迭代次数上升补偿，则可检验中介链条；若P95时延收益被超时回退抵消或交流违反率未改善，则预测失败。",
+      "Evidence": "文献事实：E001-p1-c1建立第一层调度节点多目标筛选优化模型，优选参与调整的调度节点；可迁移推论：候选筛选与精确调整可分解，但不能证明该筛选层与SAC修正层具有协同时延收益。文献事实：E001-p1-c2指出仅考虑过载线路与调度节点灵敏度关系可能导致新的线路过载并须多次潮流校验；可迁移推论：候选筛选后需AC安全校核/修正，但未证明联合方案降低违反率。文献事实：E001-p6-c2表明综合灵敏度可能迫使负荷节点切负荷；可迁移推论：筛选存在反向风险，需召回门限与复核。文献事实：E001-p7-c2给出某省级电网09:30断面T1有功调整为3390 MW后越限消除；仅说明单案例时效可行性，不提供P95时延或回退率。文献事实：E082-p0-c2称预定义校正措施可显著减少成本昂贵的预防措施，尤其与潮流控制结合；可迁移推论：校正层与潮流控制互补，但不是SAC断面控制证据。文献事实：E016-p0-c1的safety oracle组合PTDF预筛选、AC Jacobian电压灵敏度预测与line search修正动作；可迁移推论：筛选加AC修正的分层结构可行，但该文为N-2对抗自改进调度，不能证明N-1无遗漏。文献事实：E124-p0-c2称SAC在多数中等预测误差场景可控制支路过载；可迁移推论：SAC可作初解但多数不等于全部，仍需修正与回退。文献事实：E008-p0-c1在4s滚动周期内用PTDF与二次规划协调断面安全、15分钟调度跟踪和新能源消纳；可迁移推论：断面实时控制需要快速筛选与优化，但4s为该文设计，不构成时延保证。文献事实：E050-p0-c2以概率满足N和N-1支路有功安全约束为目标优化移相变压器、再调度与弃电；可迁移推论：N-1约束应显式进入修正层，但概率满足不等于逐场景无遗漏。文献事实：E022-p0-c2显式验证AC潮流可行性和Benders-ADMM收敛；可迁移推论：AC可行性需后验校核，不能仅依赖线性灵敏度或策略输出。文献事实：E027-p0-c2报告动作后条件化使不利事件比例由7.21%降至2.06%；可迁移推论：动作后修正有价值，但不能外推为SAC断面控制收益。以上文献仅支撑分项机制，联合召回门限与残差触发修正在断面场景中的安全与时延收益属于待检验假设。",
+      "Innovation": "创新点不是把SAC、GNN等术语组合，而是把候选筛选召回门限ρ与基于线性化残差的修正触发阈值τ作为两个可审计的跨层控制变量，建立“筛选遗漏风险—修正成本—时延”的显式权衡；以残差/安全裕度而非固定迭代预算决定是否支付AC修正，并用召回率与遗漏故障复核作为可解释性审计量。该变量关系和处理方式与仅做比例匹配或置信分层候选的已有构想不同，验证上采用2×2消融加ρ-τ网格扫描和时延分解。",
+      "Verification": "采用仿真对照：2×2消融（有/无召回门限筛选、有/无残差触发修正），并扫描ρ与τ；测试IEEE 39、IEEE 118及公开参数交直流扩展系统；按运行日和拓扑划分训练/测试，使用至少5个随机种子和配对场景。对照包括原始SAC、全候选全修正方案、双层优化、AC SCOPF基线；所有方案统一记录估计、推理、通信、修正、校核和回退时延。评价指标：交流约束违反率及幅值、断面过载积分、全流程P95时延、调节成本、不可解率、超时回退率、候选维数、修正幅度/迭代次数、筛选召回率、N-1遗漏复核命中数；用配对自助法给出95%置信区间。失败判据：若相对无修正方案交流违反率未显著下降，或P95时延相对全修正方案未降至预设比例，或超时回退抵消收益，或N-1复核发现筛选遗漏增加且修正不能补偿，则不支持假设；若残差触发与收益无中介相关性，则机制不成立。",
+      "Feasibility": "仿真可实施：候选筛选、AC潮流校核、非凸修正和N-1复核均可在现有开源或商业求解器与电力系统仿真环境中完成；数据需求为公开测试系统参数、给定N-1集合和新能源/负荷场景。风险与边界：非凸AC修正不保证全局最优，校正解质量需审计；N-1逐场景校核计算成本高，需离线标签与线上复核边界；状态估计误差、拓扑变化、通信时延和资源不足会削弱外推性；结论仅限稳态与指定N-1集合，不能替代动态稳定分析；需预注册容差并报告负结果，不对安全作绝对保证。"
+    },
+    "feedback": {
+      "scores": {
+        "novelty": 8.9,
+        "physics": 9.2,
+        "feasibility": 8.8,
+        "falsifiability": 9.4,
+        "evidence": 8.7,
+        "relevance": 9.6,
+        "latency": 9.1,
+        "accuracy": 9.1,
+        "generalization": 8.9,
+        "interpretability": 9.2
+      },
+      "feedback": "主要优势：假设把候选筛选召回门限ρ与线性化残差触发阈值τ作为可审计的跨层控制变量，显式刻画“筛选遗漏风险—交流修正成本—时延”的权衡；物理边界清晰，限定稳态与指定N-1，不越界作动态稳定结论；验证设计包含2×2消融、ρ-τ网格扫描、多测试系统、配对场景、时延分解和失败判据，可检验性较强。值得优先改进的三点：1）τ的构造与标定仍偏概念化，建议给出可复现公式，明确残差归一化方式、安全裕度度量、与AC Jacobian/PTDF误差或离线分位数的关系，并在独立校准集上预注册τ，检验其与真实AC越限风险的单调性和中介相关性；2）N-1筛选遗漏是核心风险，建议明确N-1候选压缩规则和复核覆盖策略，例如关键故障集合、离线标签、周期性全复核或遗漏上界/重要性采样，并定义“关键故障遗漏”和“修正无法补偿”的判定条件，而不只统计命中数；3）非凸AC修正的局部解与超时回退会直接影响准确性和时延结论，建议设计warm-start、可行性恢复、多起点或保守回退机制，报告不可解率、局部解质量、回退触发频率及端到端P95分解，并在同等硬件和通信预算下与AC SCOPF等强基线比较。",
+      "fatal": false
+    },
+    "candidate_id": 19,
+    "reference_logic": {
+      "mechanism": "该假设把候选资源筛选与动作交流可行性修正视为两个可分离且互补的环节：正负综合灵敏度用于压缩候选控制资源维数，降低在线优化负担；显式交流非线性修正用于弥补线性灵敏度近似和策略输出误差，使快速决策更接近可执行解。其中介逻辑是：候选维数下降、修正幅度和迭代次数变化，进而在相同计算预算下影响交流约束违反率、断面过载积分、全流程时延和调节成本；其协同收益属于待检验推论，而非既成结论。",
+      "evidence_needs": "需要证据分别支持：正负综合灵敏度筛选候选资源的有效性；显式交流安全约束、支路视在功率约束及指定N-1筛选的必要性；交直流稳态联合建模的合理性。还需实证证据检验SAC策略层与修正层是否产生协同收益，包括候选维数、修正幅度、迭代次数等中介变量数据，时延分解数据，不可行与回退事件标签，调节成本容差，以及遗漏故障复核结果。现有文献只能支撑分项机制，不能直接证明联合方案的安全与时延收益。",
+      "verification": "可采用2×2消融验证：有无候选筛选、有无交流修正，并在IEEE 39和118节点及参数公开的交直流扩展系统上测试；按运行日和拓扑划分训练测试，使用多个随机种子和配对场景，与原始SAC、不筛选的全维修正方案、双层优化及交流SCOPF基线比较。统一记录估计、推理、通信、修正、校核与回退时延，报告交流约束违反率及幅值、断面过载积分、全流程P95时延、调节成本、不可解率和回退率，并用配对自助法给出95%置信区间。若主要安全或时延比较未改善，或超时回退抵消收益，则不支持协同假设。",
+      "gaps": "非凸交流修正不能声称为全局欧氏投影，其局部解质量和收敛性仍需评估；超时或不可行时的应急优化依赖当前状态校验，其有效性和失败计数需单独审计；N-1筛选可能遗漏故障，必须配套复核；结论仅限稳态和指定N-1集合，不能替代动态稳定分析；状态估计误差、拓扑变化、通信时延和资源不足场景会削弱外推性；N-1样本校核成本较高，离线标签生成与线上校核边界需明确；协同收益可能受训练预算、硬件和回退策略影响，需要预注册容差和负结果报告。"
+    },
+    "core_mechanism_constraint": "假设候选维数压缩可减少在线求解负担，交流修正可消除线性灵敏度和策略近似误差；二者互补，使相同计算预算下的快速决策更接近可执行解。通过候选维数、修正幅度和迭代次数检验这一中介链条。",
+    "existing_titles": [
+      "基于候选资源筛选比例与交流修正迭代预算匹配的断面实时阻塞调控假设",
+      "基于置信分层候选资源与交流修正预算联动的断面实时阻塞调控假设",
+      "基于候选筛选召回门限与线性化残差触发交流修正的断面实时阻塞调控假设"
+    ],
+    "weakest_aspects": [
+      "evidence",
+      "feasibility",
+      "novelty"
+    ],
+    "priority": "优先修复评价指出的机制和验证设计缺陷。"
+  },
+  "queries": [
+    "线性化潮流残差归一化与安全裕度联合构造交流修正触发阈值：PTDF或Jacobian误差分位数标定、与真实AC越限风险单调性及中介效应检验 / English query: linearization residual normalization and security margin based AC correction trigger threshold, PTDF Jacobian error quantile calibration, monotonic correlation with AC violation risk and mediation test",
+    "N-1关键故障集合筛选与遗漏风险复核：离线标签、周期性全复核、重要性采样与遗漏上界，定义关键故障遗漏及修正无法补偿判据 / English query: N-1 critical contingency screening and missed-contingency review, offline labels, periodic full recheck, importance sampling and miss upper bound, criteria for critical miss and non-compensable correction",
+    "非凸交流修正的warm-start、可行性恢复、多起点与保守回退：局部解质量、不可解率、超时回退触发频率及端到端P95时延分解 / English query: nonconvex AC correction with warm start, feasibility restoration, multi-start and conservative fallback, local solution quality, infeasibility rate, timeout fallback frequency and end-to-end P95 latency decomposition",
+    "候选资源筛选召回率与交流修正协同的中介证据：候选维数、修正幅度、迭代次数对交流约束违反率、断面过载积分和调节成本的影响，并与AC SCOPF强基线同预算比较 / English query: mediation evidence between candidate screening recall and AC correction, effects of candidate dimension, correction magnitude and iterations on AC violation rate, flow overload integral and cost, same-budget comparison with AC SCOPF baseline",
+    "极端天气预测误差放大与拓扑变化下断面阻塞调控的泛化性和可解释性：残差触发阈值失效、筛选遗漏增加、回退策略性能及审计指标 / English query: generalization and interpretability of real-time congestion control under extreme weather forecast error amplification and topology changes, trigger threshold failure, increased screening misses, fallback performance and audit metrics"
+  ],
+  "hits": [
+    {
+      "id": "E001-p1-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "5UD08 ) 0 引言 高比例接入电网的风电 、 光伏等新能源具有间 歇性 ， 使得电网传输功率波动频繁 ， 容易造成线路 过载运行 。 过载线路故障跳闸会使潮流转移到关 联输电断面内其他线路上 ， 造成输电断面发生潮流 过载 ， 引起过载保护装置动作 ， 导致电网发生大规 模连锁跳闸事故 ， 严重威胁电力系统的安全稳定运 行 ［ 1-4 ］ 。 因此 ， 当电网面临切除过载线路引发输电 断面连锁过载的风险时 ， 调度人员应快速制定有效 的潮流控制策略 ， 紧急消除线路过载 ， 使电网恢复 到安全运行状态 ［ 5-7 ］ 。 目前消除线路过载的主要措 施为紧急调整发电机组出力和切负荷操作 。 潮流 控制策略主要包括灵敏度分析方法 ［ 8-13 ］ 和直接优化 类方法 ［ 14-18 ］ 。 文献 ［ 8-9 ］ 提出的灵敏度分析方法无须迭代 ， 不存在收敛性问题 ， 可以快速得到潮流控制策略 。 但是该方法仅考虑过载线路与调度节点之间的灵 敏度关系 ， 而电网具有高度非线性特征 ， 调度节点 会对其他线路的潮流有不同程度的影响 ， 可能会导 致新的线路发生过载 ， 须进行多次潮流校验 。 文献 ［ 10 ］ 基于交流潮流模型 ， 得到支路有功潮流对节点 有功注入的灵敏度 ， 通过节点有功灵敏度和负载率 等指标对输电断面潮流越限进行调度指导 。 但是 该方法仅提供调度人员指导建议 ， 没有给出消除输 电断面潮流越限的实际调度方案 。 文献 ［ 11 ］ 充分 考虑节点对过载及重载线路潮流的整体控制作用 ， 将综合灵敏度定义为节点对过载及重载线路灵敏 度的加权和 。 文献 ［ 12-13 ］ 提出基于综合灵敏度分 析的潮流越限切负荷调度方案 ， 但违背了机组出力 调整的优先级高于切负荷操作的原则 ， 会对供电可 靠性产生不利影响 ， 在实际电力系统调度中的应用 合理性有待检验 。 由于电力系统的非线性因素 ， 调 整发电机组出力以降低某些线路载荷的同时会增 加其他线路的载荷 。 如果不加筛选地利用综合灵 敏度指标来控制线路潮流 ， 可能出现某些机组节点 对群体线路的整体作用与对局部线路的作用相反 ， 部分控制节点被划分到出力调整效果加剧过载线 路越限的节点集合中 ， 导致优化算法需要更多的机 组节点参与调度以平抑不同机组的相互反作用 ， 不 利于潮流策略的制定 。 灵敏度分析方法将节点有功注入与线路有功 潮流间的非线性关系简化为线性关系 ， 当仅依靠灵 敏度关系通过多个控制节点来调整线路潮流时误 差较大 ， 难以达到实际电网的潮流控制精度要求 。 在输电断面潮流控制策略中 ， 文献 ［ 14 ］ 对比了灵敏 度分析方法和粒子群优化算法 ， 验证了基于粒子群 算法"
+    },
+    {
+      "id": "E001-p5-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 1 IEEE 39 节点系统拓扑 Fig．1 The topology of IEEE 39-bus system 备用容量 ， 以满足高比例新能源电力系统的备用需 求 。 在该运行方式下 ， 对 IEEE 39 节点系统的机组 有功出力限值进行修正 ， 设置机组 G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 参与潮流控制的有功 出力上限分别为 290 MW 、 300 MW 、 220 MW 、 240 MW 、 300 MW 、 450 MW 、 450 MW 、 530 MW 、 1 100 MW 。 采用文献 ［ 24-25 ］ 提出的基于拓扑聚合的输电 断面搜索方法对当前运行方式下的 IEEE 39 节点系 统进行关键输电断面辨识 ， 确定当前存在内部线路 过载的输电断面为线路 l 1 — 39 、 l 2 — 3 、 l 17 — 27 的集合 。 该 输电断面内的过载线路 l 以及重载线路 m 的潮流分 布情况如表 1 所示 。 从表 1 可以看出 ， 过载线路 l 1 — 39 的潮流越限量为 72．40 MW ， 潮流控制策略的目 的是将过载线路 l 1 — 39 的有功潮流控制在 250 MW 以 下 ， 同时系统中其他线路不产生新的潮流越限 。 表 1 关键线路集的潮流运行情况 Table 1 Power flow operation of key line set 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L 1 — 39 322．40 250 1．289 6 M 1 — 2 275．84 300 0．919 5 2 — 3 611．08 630 0．970 0 8 — 9 426．38 450 0．947 5 9 — 39 502．61 550 0．913 8 选取可以参与消除输电断面潮流越限的机组 节点 ( G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 ) 和执行切负荷操作的负荷节点 ( D4 、 D7 、 D20 、 D21 、 D24 、 D27 ) 。 负荷节点分为 3 类 ， 第 1 类为 D7 、 D24 ， 第 2 类为 D21 、 D27 ， 第 3 类为 D4 、 D20 ， 其对应 的"
+    },
+    {
+      "id": "E001-p9-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "化调度 ［ J ］ ． 电工电能新技术 ， 2019 ， 38 ( 12 ) : 19-27． ZHANG Jun ， WANG Hongmin ， LIU Tingzhang． Multi-objective optimization scheduling of microgrid based on improved cuckoo algorithm ［ J ］ ． Advanced Technology of Electrical Engineering and Energy ， 2019 ， 38 ( 12 ) : 19-27． ［ 22 ］ 李超 ， 苗世洪 ， 盛万兴 ， 等 ． 考虑动态网络重构的主动配电 网优化运行策略 ［ J ］ ． 电工技术学报 ， 2019 ， 34 ( 18 ) : 3909- 3919． LI Chao ， MIAO Shihong ， SHENG Wanxing ， et al． Optimization operation strategy of active distribution network considering dy- namic network reconfiguration ［ J ］ ． Transactions of China Ele- trotechnical Society ， 2019 ， 34 ( 18 ) : 3909-3919． ［ 23 ］ 杨智超 ， 孙磊 ， 丁明 ． 计及关键恢复路径的机组启动次序优 化策略 ［ J ］ ． 电力建设 ， 2019 ， 40 ( 10 ) : 28-35． YANG Zhichao ， SUN Lei ， DING Ming． Optimization strategy for start-up sequence of generation units considering critical restoration paths ［ J ］ ． Electric Power Construction ， 2019 ， 40 ( 10 ) : 28-35． ［ 24 ］ ZHANG D B ， WANG N J ， YANG H J ， et al． Fast search algo- rithm for key transmission sections based on topology converg- ing adjacency matrix ［ J ］ ． IEEE Access ， 2020 ( 8 ) : 108235- 108246． ［ 25 ］ 张大波 ， 王博欣 ， 郭怀新 ， 等 ． 基于拓扑聚合的输电断面辨 识方法与断"
+    },
+    {
+      "id": "E001-p6-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "［ 8 ］ 提出的灵敏度分析方法和直接优化类方法进行 对比 。 3 种方法制定的潮流控制策略的差异如表 4 所示 ， 其中直接优化类方法采用 NSGA- Ⅱ 进行优化 ， 线路潮流越限误差计算见式 ( 16 ) 。 表 4 调整方法性能对比 Table 4 Performance comparison between adjustment methods 方法 调度机组数量 潮流越限误差 /% 计算时间 /s 文中方法 4 0 10．70 灵敏度分析方法 5 2．9 0．74 直接优化类法 4 0 160．60 E l = P cor ， l － P lim ， l P lim ， l P cor ， l ＞ P lim ， l 0 P cor ， l ≤ P lim ， l { ( 16 ) 式中 : E l 为线路 l 潮流越限误差 ; P cor ， l 为原过载线路 l 经过潮流控制后的有功潮流大小 ; P lim ， l 为过载线路 l 的热稳定功率极限 。 由表 4 可知 ， 在制定潮流控制策略的过程中 ， 文 献 ［ 8 ］ 提出的基于反向等量配对原则的灵敏度分析 方法虽然计算速度快 ， 但是存在较大的潮流误差 ， 调整后线路 l 1 — 39 的有功潮流为 257．25 MW ， 超过其 热稳定功率极限 ， 存在 2．9% 的潮流误差 ， 线路仍处 于潮流越限状态 ， 因此须进行多次潮流校验 。 灵敏 度分析方法出现潮流误差的主要原因为灵敏度计 算过程中将节点出力与线路有功潮流间的非线性 关系简化为线性关系 。 在消除线路 l 1 — 39 潮流过载 时 ， 灵敏度分析方法因简化的线性关系无法得到各 机组的精确出力调整量 ， 造成过载线路 l 1 — 39 在潮流 调整后仍然越限 ， 无法实现对输电断面潮流越限的 精准调度 。 采用文中方法进行潮流调整时 ， 过载线路 l 1 — 39 的有功潮流由过载时的 322．40 MW 调整为 248．68 MW ， 低于其热稳定功率极限 。 文中方法不会产生 潮流误差的原因在于 : 文中采用双层优化思想 ， 首 先构建第一层调度节点多目标筛选优化模型 ， 确定 参与潮流控制的调度节点 ， 再通过第二层潮流调控 优化模型计算所选调度节点的精确出力调整量 ， 所 得的调整方法能够保证过载线路 l 1 — 39 "
+    },
+    {
+      "id": "E001-p1-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "DOI : 10．12158 /j．2096-3203．2023．01．013 2023 年 1 月 Electric Power Engineering Technology 第 42 卷 第 1 期 基于正负综合灵敏度的输电断面双层优化潮流控制策略 谢大为 1 ， 王博欣 2 ， 3 ， 王京景 1 ， 彭伟 1 ， 马英浩 2 ， 张大波 2 ( 1． 国网安徽省电力有限公司 ， 安徽 合肥 230022 ; 2． 新能源利用与节能安徽省重点实验室 ( 合肥工业大学 ) ， 安徽 合肥 230009 ; 3． 国网山东省电力公司荣成市供电公司 ， 山东 荣成 264300 ) 摘 要 : 过载线路故障跳闸会使潮流转移到关联输电断面内其他线路上 ， 造成连锁跳闸事故 。 快速制定合理有效 的潮流控制策略 ， 消除线路过载 ， 是防止发生连锁跳闸事故的关键 。 针对灵敏度分析方法精度不高和直接优化类 方法计算量过大等缺陷 ， 文中提出基于正负综合灵敏度的输电断面双层优化潮流控制策略 。 考虑节点对过载和重 载线路潮流的整体调节作用 ， 提出正负综合灵敏度指标 ， 然后通过双层优化方法快速制定潮流控制策略 。 为防止 搜索空间过大导致计算量激增 ， 建立第一层调度节点多目标筛选优化模型 ， 优选参与调整的调度节点 。 在此基础 上构建第二层潮流调控优化模型 ， 得到调度节点的精确出力调整量 ， 从而实现对输电断面潮流越限的精准调度 。 利用 IEEE 39 节点系统和某省级电网的仿真分析验证了所提方法的快速性和准确性 。 关键词 : 线路过载 ; 输电断面 ; 连锁跳闸 ; 潮流控制 ; 正负综合灵敏度指标 ; 双层优化 中图分类号 : TM73 文献标志码 : A 文章编号 : 2096-3203 ( 2023 ) 01-0107-09 收稿日期 : 2022-06-30 ; 修回日期 : 2022-09-25 基金项目 : 安徽省自然科学基金资助项目 ( 2108085UD08 ) 0 引言 高比例接入电网的风电 、 光伏等新能源具有间 歇性 ， 使得电网传输功率波动频繁 ， 容易造成线路 过载运行 。 过载线路故障跳闸会使潮流转移到关 联输电断面内其他线路上 ， 造成输电断面发生潮流 过载 ， 引起过载保护装置动作 ， 导致电网发生大规 模连锁跳闸事故 ， 严"
+    },
+    {
+      "id": "E001-p8-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， ZHANG Shang ， WANG Tao ， et al． Optimization control strategy for active power correction from perspective of security region ［ J ］ ． Automation of Electric Power Systems ， 2017 ， 41 ( 18 ) : 17-24． ［ 8 ］ 程临燕 ， 郝治国 ， 张保会 ， 等 ． 基于内点法消除输电断面过载 的实时控制算法 ［ J ］ ． 电力系统自动化 ， 2011 ， 35 ( 17 ) : 51-55． CHENG Linyan ， HAO Zhiguo ， ZHANG Baohui ， et al． Fast elimi- nation of overload in transmission line section based on simplified primal-dual interior point method ［ J ］ ． Automation of Electric Power Systems ， 2011 ， 35 ( 17 ) : 51-55． ［ 9 ］ 袁晓丹 ， 张会强 ． 多支路开断潮流转移识别及防连锁过载策 略研究 ［ J ］ ． 现代电力 ， 2014 ， 31 ( 5 ) : 74-79． YUAN Xiaodan ， ZHANG Huiqiang． Study on power flow trans- ferring identification of multi-line tripping and the strategy to prevent cascading overload strategy ［ J ］ ． Modern Electric Po- wer ， 2014 ， 31 ( 5 ) : 74-79． ［ 10 ］ 甘德树 ， 冯伯庚 ， 蒋芳玉 ， 等 ． 基于功率灵敏度分析的断面 潮流安全控制方法 ［ J ］ ． 陕西电力 ， 2017 ， 45 ( 1 ) : 82-85． GAN Deshu ， FENG Bogeng ， JIANG Fangyu ， et al． Security control method for interface power flow based on power sensi- tivity analysis ［ J ］ ． Shaanxi Electric Power ， 2017 ， 45 ( 1 ) : 82-85． ［ 11 ］ 徐岩 ， 郅静 ． 基于功率灵敏度的线路过载划区域紧急"
+    },
+    {
+      "id": "E001-p2-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "济性 。 但随着系统规模的扩大 ， 该类方法的控制变 量逐步增加 ， 会导致维数灾 ， 计算时间过长 ， 难以满 足电网实时潮流控制的要求 。 针对灵敏度分析方法精确度不高和直接优化 类方法计算量过大的缺点 ， 文中提出一种基于正负 综合灵敏度的输电断面双层优化潮流控制策略 。 首先根据节点对过载及重载线路潮流的整体调节 作用 ， 提出节点的正负综合灵敏度指标 ， 剔除对关 键线路集潮流控制效果较差的节点 。 然后通过双 层优化方法快速制定潮流控制策略 ， 第一步构建第 一层调度节点多目标筛选优化模型 ， 根据模糊满意 度优选评价方法 ， 选择参与潮流控制的调度节点 ; 第二步通过第二层潮流调控优化模型计算所选调 度节点的精确出力调整量 ， 快速制定潮流控制策 略 。 文中制定的潮流控制策略首先确定参与潮流 控制的调度节点 ， 能极大降低优化搜索空间维度 ， 再优化少量调度节点的出力调整量 ， 满足输电断面 潮流越限的在线调度要求 。 1 节点对关键线路集的综合灵敏度计算 1．1 节点对线路的有功灵敏度计算 系统运行中线路有功潮流不满足安全约束时 ， 须适当调整节点有功出力使线路有功潮流恢复到 正常运行状态 。 文中以直流潮流模型为基础 ， 建立 线路有功潮流对节点有功注入的灵敏度数学 模型 ［ 19 ］ : Δ P = B · Δ θ Δ P a = Δ θ a /x a S a ， i = Δ P a / Δ P i { ( 1 ) 式中 : Δ P 为系统线路有功潮流变化量的列向量 ; B 为系统电纳矩阵 ; Δ θ 为系统线路电压相角差的列向 量 ; Δ P a 为线路 a 的有功潮流变化量 ; Δ θ a 为线路 a 首末两端节点的电压相位差 ; x a 为线路 a 的电抗 ; Δ P i 为节点 i 的有功注入变化量 ; S a ， i 为线路 a 有功 潮流对节点 i 有功注入的灵敏度 。 S a ， i 的物理意义 为 : 节点 i 增加单位有功功率 ， 相应平衡机组减少单 位有功功率时线路 a 的有功潮流变化量 。 1．2 正负综合灵敏度指标 为了使消除线路过载的调度节点出力调整量 最少 ， 应优先调度对过载线路有功灵敏度较大的节 点 。 与此同时 ， 在调度过程中应保证其他线路不出 现过载情况 ， 尤其是重载线路不过载 。 为此 ， 考虑 到对过"
+    },
+    {
+      "id": "E001-p6-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， 低于其热稳定功率极限 。 文中方法不会产生 潮流误差的原因在于 : 文中采用双层优化思想 ， 首 先构建第一层调度节点多目标筛选优化模型 ， 确定 参与潮流控制的调度节点 ， 再通过第二层潮流调控 优化模型计算所选调度节点的精确出力调整量 ， 所 得的调整方法能够保证过载线路 l 1 — 39 在调整后有 功潮流低于其热稳定功率极限 ， 实现消除线路越限 的精准调度 。 而且 ， 文中方法仅调度 4 台机组 ， 灵敏 度分析方法则须调度 5 台机组 ， 对发电厂的既定发 电计划影响较大 。 直接优化类方法制定的潮流控制策略能够保 证过载线路 l 1 — 39 的有功潮流由过载时的 322．40 MW 下降为 248．23 MW ， 低于其热稳定功率极限 ， 不会产 生潮流误差 。 但是 ， 该方法将节点是否参与调度的 0-1 变量以及对应的出力调整量作为控制变量 ， 控 制策略的制定变为复杂的非线性潮流规划 ， 搜索空 间过大 ， 计算量激增 ， 很有可能无法在过载线路热 稳定功率极限的耐受时间内得到潮流控制策略 ， 导 致大规模连锁跳闸停电事故 。 将文中方法与文献 ［ 11 ］ 提出的综合灵敏度分 析方法进行比较 。 采用文献 ［ 11 ］ 的方法 ， 计算机组 节点 G30 、 G33 、 G37 、 G38 对过载及重载线路的综合 灵敏度分别为 0．501 1 、 0．055 3 、 0．361 6 、 0．292 9 ， 与 对应过载线路的灵敏度指标相反 ， 这使得机组节点 G30 、 G33 、 G37 、 G38 被划分到出力减少节点集合 ， 与 节点实际情况相反 ， 导致仅通过机组节点无法消除 线路过载 ， 负荷节点 D4 被迫执行切负荷操作 。 但 实际上 ， 通过文中方法得到的潮流控制策略只需机 组节点 G30 、 G34 、 G37 、 G39 参与调度控制 ， 验证了 文献 ［ 11 ］ 提出的综合灵敏度分析方法有可能导致 负荷节点被迫执行切负荷操作 ， 降低供电可靠性 。 5．2 某省级电网潮流越限调整仿真分析 为进一步验证文中方法制定的潮流控制策略 的有效性 ， 以某省级电网 5 月 6 号 08 : 00 — 10 : 00 时 的潮流运行为例进行分析 。 如图 2 所示 ， 省级电网 输电断面 T1 发生潮流越限 ， 图中红色曲线途径的 线路集合为发生潮流越限的输电断面 T1 ， 节点间的 双线代表双回线路 ， 箭头指向代表潮流方向 。 输电 断面 T1 在 5 月 6 号 08 : 00 — 10 : 00 的有功潮流见 图 3 。 图 2 输电断面 T1 位置示意 Fig．2 Schematic diagram of p"
+    },
+    {
+      "id": "E001-p3-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "制效果的节点集合 N 。 调度专家根据电网规模和过载线路越限量确 定剔除节点比例 β 。 当过载线路越限量较大时 ， 需 要更多的节点参与调整 ， 剔除节点比例可以相应降 低 ; 当电网规模较大时 ， 对过载线路潮流控制作用 较小的节点较多 ， 剔除节点比例可以相应提高 。 2．2 第一层调度节点多目标筛选优化模型的构建 通过初步筛选得到节点集合 N 后 ， 利用双层优 化方法快速制定潮流控制策略 。 首先构建第一层 调度节点多目标筛选优化模型 ， 该模型以筛选参与 潮流控制的调度节点为目的 ， 不进行耗时较大的潮 流计算 ， 可实现调度节点的快速筛选 。 2．2．1 优化算法的数学模型 为实现以少量调度节点消除线路过载 ， 同时避 免执行切负荷操作和减少平衡机组出力调整量的 目标 ， 文中构建调度节点多目标筛选优化数学模型 。 ( 1 ) 目标函数 。 目标 1 : 为保证尽快完成输电 断面潮流控制策略的构建 ， 避免过多的节点参与调 度 ， 参与调度的节点要最少 ， 目标函数见式 ( 4 ) 。 min f 1 = ∑ N G g = 1 u g + ∑ N load k = 1 u k ( 4 ) 式中 : N G 、 N load 分别为机组节点数和负荷节点数 ; u g 、 u k 为 0-1 变量 ， 分别表征机组节点 g 和负荷节点 k 参与调度情况 ， 为 1 表示参与 ， 为 0 表示不参与 。 目标 2 : 在潮流控制中 ， 切负荷操作会切断部分 用户的供电 ， 影响供电可靠性 。 因此 ， 要确保在调 整机组出力无法消除线路过载时才执行切负荷操 作 。 执行切负荷操作时 ， 如果对供电等级较高的用 户进行切除 ， 会造成较大的影响 ， 所以应不切或少 切该类用户 ; 对供电等级较低的用户进行切除 ， 虽 然不会造成较大的影响 ， 但是该类负荷的过量切除 同样不利于电力系统的稳定运行 。 综上所述 ， 在避 免执行切负荷操作的同时 ， 应使切除负荷产生的影 响降到最低 ， 目标函数见式 ( 5 ) 。 min f 2 = ∑ N load k = 1 u k η k Δ P k ( 5 ) 式中 : η k 为负荷节点 k 切除单位有功负荷的影响系 数 ; Δ P k 为负荷节点 k 执行切负荷操作的负荷调 整量 。 目标 3 : 平衡机组在电网"
+    },
+    {
+      "id": "E005-p5-c4",
+      "paper": "E005",
+      "file": "Proximal_Jacobian_Distribution_Optimal_Power_Flow_in_a_Distributed_Cyber-Physical_Environment.pdf",
+      "text": "RAC) protocol. Communications costs can be computed in terms of transfer time, deﬁned as the end–to–end total delay, i.e., the time from the moment a sender puts data content on top of its transmission stack up to the moment the receiver extracts the data from its received stack [42]. Two main contributions to the transfer time are the transmission delay (encompassing waiting time) and the propagation delay. While the former captures the time between signal generation and its arrival at the receiver, the latter represents the time it takes for feedbacks to travel from the sender to the receiver over the physical medium. Under normal operating conditions, the propagation delay may be neglected; transfer times reduce then to transmission delays. To meet the performance requirements, the dispatch time constraint T max imposes an upper bound on these transmission delays, which in turn are functions of the corresponding data rates: dinter p = f inter p (μpq), (14) dintra p = f intra p (μcp ), (15) where the functions f inter and f intra depend in general on the deployed data encoding, error correction techniques, and the transmission alg"
+    },
+    {
+      "id": "E001-p4-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "后的隶属度函数 Ｒ h 为 : Ｒ h = ∑ N obj c = 1 Ｒ c ， h ∑ H h = 1 ∑ N obj c = 1 Ｒ c ， h ( 12 ) 式中 : H 、 N obj 分别为非支配解集中解的数量和子目 标函数的数量 。 通过模糊满意度优选评价方法 ， 在非支配解集 中选择 Ｒ h 值最大的解作为最优解 ， 将最优解中的节 点作为参与消除线路过载的调度节点 。 3 最优出力调整量的确定 3．1 第二层潮流调控优化模型的构建 确定参与消除线路过载的调度节点后 ， 得到调 度节点的精确出力调整量是制定输电断面潮流控 制策略的关键 。 为减少对调度节点出力的调整 ， 文 中以调度节点的总出力调整量最少为优化目标 ， 构 建第二层潮流调控优化模型 ， 计算出所选调度节点 的精确出力调整量 。 该模型的目标函数为 : min f = ∑ i ∈ N' Δ P i ( 13 ) 式中 : N' 为参与潮流控制的调度节点集合 ; Δ P i 为第 i 个调度节点的出力调整量 。 等式约束条件为系统交流模型下的潮流方程 : P G i － P D i － U i ∑ j ∈ N' U j ( G ij cos δ ij + B ij sin δ ij ) = 0 Q G i － Q D i － U i ∑ j ∈ N' U j ( G ij sin δ ij － B ij cos δ ij ) = 0 { ( 14 ) 式中 : P G i 、 Q G i 分别为节点 i 的有功出力和无功出力 ; P D i 、 Q D i 分别为节点 i 的有功负荷和无功负荷 ; U i 为 节点 i 的电压幅值 ; G ij 、 B ij 、 δ ij 分别为节点 i 、 j 之间的 电导 、 电纳和相位差 。 不等式约束条件分别为发电机有功出力约束 、 无功出力约束 、 节点电压幅值约束以及线路有功潮 流约束 ， 表达式为 : P min G i ＜ P G i ＜ P max G i Q min G i ＜ Q G i ＜ Q max G i U min i ＜ U i ＜ U max i P a = U i U j ( G ij sin δ ij － B ij cos δ ij ) － U 2 i G ij ≤ P max a        ("
+    },
+    {
+      "id": "E001-p3-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "- Ⅱ 的控制模型求解 带有精英策略的非支配排序遗传算法 ( non- dominated sorting genetic algorithm Ⅱ ， NSGA- Ⅱ ) 在 求解多目标优化问题上具有较强的处理能力 ［ 20-21 ］ 。 该算法优势在于 : 通过快速非支配排序对个体进行 分层化处理 ; 引入拥挤度距离确保个体均匀分布在 目标空间 ， 保持种群多样性 ; 通过精英策略将优秀 个体保留到下一代 ， 提高种群水平 。 文中基于 NSGA- Ⅱ 构建调度节点多目标筛选优化模型 ， 优化 求解得到帕累托 ( Pareto ) 前沿解集 。 2．2．3 模糊满意度优选评价方法 得到 Pareto 前沿解集后 ， 采用模糊理论选择最 优候选解 。 通过模糊隶属度函数表示 Pareto 前沿解 中目标函数对应的模糊隶属度 ， 具体见式 ( 11 ) 。 Ｒ c ， h = 1 f c ≤ f min c f max c － f c f max c － f min c f min c ＜ f c ＜ f max c 0 f c ≥ f max c      ( 11 ) 式中 : Ｒ c ， h 为非支配解 h 中第 c 个目标函数对应的模 糊隶属度 ; f min c 、 f max c 分别为非支配解集中目标函数 f c 的最小值和最大值 。 对每一个非支配解 h 进行归一化处理 ， 归一化 901 谢大为 等 : 基于正负综合灵敏度的输电断面双层优化潮流控制策略"
+    },
+    {
+      "id": "E016-p0-c1",
+      "paper": "E016",
+      "file": "Adversarial Self‐Improvement for Resilient Smart Grid Dispatch Control Under Extreme N‐2 Contingencies",
+      "text": "ABSTRACT Deploying AI‐enabled dispatch controllers in smart grids demands quantifiable resilience against contingencies beyond the conventional N‐1 design basis. We present AG2CDT + , an adversarial self‐improvement framework that hardens offline‐trained dispatch controllers through iterative stress testing and corrective fine‐tuning. A grid adversary generates targeted N‐1, N‐2 and compound contingencies from critical transmission corridors. A safety oracle combining PTDF‐based preaction thermal screening, an advisory AC Jacobian voltage‐sensitivity predictor and duration‐aware poststep voltage enforcement identifies violations and generates corrected actions via line search; a special protection scheme (SPS) controller invokes targeted load shedding and line‐bridge switching whenever AC power flow diverges turning previously‐fatal scenarios into recoverable ones. Empirical measurement shows that the agent's active‐power dispatch moves monitored bus voltages by p.u./MW—two orders of m",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70090",
+      "url": "https://doi.org/10.1049/stg2.70090"
+    },
+    {
+      "id": "E022-p0-c2",
+      "paper": "E022",
+      "file": "Uncertainty‐Aware Coordinated Transmission‐Distribution Dispatch via GNN‐Augmented Distributionally Robust Optimal Power Flow",
+      "text": " OPF and eliminates voltage violations that afflict deterministic and GNN‐only methods. A controlled ablation isolating the CVaR and radius‐inflation effects—including a fair comparison against exact‐sensitivity DRO augmented with the same CVaR layer and equivalent total radius—confirms that the combined mechanism yields up to 7% worst‐case cost reduction under heavy‐tailed uncertainty beyond what the Wasserstein radius alone provides. Benders‐ADMM convergence to within 1% optimality gap and AC power flow feasibility are verified explicitly across all test systems.",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70094",
+      "url": "https://doi.org/10.1049/stg2.70094"
+    },
+    {
+      "id": "E195-p0-c1",
+      "paper": "E195",
+      "file": "Coordinating Time-Coupled Industrial Microgrid Flexibility for Resilient Distribution Network Restoration Under Extreme Events",
+      "text": "Extreme-event restoration requires damaged distribution feeders to coordinate sequential line repair with time-dependent support from industrial microgrids. Temporary industrial load reduction releases capacity during outages but creates recovery obligations that compete with later load restoration and storage charging. We study a topology-aware restoration controller with staged correction of discrete network decisions and continuous industrial and storage actions, followed by bounded candidate screening. The modified IEEE 33-bus and 69-bus feeders are each evaluated over 440 matched physical scenarios and three independently trained policies, giving 3960 complete 96-step cases per feeder. Mean weighted grid energy not supplied is 7.268 versus 7.863 MWh for GS-HF and GS on IEEE33 and 5.640 versus 5.800 MWh on IEEE69. Their mean online decision times are 566.2 versus 18.8 ms and 3503.0 versus 24.2 ms, respectively. A separately certified 48-scenario IEEE33 encoder comparison with train",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15194540",
+      "url": "https://doi.org/10.3390/electronics15194540"
+    },
+    {
+      "id": "E028-p0-c2",
+      "paper": "E028",
+      "file": "Power Flow Coupling Characteristics Analysis and Coordinated Optimization Strategy for AC/DC Hybrid Transmission Sections",
+      "text": "low security, a novel AC-like AC/DC power flow coordinated optimization strategy is proposed. Based on phase angle coordinated control, the autonomous response capability of the DC system is leveraged to perform real-time control and optimization of transmission power on lines, maximizing the capacity utilization of AC/DC hybrid transmission section while satisfying security and stability requirements. Finally, simulation studies based on a transmission network containing two four-machine AC systems verify that the proposed strategy fully meets the security and stability requirements of AC/DC hybrid power grids, providing reliable technical support for the coordinated development of future AC/DC grids.",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15010066",
+      "url": "https://doi.org/10.3390/electronics15010066"
+    },
+    {
+      "id": "E124-p0-c2",
+      "paper": "E124",
+      "file": "Real‑Time Dynamic Dispatch Strategy for High‑Penetration Wind‑Solar Power Systems Based on Deep Reinforcement Learning",
+      "text": "inated thermal generation adjustment, battery charging and discharging, and interruptible load response. Experiments are conducted on a modified IEEE 118-bus system, where MATPOWER is used for AC power-flow verification and Python is used to build the reinforcement learning environment. PPO, DDPG, and rolling economic dispatch are selected as comparative methods. The results show that SAC reduces the daily operation cost to 45,820 USD, decreases the renewable curtailment rate to 4.82%, and lowers load shedding to 0.71 MWh under 70% wind-solar penetration. It also effectively controls branch-overload events in most medium forecast-error scenarios. These results indicate that deep reinforcement learning can form a stable dispatch balance among economic efficiency, renewable accommodation, and security constraints, providing a feasible computational solution for real-time control in high-renewable smart grids.",
+      "source_type": "abstract",
+      "doi": "10.54254/2755-2721/2026.36888",
+      "url": "https://doi.org/10.54254/2755-2721/2026.36888"
+    },
+    {
+      "id": "E194-p0-c2",
+      "paper": "E194",
+      "file": "Resilient Event-Triggered Distributed Economic Dispatch Control Strategy Under DoS Attacks",
+      "text": "r is proved. Simulations on the IEEE 33-bus AC distribution system show that, under load disturbances, dispatch-command variations, and DoS attacks, the proposed strategy can maintain stable system operation, restore dispatch performance after attacks, and reduce communication overhead by 91.86% compared with a fixed-step periodic updating baseline. These results demonstrate the effectiveness and resilience of the proposed method for distributed economic dispatch in AC distribution systems under DoS attacks.",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15112262",
+      "url": "https://doi.org/10.3390/electronics15112262"
+    },
+    {
+      "id": "E028-p0-c1",
+      "paper": "E028",
+      "file": "Power Flow Coupling Characteristics Analysis and Coordinated Optimization Strategy for AC/DC Hybrid Transmission Sections",
+      "text": "At present, the continuous growth of renewable energy integration and power grid load demand has placed higher requirements on the transmission capacity and power flow control capability of power systems. Owing to its flexible and controllable power flow characteristics, DC transmission technology has been introduced into AC grid structures, making AC/DC hybrid power grids an important development trend. However, the increasingly prominent power flow security issues caused by the complex coupling characteristics between AC and DC systems pose new challenges. First, this paper conducts an in-depth analysis of the operating mechanisms and power flow coupling characteristics of AC/DC hybrid transmission sections under various operating conditions. To address the dual challenges of insufficient utilization of transmission capacity and power flow security, a novel AC-like AC/DC power flow coordinated optimization strategy is proposed. Based on phase angle coordinated control, the autonomous",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15010066",
+      "url": "https://doi.org/10.3390/electronics15010066"
+    },
+    {
+      "id": "E025-p0-c1",
+      "paper": "E025",
+      "file": "Probabilistic deep learning control of hybrid FACTS for real-time voltage stability in renewable-rich power grids",
+      "text": "Abstract Including renewable energy sources into contemporary power systems has greatly added unpredictability and presented problems including harmonic distortion, voltage instability, and degraded power quality. In response, we provide a new deep learning-enabled framework for the real-time adaptive control and optimal allocation of hybrid Flexible AC Transmission Systems (FACTS), specifically the Unified Power Flow Controller (UPFC) and Static VAR Compensator (SVC), in renewable-rich transmission networks. For multi-objective planning, the suggested method combines a Two-Point Estimation Method (2PEM)-based probabilistic load flow model with a hybrid Grey Wolf Optimization–Particle Swarm Optimization (GWO–PSO) algorithm. Trained offline on a scenario-rich dataset, a Long Short-Term Memory (LSTM) neural controller inferences control set-points in real time with sub-15 ms latency. Under operational contingency and changeable photovoltaic (PV) generation, this integration of offline pr",
+      "source_type": "abstract",
+      "doi": "10.1007/s40435-025-01962-6",
+      "url": "https://doi.org/10.1007/s40435-025-01962-6"
+    },
+    {
+      "id": "E195-p0-c2",
+      "paper": "E195",
+      "file": "Coordinating Time-Coupled Industrial Microgrid Flexibility for Resilient Distribution Network Restoration Under Extreme Events",
+      "text": "cision times are 566.2 versus 18.8 ms and 3503.0 versus 24.2 ms, respectively. A separately certified 48-scenario IEEE33 encoder comparison with training seed 2027 yields 2.79% lower mean weighted EENS after removing inter-node message passing, so the complete-controller gains are not attributed to graph message passing. A matched 48-scenario industrial-storage sensitivity study and a completed CEPP action-chain audit provide additional implementation evidence. The demonstrated guarantee remains limited to the stated active-power, topology and industrial-resource model; online voltage, reactive-power and comprehensive AC feasibility are outside its scope.",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15194540",
+      "url": "https://doi.org/10.3390/electronics15194540"
+    },
+    {
+      "id": "E092-p0-c2",
+      "paper": "E092",
+      "file": "State-Adaptive and Tail-Risk-Aware Rolling Control of Wind–Solar–VRFB Systems with Experimentally Calibrated Power Envelopes",
+      "text": "he common charge-reference comparison. A causal 184-day NSRDB/WIND Toolkit replay evaluates a nominal 20 MW/80 MWh VRFB under common empirical-envelope and energy protection for all storage methods. SA-RR-MPC reduces realized ramp-exceedance CVaR90 by 40.94% and request-to-execution correction energy by 65.64% relative to Fixed-MPC, with a 0.54% increase in tracking RMSE. Relative to a matched risk-aware controller differing only in predictive power bounds, correction energy falls by 58.48%. Two nonoverlapping 28-day weather windows and three paired scenario seeds retain 27.06–50.01% CVaR90 reductions relative to Fixed-MPC. Paired module tests identify complementary roles in request adaptation, net-power prediction, and tail-risk valuation. The 95th-percentile serial software-loop time is 18.54 ms over 624 cycles after 48 warm-up steps.",
+      "source_type": "abstract",
+      "doi": "10.3390/batteries12110448",
+      "url": "https://doi.org/10.3390/batteries12110448"
+    },
+    {
+      "id": "E046-p0-c1",
+      "paper": "E046",
+      "file": "Interpretable Machine Learning‐Based Intelligent High‐Frequency Static Security Adjustment Method for Power System Operations",
+      "text": "ABSTRACT The high penetration of renewable energy exacerbates stochastic fluctuations on both the generation and demand sides. It results in spatiotemporally frequent static security violations and requires high‐frequency assessment and adjustment of the operation mode. However, conventional offline verification and manual adjustment methods fail to meet this requirement. Therefore, this paper proposes an interpretable machine learning‐based intelligent high‐frequency static security adjustment method for power system operations. First, a multitask XGBoost collaborative framework‐based static security analysis model is developed by utilising power flow characteristics under the base case ( N state) and various N − 1 contingency scenarios ( N − 1 states) as input–output features. It can efficiently and accurately evaluate the power flow violation status under both the N state and various N − 1 states. Second, when operational modes exhibit power flow violation status, an intelligent adj",
+      "source_type": "abstract",
+      "doi": "10.1049/stg2.70074",
+      "url": "https://doi.org/10.1049/stg2.70074"
+    },
+    {
+      "id": "E092-p0-c1",
+      "paper": "E092",
+      "file": "State-Adaptive and Tail-Risk-Aware Rolling Control of Wind–Solar–VRFB Systems with Experimentally Calibrated Power Envelopes",
+      "text": "State-adaptive risk-aware rolling model predictive control (SA-RR-MPC) links experimentally calibrated battery action limits to grid-side tracking and ramp-risk costs in wind–solar–vanadium redox flow battery (VRFB) regulation. Protocol-matched PNNL cycling observations supply power envelopes conditioned on a continuous charge reference and measured capacity, while Mendeley pressure–flow measurements supply the normalized pump-loss shape. Pump-corrected net injection connects admitted stack actions to scenario conditional value at risk (CVaR). A two-pass linear program selects dispatch requests, and current-state projection provides minimum-correction execution with an explicit bound on the resulting ramp-risk perturbation. Whole-cycle calibration checks give 89.95% Q90 coverage, and the local power labels change by at most 0.205% under the common charge-reference comparison. A causal 184-day NSRDB/WIND Toolkit replay evaluates a nominal 20 MW/80 MWh VRFB under common empirical-envelop",
+      "source_type": "abstract",
+      "doi": "10.3390/batteries12110448",
+      "url": "https://doi.org/10.3390/batteries12110448"
+    },
+    {
+      "id": "E071-p0-c1",
+      "paper": "E071",
+      "file": "Non-solution power flow diagnosis method for AC/DC hybrid power grid based on topology-aware graph neural network",
+      "text": "With the continuous evolution of power grids, the issue of power flow unsolvability in hybrid AC–DC grids, arising from topological changes, abrupt load variations, or control failures, has become increasingly prominent. To overcome the black-box nature inherent in conventional artificial intelligence methods, this work explicitly models identifiable manifestations of physical constraints through interpretable graph neural network (GNN) layers. Consequently, this paper develops a data-driven and physics-model-fused diagnostic approach: the topology-aware graph neural network (TAGNN). A dual diagnostic strategy based on DC-side harmonic injection and AC-side voltage sensitivity is proposed. This establishes explicit mappings between topological characteristics and power flow feasible regions, thereby revealing the intrinsic relationship between grid topological structures and unsolvable power flow conditions. The approach addresses the challenge of solving multivariate nonlinear equatio",
+      "source_type": "abstract",
+      "doi": "10.1063/5.0300246",
+      "url": "https://doi.org/10.1063/5.0300246"
+    },
+    {
+      "id": "E082-p0-c2",
+      "paper": "E082",
+      "file": "Optimised Congestion Management Using Curative Measures in Combined AC/DC Systems with Flexible AC Transmission Systems",
+      "text": " implementation of optimised congestion management in an A Mathematical Programming Language (AMPL)-based nonlinear optimisation problem. AMPL is an effective tool to deal with highly complex problems of optimisation and scheduling. Therefore, the modelling of assets and flexibilities for power flow control in AC/DC systems in combination with an innovative grid operation strategy using predefined curative measures for the optimised use of the existing grid is introduced. The nonlinear mathematical optimisation aims at the optimal cost selection of flexibility measures. The application of the optimisation technique in a combined AC/DC system shows the optimal preventive and curative use of measures in operational congestion management. Simulation results prove that, by using predefined curative measures, the volume of cost-intensive preventive measures can significantly be reduced, especially in association with power flow control.",
+      "source_type": "abstract",
+      "doi": "10.3390/en17092157",
+      "url": "https://doi.org/10.3390/en17092157"
+    },
+    {
+      "id": "E031-p0-c1",
+      "paper": "E031",
+      "file": "Congestion management through rotor stress controlled optimal transmission switching",
+      "text": "Security constrained optimal transmission switching (SC‐OTS) can be an essential part of future smart grids with flexible topologies. Transmission switching, however, can have adverse impact on generators because of creating excessive torque on their rotor shafts. In this study, SC‐OTS as an effective tool is applied to relieve congestion while considering AC constraints and generator rotor shaft impact caused by switching. As opposed to previously used simplified models based on standing phase angle, this study utilises dynamic response of generators to accurately calculate the actual stresses on rotors because of switching. In addition, network N ‐1 security criterion is taken into account. In the proposed model, OTS actions are obtained through a bi‐level process. In the upper level, OTS set is determined and the applicability of each action is checked in the lower level. The proposed methodology leads to a mixed integer non‐linear programming problem, which is formulated and solved",
+      "source_type": "abstract",
+      "doi": "10.1049/iet-gtd.2014.1040",
+      "url": "https://doi.org/10.1049/iet-gtd.2014.1040"
+    },
+    {
+      "id": "E047-p0-c1",
+      "paper": "E047",
+      "file": "Optimised curtailment of distributed generators for the provision of congestion management services considering discrete controllability",
+      "text": "Grid operation becomes a more challenging task due to the increasing amount of distributed generators in the system. Consequently, critical situations with violations of operational limits occur more frequently. Hence, grid operators have to take corrective countermeasures to ensure the security of supply. This study presents a discrete optimisation approach to determine the optimal amount of distributed generator curtailment regarding multiple objectives. The proposed method is based on non‐linear AC load flow analysis of the network. The method is implemented into a modified version of the IEEE 14‐bus test system and the necessary amount of generation curtailment to retain predefined operational limits is identified. Simulations are carried out for different contingency scenarios and several possible increments of curtailment levels are compared. Results reveal the potential to reduce the total amount of power adjustments distinctly by using curtailment levels with smaller step sizes",
+      "source_type": "abstract",
+      "doi": "10.1049/iet-gtd.2019.0992",
+      "url": "https://doi.org/10.1049/iet-gtd.2019.0992"
+    },
+    {
+      "id": "E050-p0-c1",
+      "paper": "E050",
+      "file": "Probabilistic Security-Constrained Preventive Control under Forecast Uncertainties Including Volt/Var Constraints",
+      "text": "The continuous increase in generation from renewable energy sources, marked by correlated forecast uncertainties, requires specific methodologies to support power system operators in security management. This paper proposes a probabilistic preventive control to ensure N-1 security in presence of correlated uncertainties of renewable sources and loads. By adopting a decoupled linear formulation of the AC load flow equations, the preventive control is decomposed into two subsequent linear programming problems, the former concerning the active power and the latter the voltage/reactive power-related issues. In particular, in the active control problem, the algorithm combines Third Order Polynomial Normal Transformation, Point Estimate Method, and Cornish–Fisher expansion to model the forecast uncertainties and characterize the chance constraints in the problem. The goal is to find the optimal phase shifting transformer tap setting, conventional generation redispatching, and renewable curta",
+      "source_type": "abstract",
+      "doi": "10.3390/en16041812",
+      "url": "https://doi.org/10.3390/en16041812"
+    },
+    {
+      "id": "E194-p0-c1",
+      "paper": "E194",
+      "file": "Resilient Event-Triggered Distributed Economic Dispatch Control Strategy Under DoS Attacks",
+      "text": "Distributed economic dispatch in AC distribution systems relies heavily on communication networks and is therefore vulnerable to denial-of-service (DoS) attacks. To address this issue, this paper proposes a resilient event-triggered distributed economic dispatch control strategy. Two typical DoS attack scenarios, namely communication-link blocking and node isolation, are first modeled, and an event-triggered distributed economic dispatch controller is then developed to maintain incremental cost consensus and system power balance while reducing communication overhead. Based on Lyapunov stability theory and a linear matrix inequality approach, sufficient conditions for the asymptotic stability of the closed-loop system are derived, tolerable bounds on the frequency and duration of DoS attacks are established, and the absence of Zeno behavior is proved. Simulations on the IEEE 33-bus AC distribution system show that, under load disturbances, dispatch-command variations, and DoS attacks, t",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15112262",
+      "url": "https://doi.org/10.3390/electronics15112262"
+    }
+  ]
+}

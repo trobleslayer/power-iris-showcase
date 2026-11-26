@@ -1,0 +1,261 @@
+{
+  "context": {
+    "goal": "新型电力系统断面潮流控制：兼顾时效性、准确性、泛化性与可解释性，在实时运行和极端天气场景强化断面阻塞决策、确保安全裕度并适应电网动态演化。",
+    "direction": "可解释性与证据校验",
+    "action": "generate",
+    "previous": {},
+    "feedback": {},
+    "candidate_id": 16,
+    "reference_logic": {
+      "mechanism": "把解释的可信度分解为三层并分别约束：第一层是依据可追溯，即对文献按段落与证据边界建索引，对运行参数按版本建独立知识，使每条解释都附带来源，从而压低无依据陈述；第二层是动作忠实，即文献检索只能保证“有出处”，不能保证解释与当前动作的实际电气效应一致，因此对关键动作构造可行的反事实（在保持功率平衡与设备边界的前提下替换或撤销动作，再重算交流潮流并比较关键支路），把解释中的方向描述与仿真里的动作效应绑定；第三层是人员效益，即解释是否真正帮助识别错误方案与缩短复核。中介路径为：有效证据覆盖与不适用规则过滤→解释方向与仿真一致→错误方案识别与复核效率。该机制的作用范围限于仿真内的动作效应检验，并明确不声称识别现实因果或提供安全保证；证据不足时输出“无法支持”，缺平衡资源的反事实判为不可检验。",
+      "evidence_needs": "需要四类可核查材料：(1) 带可追溯段落与合法访问来源的文献索引，用于支撑灵敏度方向、约束校验与交直流动作重算等具体断言；(2) 版本化的运行知识与拓扑配置，用以标记过期规则并支持知识版本过滤；(3) 固定候选方案集，须覆盖正确方案、方向错误、潜在新过载、过期拓扑规则和不可检验反事实五类，并配套统一潮流仿真与可用的平衡资源；(4) 双人独立标注及其一致性统计，以及人工复核时间与随机交叉顺序的实验记录。需要强调的是，文献只能支撑底层电气关系与约束校验，检索忠实性、反事实解释的增量作用和人工复核收益属于待检验命题，不能当作既有证据引用；引用支持率、方向一致率等指标本身也需在标注协议中先定义。",
+      "verification": "采用分层对照：至少200个固定候选方案的盲测集，按文档与拓扑分组留出以避免泄漏；对比无检索、仅检索、检索加反事实三组，并增设纯数值校核作为额外基线，以区分“解释起了作用”与“安全校核直接给出答案”。指标分别报告引用支持率、解释与仿真方向一致率、错误方案识别的精确率与召回率（在等误报率下比较召回）、解释延迟与人工复核时间。阴性判据预先设定：若引用支持率上升但忠实性无改善，或解释仅复述安全校核结论，则不成立反事实解释的增量贡献。人工部分采用随机交叉顺序控制学习效应，报告标注者间一致性，并在未完成人工实验时仅声明自动指标结论。",
+      "gaps": "(1) 反事实依赖可行替代平衡资源，缺失时判为不可检验，导致可检验样本比例下降并可能引入选择性偏差；(2) 文献仅6篇，过期规则与拓扑不一致情形的覆盖偏窄，过滤率的估计不稳定；(3) 方向一致率是忠实性的代理指标，其构念效度未单独论证，且引用支持率与忠实性若由同一标注者判定存在混淆风险，需盲法与分人标注；(4) 固定动作集虽隔离了解释效应，但限制了对其他调控场景的外推；(5) 解释异步生成与独立安全校核并行的时序影响（如解释滞后导致的决策等待）未被量化为独立变量；(6) 未进入闭环下发，仅离线评估，生态效度与真实调度压力下的表现未知；(7) 人工复核收益受审核者背景影响，样本量与个体差异需要更大规模实验才能区分组间差异与噪声。"
+    },
+    "core_mechanism_constraint": "假设文献检索减少无依据陈述，但仅检索不能保证解释忠实于当前动作；反事实潮流干预将说明与实际电气效应绑定，从而揭示错误方向、过期规则或遗漏受影响线路。该干预用于检验仿真内的动作作用，不宣称识别所有现实因果效应。",
+    "existing_titles": []
+  },
+  "queries": [
+    "counterfactual explanation for power system operation: verifying explanation faithfulness against AC power flow action effects under security-constrained dispatch",
+    "断面潮流控制 可解释性 证据追溯 检索增强生成 电网运行规则 版本化知识 过滤过期规则",
+    "security-constrained optimal power flow congestion management branch flow limits corrective control topology changes extreme weather",
+    "explainable AI for power system operators: human-in-the-loop evaluation of error identification, review time, and inter-annotator agreement",
+    "interpretability evaluation protocol power systems: citation support rate, explanation-action consistency, counterfactual testability, and selective bias"
+  ],
+  "hits": [
+    {
+      "id": "E001-p7-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 3 输电断面 T1 的有功潮流 Fig．3 Active power flow of transmission section T1 路 l 5307 、 l 5308 的有功潮流增加到 1 336 MW 、 1 337 MW ， 超过其线路自身的热稳定功率极限 ; 与此同 时 ， 输电断面 T1 传输的有功潮流增加到 3 470 MW ， 超过其自身的极限传输功率 ( 3 400 MW ) ， 造成输电 断面潮流越限 ， 潮流越限量为 70 MW 。 输电断面 T1 内过载线路以及重载线路的潮流分布情况见表 5 。 表 5 实际电网中关键线路的潮流运行状态 Table 5 Power flow operation of key lines in the actual power grid 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L l 5307 1 336 1 250 1．068 8 l 5308 1 337 1 250 1．069 6 M l 5703 278 300 0．926 7 l 5367 517 550 0．940 0 l 5368 516 550 0．938 2 切除过载线路会引发输电断面连锁过载 ， 因 此 ， 采用文中方法对输电断面 T1 进行潮流越限调 整 ， 制定的潮流控制策略如表 6 所示 。 表 6 潮流控制方案 Table 6 Power flow control scheme MW 调度节点 初始 有功功率 调整后 有功功率 出力 调整量 有功 出力上限 G42 784 983 +199 1 260 G34 637 835 +198 1 260 G40 500 104 －396 1 000 由表 6 可知 ， 文中方法制定的潮流控制策略要 调度的机组节点为 G42 、 G34 、 G40 ， 符合机组节点 G42 、 G34 、 G40 对关键线路潮流调整效果较好的实 际情况 。 而且 G42 、 G34 的出力增加调整量近似等 于 G40 的出力减少调整量 ， 总出力调整量为 793 MW ， 有效避免平衡机组过度参与潮流调整 。 通过 制定的潮流控制策略对潮流越限的输电断面 T1 进 行调整控制 ， 得到的线路潮流调整结果如表 7 所示 。 表 7 实际电网中关键线路调整结果 Table 7 Adjustm"
+    },
+    {
+      "id": "E001-p8-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， ZHANG Shang ， WANG Tao ， et al． Optimization control strategy for active power correction from perspective of security region ［ J ］ ． Automation of Electric Power Systems ， 2017 ， 41 ( 18 ) : 17-24． ［ 8 ］ 程临燕 ， 郝治国 ， 张保会 ， 等 ． 基于内点法消除输电断面过载 的实时控制算法 ［ J ］ ． 电力系统自动化 ， 2011 ， 35 ( 17 ) : 51-55． CHENG Linyan ， HAO Zhiguo ， ZHANG Baohui ， et al． Fast elimi- nation of overload in transmission line section based on simplified primal-dual interior point method ［ J ］ ． Automation of Electric Power Systems ， 2011 ， 35 ( 17 ) : 51-55． ［ 9 ］ 袁晓丹 ， 张会强 ． 多支路开断潮流转移识别及防连锁过载策 略研究 ［ J ］ ． 现代电力 ， 2014 ， 31 ( 5 ) : 74-79． YUAN Xiaodan ， ZHANG Huiqiang． Study on power flow trans- ferring identification of multi-line tripping and the strategy to prevent cascading overload strategy ［ J ］ ． Modern Electric Po- wer ， 2014 ， 31 ( 5 ) : 74-79． ［ 10 ］ 甘德树 ， 冯伯庚 ， 蒋芳玉 ， 等 ． 基于功率灵敏度分析的断面 潮流安全控制方法 ［ J ］ ． 陕西电力 ， 2017 ， 45 ( 1 ) : 82-85． GAN Deshu ， FENG Bogeng ， JIANG Fangyu ， et al． Security control method for interface power flow based on power sensi- tivity analysis ［ J ］ ． Shaanxi Electric Power ， 2017 ， 45 ( 1 ) : 82-85． ［ 11 ］ 徐岩 ， 郅静 ． 基于功率灵敏度的线路过载划区域紧急"
+    },
+    {
+      "id": "E002-p10-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1203 [8] F. Capitanescu, M. Glavic, D. Ernst, and L. Wehenkel, “Contingency ﬁltering techniques for preventive security-constrained optimal power ﬂow,” IEEE Trans. Power Syst., vol. 22, no. 4, pp. 1690–1697, Nov. 2007. [9] F. Capitanescu and L. Wehenkel, “A new iterative approach to the corrective security-constrained optimal power ﬂow problem,” IEEE Trans. Power Syst., vol. 23, no. 4, pp. 1533–1541, Nov. 2008. [10] K. Karoui, H. Crisciu, A. Szekut, and M. Stubbe, “Large scale security constrained optimal powerﬂow,” inProc. 16th Power Syst. Computa- tion Conf., Glasgow, U.K., Jul. 14–18, 2008. [11] P. Dimo, Nodal Analysis of Power Systems. Tunbridge Wells, Kent, U.K.: Abacus Press, 1975. [12] R. H. Byrd, M. E. Hribar, and J. Nocedal, “An interior point algorithm for large-scale non-linear programming,”SIAM J. Optimiz., vol. 9, pp. 877–900, Apr. 1999. [ 1 3 ] K .K a r o u"
+    },
+    {
+      "id": "E002-p1-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "1194 IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 29, NO. 3, MAY 2014 A Generic Approach for Solving Nonlinear-Discrete Security-Constrained Optimal Power Flow Problems in Large-Scale Systems Ludovic Platbrood, Florin Capitanescu, Christian Merckx, Horia Crisciu, and Louis Wehenkel Abstract— This paper proves the practicality of an iterative algo- rithm for solving realistic large-scale security-constrained optimal power ﬂow (SCOPF) problems. This algorithm is based on the combination of a contingencyﬁltering scheme, used to identify the binding contingencies at the optimum, and a network compression method, used to reduce the complexity of the post-contingency models included in the SCOPF formulation. We show that by combining these two complementary ideas, it is possible to solvein a reasonable time SCOPF problems on large power system models with a large number of contingencies. Unlike most results reported for large-scale SCOPF problems, our algorithm uses a nonlinear AC network model "
+    },
+    {
+      "id": "E002-p2-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1195 system operators, the scientiﬁc literature reporting on experi- ments using SCOPF solvers on large-scale systems is still quite limited. Indeed most publications reporting on SCOPF algo- rithms provide only results obtained on small to medium sized power systems, rarely exceeding 1000 buses, except of the following works: [7] uses an SLP approach for a 12 965-bus system, [18] uses a SLP for the 3551-bus UK system, [19] relies on the IPM for a 2746-bus Polish system, [20] em- ploys a conic programming for a 2383-bus Polish system, and [21] provides experiments withthe IPM for a 3012-bus Polish system, and a 8387-bus European grid model. However, other than [18], these works rely on acontinuous relaxation of the discrete variables. B. Paper Contribution and Organization We reported in [17] preliminary results with our iterative method, and speciﬁcally how some modules"
+    },
+    {
+      "id": "E001-p5-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 1 IEEE 39 节点系统拓扑 Fig．1 The topology of IEEE 39-bus system 备用容量 ， 以满足高比例新能源电力系统的备用需 求 。 在该运行方式下 ， 对 IEEE 39 节点系统的机组 有功出力限值进行修正 ， 设置机组 G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 参与潮流控制的有功 出力上限分别为 290 MW 、 300 MW 、 220 MW 、 240 MW 、 300 MW 、 450 MW 、 450 MW 、 530 MW 、 1 100 MW 。 采用文献 ［ 24-25 ］ 提出的基于拓扑聚合的输电 断面搜索方法对当前运行方式下的 IEEE 39 节点系 统进行关键输电断面辨识 ， 确定当前存在内部线路 过载的输电断面为线路 l 1 — 39 、 l 2 — 3 、 l 17 — 27 的集合 。 该 输电断面内的过载线路 l 以及重载线路 m 的潮流分 布情况如表 1 所示 。 从表 1 可以看出 ， 过载线路 l 1 — 39 的潮流越限量为 72．40 MW ， 潮流控制策略的目 的是将过载线路 l 1 — 39 的有功潮流控制在 250 MW 以 下 ， 同时系统中其他线路不产生新的潮流越限 。 表 1 关键线路集的潮流运行情况 Table 1 Power flow operation of key line set 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L 1 — 39 322．40 250 1．289 6 M 1 — 2 275．84 300 0．919 5 2 — 3 611．08 630 0．970 0 8 — 9 426．38 450 0．947 5 9 — 39 502．61 550 0．913 8 选取可以参与消除输电断面潮流越限的机组 节点 ( G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 ) 和执行切负荷操作的负荷节点 ( D4 、 D7 、 D20 、 D21 、 D24 、 D27 ) 。 负荷节点分为 3 类 ， 第 1 类为 D7 、 D24 ， 第 2 类为 D21 、 D27 ， 第 3 类为 D4 、 D20 ， 其对应 的"
+    },
+    {
+      "id": "E006-p12-c4",
+      "paper": "E006",
+      "file": "High-Performance_Optimal_Power_Flow_Estimation_for_EV-Interfaced_Microgrids_With_Standardized_Grid_Services.pdf",
+      "text": ", vol. 29, pp. 1948–1958, 2014. [Online]. Available: http://www.sciencedirect.com/ science/article/pii/S1877050914003561 [6] R. Liu, A. K. Srivastava, D. E. Bakken, A. Askerman, and P. Panciatici, “Decentralized state estimation and remedial control action for minimum wind curtailment using distributed computing platform,”IEEE Trans. Ind. Appl., vol. 53, no. 6, pp. 5915–5926, Nov./Dec. 2017. [7] X. Ai, J. Wen, T. Wu, and W.-J. Lee, “A discrete point estimate method for probabilistic load ﬂow based on the measured data of wind power,”IEEE Trans. Ind. Appl., vol. 49, no. 5, pp. 2244–2252, Sep./Oct. 2013. [8] G. Artale et al., “Real-time power ﬂow monitoring and control system for microgrids integration in islanded scenarios,”IEEE Trans. Ind. Appl., vol. 55, no. 6, pp. 7186–7197, Nov./Dec. 2019. [9] M. Alhazmi, P. Dehghanian, S. Wang, and B. Shinde, “Power grid optimal topology control considering correlations of system uncertainties,”IEEE Trans. Ind. Appl., vol. 55, no. 6, pp. 5594–5604, Nov./Dec. 2019. [10] B. Matthiss, J. Erb, and J. Binder, “Using smart meters for distribution grid state estimation,” inProc. IEEE Int. Conf. Smart E"
+    },
+    {
+      "id": "E002-p4-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1197 lution provided by the SCOPF module, some contingencies lead to violations ofconstraints (branch ﬂows or voltage limits). The so identiﬁed contingencies are calledcritical contingencies. If the set of critical contingencies is empty an acceptable solution of the SCOPF problem is found and computations terminate. Notice that because we use the network compression method within the SCOPF (see Section II-C), it may be possible that when running the SA module at the optimal solution provided by the SCOPF, some of the potentially binding contingencies (those already included in SCOPF) still lead to small constraint violations. If these violations are above a given tolerance,the compression factor used in the NC module (see Section II-C) will be reduced for the concerned contingencies for the subsequent loops. 4) A contingencyﬁlter (CF) module (see Section II-B) selects a"
+    },
+    {
+      "id": "E001-p9-c5",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "ion method． In order to prevent the surge of computation caused by too large search space ， a multi-objective selecting optimization model of the first layer scheduling nodes is established to optimize the scheduling nodes involved in the adjustment． On this basis ， the second layer power flow regulation optimization model is constructed to obtain the accurate output adjustment of the scheduling nodes． The above model realizes the accurate dispatching of power flow out of limit on the transmission section． The simulation results of IEEE 39-bus system and a provincial power grid verify the rapidity and accuracy of the proposed method． Keywords : line overload ; transmission section ; cascading trips ; power flow control ; positive and negative comprehensive sensiti- vity index ; double layer optimization ( 编辑 方晶 ) 511 谢大为 等 : 基于正负综合灵敏度的输电断面双层优化潮流控制策略"
+    },
+    {
+      "id": "E001-p9-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "ons based on topology converg- ing adjacency matrix ［ J ］ ． IEEE Access ， 2020 ( 8 ) : 108235- 108246． ［ 25 ］ 张大波 ， 王博欣 ， 郭怀新 ， 等 ． 基于拓扑聚合的输电断面辨 识方法与断面传输极限的研究 ［ J ］ ． 电力系统保护与控制 ， 2022 ， 50 ( 5 ) : 33-42． ZHANG Dabo ， WANG Boxin ， GUO Huaixin ， et al． A method of identifying a transmission section based on topology aggregation and the transmission limit of the section ［ J ］ ． Power System Protection and Control ， 2022 ， 50 ( 5 ) : 33-42． 作者简介 : 谢大为 谢大为 ( 1978 ) ， 男 ， 硕士 ， 高级工程师 ， 从 事电力系统分析控制相关工作 ( E-mail : dwxie @ 163．com ) ; 王博欣 ( 1996 ) ， 男 ， 硕士 ， 从事电网智能调 度相关工作 ; 王京景 ( 1983 ) ， 男 ， 博士 ， 高级工程师 ， 从 事电网调度相关工作 。 Double layer optimal power flow control strategy of transmission section based on positive and negative comprehensive sensitivity XIE Dawei 1 ， WANG Boxin 2 ， 3 ， WANG Jingjing 1 ， PENG Wei 1 ， MA Yinghao 2 ， ZHANG Dabo 2 ( 1． State Grid Anhui Electric Power Co． ， Ltd． ， Hefei 230022 ， China ; 2． Anhui Province Key Laboratory of Ｒenewable Energy Utilization and Energy Saving ( Hefei University of Technology ) ， Hefei 230009 ， China ; 3． State Grid Ｒongcheng Power Supply Company of Shandong Electric Power Company ， Ｒongcheng 264"
+    },
+    {
+      "id": "E002-p8-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1201 Fig. 3. Generators active powers (MW) in both full case (dashed line) and com- pressed case (continuous line). general trend of the objective function is respected. The differ- ence between both solutions in terms of generators active power is of 11.4 MW in average with a maximum value of 39.6 MW. Furthermore, 57 generators out of 98 have a deviation of less than 10 MW. Hence, althoughﬁnal values of active powers are slightly different, this approximated solution can be deemed ac- ceptable especially given the number of generators involved in optimization and theirﬁnal output. We can conclude that the trade-off between accuracy and speed due to the ISCOPF-NC method approximation is accept- able as it allows reducing signiﬁcantly the computational time offering a national system operator the possibility to use the al- gorithm not only in day-ahead but also in intra-d"
+    },
+    {
+      "id": "E005-p3-c3",
+      "paper": "E005",
+      "file": "Proximal_Jacobian_Distribution_Optimal_Power_Flow_in_a_Distributed_Cyber-Physical_Environment.pdf",
+      "text": "E (8) P2 jk + Q2 jk ≤ vjljk, ∀(j,k)∈E (9) and (3) ,(4),(5),(6),(7). B. Parallel–Distributed DOPF Model To enable distributed optimal energy management, the power distribution system, represented by G,m a yb e virtually partitioned into a set P of control areas, each of them represented by a subgraph Gp = (Np,Ep),w h e r eEp = {(i,j) ∈ E : j ∈ Np}. See Table I for a comprehensive TABLE I NOMENCLATURE AND DEFINITIONS Fig. 2. Detail of a partitioned power system showing two control areas. Subgraphs represent control areas, and their nodes correspond to buses in the power system. Fig. 3. Communication graph showin g two control areas and their boundary variables. Nodes in this graph correspond to control areas in the power system. explanation of the nomenclature used. The partition is performed such that ⋃ p∈P Np = N and Ni ⋂ Nj = ∅∀ (i,j) ∈ P. Fig. 2 shows a schematic of a partitioned distribution system. As a ﬁrst step (I) towards a distributed solution technique, problem (DOPF–r) may be reformulated by expressing the system–wide objective function as a sum of local functions, each of them capturing the cost incurred within a control "
+    },
+    {
+      "id": "E129-p0-c1",
+      "paper": "E129",
+      "file": "Security Constrained Optimal Power Flow on A 132 kV Line with Service Potential Transformer Substations: A Case Study of Juja-Rabai Line",
+      "text": "The frequent power outages in transmission lines have been associated with generation station expansion to meet growing power demand without corresponding transmission infrastructure development, leading to exceeded loadability limits and system outages. This paper utilized PowerWorld simulator and a modeled Juja-Rabai power network to analyze secure optimal power flow conditions of a 132 kV transmission line with installed Service Potential Transformer (SPT) substations that address power demand from scattered villages near high voltage lines. The study focused on economic load dispatch of three thermal power plants (Thika, Rabai, and Kipevu) supplying power via conventional and non-conventional substations. Security constrained economic load dispatch, optimal power flow, and security constrained optimal power flow were analyzed under both pre-contingency and post-contingency states, including forced contingency scenarios. The results revealed that generating stations successfully adj",
+      "source_type": "abstract",
+      "doi": "10.62777/pec.v2i2.66",
+      "url": "https://doi.org/10.62777/pec.v2i2.66"
+    },
+    {
+      "id": "E124-p0-c2",
+      "paper": "E124",
+      "file": "Real‑Time Dynamic Dispatch Strategy for High‑Penetration Wind‑Solar Power Systems Based on Deep Reinforcement Learning",
+      "text": "inated thermal generation adjustment, battery charging and discharging, and interruptible load response. Experiments are conducted on a modified IEEE 118-bus system, where MATPOWER is used for AC power-flow verification and Python is used to build the reinforcement learning environment. PPO, DDPG, and rolling economic dispatch are selected as comparative methods. The results show that SAC reduces the daily operation cost to 45,820 USD, decreases the renewable curtailment rate to 4.82%, and lowers load shedding to 0.71 MWh under 70% wind-solar penetration. It also effectively controls branch-overload events in most medium forecast-error scenarios. These results indicate that deep reinforcement learning can form a stable dispatch balance among economic efficiency, renewable accommodation, and security constraints, providing a feasible computational solution for real-time control in high-renewable smart grids.",
+      "source_type": "abstract",
+      "doi": "10.54254/2755-2721/2026.36888",
+      "url": "https://doi.org/10.54254/2755-2721/2026.36888"
+    },
+    {
+      "id": "E113-p0-c1",
+      "paper": "E113",
+      "file": "Deep Learning-Based Optimal Power Flow Algorithm with Grid Topology-Variation Perception",
+      "text": "With the increasing penetration of renewable energy resources and the continuous diversification of power system operating conditions, data-driven methods are becoming an important means for real-time optimal power flow (OPF) decision-making in power system planning and operation because of their capability to process large-scale data and provide fast inference. However, under stochastic operating conditions and network topology changes, existing methods still face several key challenges, including limited physical interpretability, insufficient training samples for newly encountered topologies, and inadequate generalization across varying network structures. To address these issues, this paper proposes a deep learning-based OPF method for power systems with topology changes. Multiple topology domains are constructed for source-domain model pretraining, while Chebyshev graph convolution weighted by branch-admittance magnitudes is employed to extract multi-order electrical coupling feat",
+      "source_type": "abstract",
+      "doi": "10.3390/en19194582",
+      "url": "https://doi.org/10.3390/en19194582"
+    },
+    {
+      "id": "E027-p0-c1",
+      "paper": "E027",
+      "file": "Forward‐Looking Risk‐Constrained Deep Reinforcement Learning for Real‐Time Dispatch of Active Distribution Networks",
+      "text": "ABSTRACT In active distribution networks with high renewable penetration, forecast uncertainty exposes real‐time dispatch to dynamically evolving prospective operational risks. A dispatch action that appears economical in the current interval may weaken the system's corrective capability in subsequent risk scenarios if it excessively consumes regulation flexibility. For this reason, this paper proposes an action‐conditioned forward‐looking risk‐constrained soft actor–critic (SAC) method. Multi‐step forecasts are converted into probabilistic‐power‐flow‐based risk indicators over a 3 × 15‐min look‐ahead window. After the current action is executed, the remaining regulation margins are recalculated and used in a sensitivity‐weighted residual‐flexibility stress test, yielding an action‐dependent residual‐risk signal that is incorporated into risk‐specific, action‐conditioned safety constraints. On the modified IEEE 33‐bus system, the proposed method achieves an average daily operating cost",
+      "source_type": "abstract",
+      "doi": "10.1049/rpg2.70389",
+      "url": "https://doi.org/10.1049/rpg2.70389"
+    },
+    {
+      "id": "E020-p0-c1",
+      "paper": "E020",
+      "file": "Preventive-Security-Constrained Optimal Power Flow Model Considering IPFC Control Modes",
+      "text": "The interline power flow controller (IPFC) is one of the most versatile integrated flexible alternating current transmission systems (FACTS) controllers and can realize power flow control for multiple transmission lines in modern power systems. However, control characteristics are ignored in conventional IPFC models, in which unreasonable assumptions about injected voltages may lead to security problems in realistic operation. Besides, preventive security constraints considering IPFC control modes are not included in optimal power flow (OPF) control of the system with IPFC, squandering IPFC control potential. To solve these problems, a preventive-security-constrained optimal power flow (PSCOPF) model considering IPFC control modes is proposed in this paper. IPFC control characteristics under different control modes are analyzed and employed as constraints of the optimization model. The iterative updates of converter output voltages for different control modes are derived respectively f",
+      "source_type": "abstract",
+      "doi": "10.3390/en17071660",
+      "url": "https://doi.org/10.3390/en17071660"
+    },
+    {
+      "id": "E057-p0-c1",
+      "paper": "E057",
+      "file": "Deep Reinforcement Learning-Based Approach for Autonomous Power Flow Control Using Only Topology Changes",
+      "text": "With the increasing complexity of power system structures and the increasing penetration of renewable energy, driven primarily by the need for decarbonization, power system operation and control become challenging. Changes are resulting in an enormous increase in system complexity, wherein the number of active control points in the grid is too high to be managed manually and provide an opportunity for the application of artificial intelligence technology in the power system. For power flow control, many studies have focused on using generation redispatching, load shedding, or demand side management flexibilities. This paper presents a novel reinforcement learning (RL)-based approach for the secure operation of power system via autonomous topology changes considering various constraints. The proposed agent learns from scratch to master power flow control purely from data. It can make autonomous topology changes according to current system conditions to support grid operators in making e",
+      "source_type": "abstract",
+      "doi": "10.3390/en15196920",
+      "url": "https://doi.org/10.3390/en15196920"
+    },
+    {
+      "id": "E014-p0-c1",
+      "paper": "E014",
+      "file": "Preventive Security-Constrained Optimal Power Flow with Probabilistic Guarantees",
+      "text": "The traditional security-constrained optimal power flow (SCOPF) model under the classical N-1 criterion is implemented in the power industry to ensure the secure operation of a power system. However, with increasing uncertainties from renewable energy sources (RES) and loads, the existing SCOPF model has difficulty meeting the practical requirements of the industry. This paper proposed a novel chance-constrained preventive SCOPF model that considers the uncertainty of power injections, including RES and load, and contingency probability. The chance constraint is used to constrain the overall line flow within the limits with high probabilistic guarantees and to significantly reduce the constraint scales. The cumulant and Johnson systems were combined to accurately approximate the cumulative distribution functions, which is important in solving chance-constrained optimization problems. The simulation results show that the model proposed in this paper can achieve better performance than t",
+      "source_type": "abstract",
+      "doi": "10.3390/en13092344",
+      "url": "https://doi.org/10.3390/en13092344"
+    },
+    {
+      "id": "E023-p0-c1",
+      "paper": "E023",
+      "file": "Identification of Critical Security Boundary for Resilient Power Systems Driven by Model‐Data Fusion",
+      "text": "ABSTRACT With the evolution of power system structure and the expansion of renewable energy scale, the security and stability challenges brought by extreme events are becoming increasingly prominent. The traditional transient model of power systems is tailored specifically for certain fault scenarios and exhibits nonlinear characteristics. Consequently, its solutions are often characterized by a time‐intensive nature and suboptimal generalization performance. Therefore, a security boundary identification method for resilient power system driven by model‐data fusion is proposed in this paper. Based on the security constrained unit commitment model of power system, the umbrella constraint identification method is employed to identify the effective constraints. A massive extreme sample set based on the dynamic response model of the CloudPSS platform is established, and support vector machine is leveraged to identify and extract transient safety constraints. The critical security boundary ",
+      "source_type": "abstract",
+      "doi": "10.1049/rpg2.70103",
+      "url": "https://doi.org/10.1049/rpg2.70103"
+    },
+    {
+      "id": "E052-p0-c1",
+      "paper": "E052",
+      "file": "A Distributed Optimization Algorithm for Multi-Area Power Grid Transmission Congestion Management",
+      "text": "Abstract The interconnection of power grid brings significant economic benefits, while it calls for higher requirements to the security, stability and economic operation of power system as well. With high dimensionality of its optimization problem, the whole network centralized optimal power flow (OPF) algorithm is computational inefficient. Therefore, on the basis of power grid layering and zoning, the distributed optimal power flow calculation method in interconnected power grid with multiple control centers has important realistic significance. A distributed optimization algorithm of interconnected power grid transmission congestion management is proposed in this paper. The active power constraints of inter-area transmission interfaces are considered to satisfy the trade power constraints between adjacent sub-systems. The coordination and cooperation procedure counts on the correction and updating of boundary bus equivalent injection power and voltage vector. The numerical results o",
+      "source_type": "abstract",
+      "doi": "10.1088/1755-1315/769/4/042095",
+      "url": "https://doi.org/10.1088/1755-1315/769/4/042095"
+    },
+    {
+      "id": "E143-p0-c2",
+      "paper": "E143",
+      "file": "Interpretable Machine Learning Models for Critical Decision Systems",
+      "text": "ailable to humans. This paper is the systematic and complete study of interpretable machine learning models of critical decision systems. We start by examining the conceptual basis behind interpretability and its significance in high risk applications. An elaborate literature review classifies the currently existing interpretability methods as intrinsic interpretability methods and post-hoc explanation methods and their strong and weak points and the appropriateness to critical systems. The suggested methodology describes a systematic approach to the selection, design and validation of interpretable ML models within real-life conditions of uncertainties of data, bias and regulatory standards. Mathematically stated representative interpretable models such as linear models, decision trees, rule-based systems and attention mechanisms are given to provide formal grounding. Examples of experimental findings of representative domains of application are presented to illustrate the trade-offs in interpretability and performance. The discussion highlights levels of interpretability, robustness, and fairness measures, and predictive accuracy.",
+      "source_type": "abstract",
+      "doi": "10.67228/3142788x/ijmlpa-2023pi9w2r",
+      "url": "https://doi.org/10.67228/3142788x/ijmlpa-2023pi9w2r"
+    },
+    {
+      "id": "E063-p0-c2",
+      "paper": "E063",
+      "file": "Minimization of Transmission Line Losses Through System Topology Reconfiguration",
+      "text": "mining the optimal topology for corrective control that optimizes power flows in different situations. It is proven that this approach reduces losses compared to a base case by 99%, even in the face of N − 1 or random contingencies, without losing the load and while maintaining the same active power dispatch and, finally, verifying a strategic increase in the dispatch of reactive power to maintain operating parameters within stable limits.",
+      "source_type": "abstract",
+      "doi": "10.3390/en18082063",
+      "url": "https://doi.org/10.3390/en18082063"
+    },
+    {
+      "id": "E028-p0-c2",
+      "paper": "E028",
+      "file": "Power Flow Coupling Characteristics Analysis and Coordinated Optimization Strategy for AC/DC Hybrid Transmission Sections",
+      "text": "low security, a novel AC-like AC/DC power flow coordinated optimization strategy is proposed. Based on phase angle coordinated control, the autonomous response capability of the DC system is leveraged to perform real-time control and optimization of transmission power on lines, maximizing the capacity utilization of AC/DC hybrid transmission section while satisfying security and stability requirements. Finally, simulation studies based on a transmission network containing two four-machine AC systems verify that the proposed strategy fully meets the security and stability requirements of AC/DC hybrid power grids, providing reliable technical support for the coordinated development of future AC/DC grids.",
+      "source_type": "abstract",
+      "doi": "10.3390/electronics15010066",
+      "url": "https://doi.org/10.3390/electronics15010066"
+    },
+    {
+      "id": "E047-p0-c1",
+      "paper": "E047",
+      "file": "Optimised curtailment of distributed generators for the provision of congestion management services considering discrete controllability",
+      "text": "Grid operation becomes a more challenging task due to the increasing amount of distributed generators in the system. Consequently, critical situations with violations of operational limits occur more frequently. Hence, grid operators have to take corrective countermeasures to ensure the security of supply. This study presents a discrete optimisation approach to determine the optimal amount of distributed generator curtailment regarding multiple objectives. The proposed method is based on non‐linear AC load flow analysis of the network. The method is implemented into a modified version of the IEEE 14‐bus test system and the necessary amount of generation curtailment to retain predefined operational limits is identified. Simulations are carried out for different contingency scenarios and several possible increments of curtailment levels are compared. Results reveal the potential to reduce the total amount of power adjustments distinctly by using curtailment levels with smaller step sizes",
+      "source_type": "abstract",
+      "doi": "10.1049/iet-gtd.2019.0992",
+      "url": "https://doi.org/10.1049/iet-gtd.2019.0992"
+    },
+    {
+      "id": "E044-p0-c1",
+      "paper": "E044",
+      "file": "Preventive Security-Constrained Optimal Power Flow Considering UPFC Control Modes",
+      "text": "The successful application of the unified power flow controller (UPFC) provides a new control method for the secure and economic operation of power system. In order to make the full use of UPFC and improve the economic efficiency and static security of a power system, a preventive security-constrained power flow optimization method considering UPFC control modes is proposed in this paper. Firstly, an iterative method considering UPFC control modes is deduced for power flow calculation. Taking into account the influence of different UPFC control modes on the distribution of power flow after N-1 contingency, the optimization model is then constructed by setting a minimal system operation cost and a maximum static security margin as the objective. Based on this model, the particle swarm optimization (PSO) algorithm is utilized to optimize power system operating parameters and UPFC control modes simultaneously. Finally, a standard IEEE 30-bus system is utilized to demonstrate that the prop",
+      "source_type": "abstract",
+      "doi": "10.3390/en10081199",
+      "url": "https://doi.org/10.3390/en10081199"
+    },
+    {
+      "id": "E009-p0-c1",
+      "paper": "E009",
+      "file": "Interpretable data‐driven contingency classification for real‐time corrective security‐constrained economic dispatch",
+      "text": "Abstract High penetrations of renewable energy are crucial for low‐carbon power systems. However, the higher volatility of renewable power generation pushes real‐time operations closer to equipment limits. It is thus important to utilize flexibilities in the system through corrective security‐constrained economic dispatch (SCED) that allows generators to take corrective adjustments after contingencies. The corrective SCED problem, containing a large number of contingencies, and corresponding post‐contingency decisions and constraints, is very large in scale and difficult to solve using purely model‐based methods within the strict time limits of real‐time markets. To accelerate the solution process, this paper develops a novel interpretable data‐driven contingency classification method. Historical data and their potentially useful patterns are utilized in interpretable data‐driven decision tree classifiers. To directly consider continuous features, such as net load values, and to consid",
+      "source_type": "abstract",
+      "doi": "10.1049/rpg2.12830",
+      "url": "https://doi.org/10.1049/rpg2.12830"
+    },
+    {
+      "id": "E082-p0-c2",
+      "paper": "E082",
+      "file": "Optimised Congestion Management Using Curative Measures in Combined AC/DC Systems with Flexible AC Transmission Systems",
+      "text": " implementation of optimised congestion management in an A Mathematical Programming Language (AMPL)-based nonlinear optimisation problem. AMPL is an effective tool to deal with highly complex problems of optimisation and scheduling. Therefore, the modelling of assets and flexibilities for power flow control in AC/DC systems in combination with an innovative grid operation strategy using predefined curative measures for the optimised use of the existing grid is introduced. The nonlinear mathematical optimisation aims at the optimal cost selection of flexibility measures. The application of the optimisation technique in a combined AC/DC system shows the optimal preventive and curative use of measures in operational congestion management. Simulation results prove that, by using predefined curative measures, the volume of cost-intensive preventive measures can significantly be reduced, especially in association with power flow control.",
+      "source_type": "abstract",
+      "doi": "10.3390/en17092157",
+      "url": "https://doi.org/10.3390/en17092157"
+    },
+    {
+      "id": "E050-p0-c1",
+      "paper": "E050",
+      "file": "Probabilistic Security-Constrained Preventive Control under Forecast Uncertainties Including Volt/Var Constraints",
+      "text": "The continuous increase in generation from renewable energy sources, marked by correlated forecast uncertainties, requires specific methodologies to support power system operators in security management. This paper proposes a probabilistic preventive control to ensure N-1 security in presence of correlated uncertainties of renewable sources and loads. By adopting a decoupled linear formulation of the AC load flow equations, the preventive control is decomposed into two subsequent linear programming problems, the former concerning the active power and the latter the voltage/reactive power-related issues. In particular, in the active control problem, the algorithm combines Third Order Polynomial Normal Transformation, Point Estimate Method, and Cornish–Fisher expansion to model the forecast uncertainties and characterize the chance constraints in the problem. The goal is to find the optimal phase shifting transformer tap setting, conventional generation redispatching, and renewable curta",
+      "source_type": "abstract",
+      "doi": "10.3390/en16041812",
+      "url": "https://doi.org/10.3390/en16041812"
+    },
+    {
+      "id": "E134-p0-c1",
+      "paper": "E134",
+      "file": "Assessing supply security risk of renewable‐dominated power system via entropy‐based analytic hierarchy method",
+      "text": "Abstract Amid escalating geopolitical conflicts and extreme weather, the transformation to a renewable‐dominated power system faces increasing supply security risks. The current literature lacks comprehensive multidimensional assessment index systems to quantify these risks. This paper first identifies the key factors influencing supply security in renewable‐dominated power system. Subsequently, it constructs a supply security risk assessment model based on a comprehensive evaluation method combining the analytic hierarchy process method and the entropy weight method. The effectiveness of the approach is then evaluated through simulations of supply security risks across 11 provinces, including Inner Mongolia and Sichuan. Finally, the analysis of supply security risks in the Sichuan power system is conducted at different stages, focusing on changes in supply security risk levels and risk transmission mechanisms during Sichuan power crunch events in 2022. The results show that during Sic",
+      "source_type": "abstract",
+      "doi": "10.1049/rpg2.12989",
+      "url": "https://doi.org/10.1049/rpg2.12989"
+    }
+  ]
+}

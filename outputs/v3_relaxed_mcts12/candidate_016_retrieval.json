@@ -1,0 +1,146 @@
+{
+  "context": {
+    "goal": "新型电力系统断面潮流控制：兼顾时效性、准确性、泛化性与可解释性，在实时运行和极端天气场景强化断面阻塞决策、确保安全裕度并适应电网动态演化。",
+    "direction": "可解释性与证据校验",
+    "action": "generate",
+    "previous": {},
+    "feedback": {},
+    "candidate_id": 16,
+    "reference_logic": {
+      "mechanism": "把解释的可信度分解为三层并分别约束：第一层是依据可追溯，即对文献按段落与证据边界建索引，对运行参数按版本建独立知识，使每条解释都附带来源，从而压低无依据陈述；第二层是动作忠实，即文献检索只能保证“有出处”，不能保证解释与当前动作的实际电气效应一致，因此对关键动作构造可行的反事实（在保持功率平衡与设备边界的前提下替换或撤销动作，再重算交流潮流并比较关键支路），把解释中的方向描述与仿真里的动作效应绑定；第三层是人员效益，即解释是否真正帮助识别错误方案与缩短复核。中介路径为：有效证据覆盖与不适用规则过滤→解释方向与仿真一致→错误方案识别与复核效率。该机制的作用范围限于仿真内的动作效应检验，并明确不声称识别现实因果或提供安全保证；证据不足时输出“无法支持”，缺平衡资源的反事实判为不可检验。",
+      "evidence_needs": "需要四类可核查材料：(1) 带可追溯段落与合法访问来源的文献索引，用于支撑灵敏度方向、约束校验与交直流动作重算等具体断言；(2) 版本化的运行知识与拓扑配置，用以标记过期规则并支持知识版本过滤；(3) 固定候选方案集，须覆盖正确方案、方向错误、潜在新过载、过期拓扑规则和不可检验反事实五类，并配套统一潮流仿真与可用的平衡资源；(4) 双人独立标注及其一致性统计，以及人工复核时间与随机交叉顺序的实验记录。需要强调的是，文献只能支撑底层电气关系与约束校验，检索忠实性、反事实解释的增量作用和人工复核收益属于待检验命题，不能当作既有证据引用；引用支持率、方向一致率等指标本身也需在标注协议中先定义。",
+      "verification": "采用分层对照：至少200个固定候选方案的盲测集，按文档与拓扑分组留出以避免泄漏；对比无检索、仅检索、检索加反事实三组，并增设纯数值校核作为额外基线，以区分“解释起了作用”与“安全校核直接给出答案”。指标分别报告引用支持率、解释与仿真方向一致率、错误方案识别的精确率与召回率（在等误报率下比较召回）、解释延迟与人工复核时间。阴性判据预先设定：若引用支持率上升但忠实性无改善，或解释仅复述安全校核结论，则不成立反事实解释的增量贡献。人工部分采用随机交叉顺序控制学习效应，报告标注者间一致性，并在未完成人工实验时仅声明自动指标结论。",
+      "gaps": "(1) 反事实依赖可行替代平衡资源，缺失时判为不可检验，导致可检验样本比例下降并可能引入选择性偏差；(2) 文献仅6篇，过期规则与拓扑不一致情形的覆盖偏窄，过滤率的估计不稳定；(3) 方向一致率是忠实性的代理指标，其构念效度未单独论证，且引用支持率与忠实性若由同一标注者判定存在混淆风险，需盲法与分人标注；(4) 固定动作集虽隔离了解释效应，但限制了对其他调控场景的外推；(5) 解释异步生成与独立安全校核并行的时序影响（如解释滞后导致的决策等待）未被量化为独立变量；(6) 未进入闭环下发，仅离线评估，生态效度与真实调度压力下的表现未知；(7) 人工复核收益受审核者背景影响，样本量与个体差异需要更大规模实验才能区分组间差异与噪声。"
+    },
+    "existing_titles": []
+  },
+  "queries": [
+    "counterfactual explanation validation for AC power flow dispatch: balancing resource availability, action faithfulness, and branch flow direction consistency in security-constrained operation",
+    "provenance-aware retrieval and versioned knowledge for power system topology changes: tracing evidence boundaries, filtering expired operating rules, and supporting interpretable congestion decisions",
+    "断面潮流控制 可解释性 证据校验 反事实 仿真 平衡资源 可用性 安全校核 方向一致率 评估协议",
+    "human-in-the-loop evaluation of explanation usefulness in power system security assessment: operator review time, false-alarm recall, inter-annotator agreement, and decision latency under asynchronous explanation generation",
+    "extreme weather and topology contingency scenario benchmarks for explainable power flow congestion management: generalization, temporal validity, and ecological validity of offline counterfactual explanations"
+  ],
+  "hits": [
+    {
+      "id": "E001-p7-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 3 输电断面 T1 的有功潮流 Fig．3 Active power flow of transmission section T1 路 l 5307 、 l 5308 的有功潮流增加到 1 336 MW 、 1 337 MW ， 超过其线路自身的热稳定功率极限 ; 与此同 时 ， 输电断面 T1 传输的有功潮流增加到 3 470 MW ， 超过其自身的极限传输功率 ( 3 400 MW ) ， 造成输电 断面潮流越限 ， 潮流越限量为 70 MW 。 输电断面 T1 内过载线路以及重载线路的潮流分布情况见表 5 。 表 5 实际电网中关键线路的潮流运行状态 Table 5 Power flow operation of key lines in the actual power grid 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L l 5307 1 336 1 250 1．068 8 l 5308 1 337 1 250 1．069 6 M l 5703 278 300 0．926 7 l 5367 517 550 0．940 0 l 5368 516 550 0．938 2 切除过载线路会引发输电断面连锁过载 ， 因 此 ， 采用文中方法对输电断面 T1 进行潮流越限调 整 ， 制定的潮流控制策略如表 6 所示 。 表 6 潮流控制方案 Table 6 Power flow control scheme MW 调度节点 初始 有功功率 调整后 有功功率 出力 调整量 有功 出力上限 G42 784 983 +199 1 260 G34 637 835 +198 1 260 G40 500 104 －396 1 000 由表 6 可知 ， 文中方法制定的潮流控制策略要 调度的机组节点为 G42 、 G34 、 G40 ， 符合机组节点 G42 、 G34 、 G40 对关键线路潮流调整效果较好的实 际情况 。 而且 G42 、 G34 的出力增加调整量近似等 于 G40 的出力减少调整量 ， 总出力调整量为 793 MW ， 有效避免平衡机组过度参与潮流调整 。 通过 制定的潮流控制策略对潮流越限的输电断面 T1 进 行调整控制 ， 得到的线路潮流调整结果如表 7 所示 。 表 7 实际电网中关键线路调整结果 Table 7 Adjustm"
+    },
+    {
+      "id": "E001-p8-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "， ZHANG Shang ， WANG Tao ， et al． Optimization control strategy for active power correction from perspective of security region ［ J ］ ． Automation of Electric Power Systems ， 2017 ， 41 ( 18 ) : 17-24． ［ 8 ］ 程临燕 ， 郝治国 ， 张保会 ， 等 ． 基于内点法消除输电断面过载 的实时控制算法 ［ J ］ ． 电力系统自动化 ， 2011 ， 35 ( 17 ) : 51-55． CHENG Linyan ， HAO Zhiguo ， ZHANG Baohui ， et al． Fast elimi- nation of overload in transmission line section based on simplified primal-dual interior point method ［ J ］ ． Automation of Electric Power Systems ， 2011 ， 35 ( 17 ) : 51-55． ［ 9 ］ 袁晓丹 ， 张会强 ． 多支路开断潮流转移识别及防连锁过载策 略研究 ［ J ］ ． 现代电力 ， 2014 ， 31 ( 5 ) : 74-79． YUAN Xiaodan ， ZHANG Huiqiang． Study on power flow trans- ferring identification of multi-line tripping and the strategy to prevent cascading overload strategy ［ J ］ ． Modern Electric Po- wer ， 2014 ， 31 ( 5 ) : 74-79． ［ 10 ］ 甘德树 ， 冯伯庚 ， 蒋芳玉 ， 等 ． 基于功率灵敏度分析的断面 潮流安全控制方法 ［ J ］ ． 陕西电力 ， 2017 ， 45 ( 1 ) : 82-85． GAN Deshu ， FENG Bogeng ， JIANG Fangyu ， et al． Security control method for interface power flow based on power sensi- tivity analysis ［ J ］ ． Shaanxi Electric Power ， 2017 ， 45 ( 1 ) : 82-85． ［ 11 ］ 徐岩 ， 郅静 ． 基于功率灵敏度的线路过载划区域紧急"
+    },
+    {
+      "id": "E002-p1-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "1194 IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 29, NO. 3, MAY 2014 A Generic Approach for Solving Nonlinear-Discrete Security-Constrained Optimal Power Flow Problems in Large-Scale Systems Ludovic Platbrood, Florin Capitanescu, Christian Merckx, Horia Crisciu, and Louis Wehenkel Abstract— This paper proves the practicality of an iterative algo- rithm for solving realistic large-scale security-constrained optimal power ﬂow (SCOPF) problems. This algorithm is based on the combination of a contingencyﬁltering scheme, used to identify the binding contingencies at the optimum, and a network compression method, used to reduce the complexity of the post-contingency models included in the SCOPF formulation. We show that by combining these two complementary ideas, it is possible to solvein a reasonable time SCOPF problems on large power system models with a large number of contingencies. Unlike most results reported for large-scale SCOPF problems, our algorithm uses a nonlinear AC network model "
+    },
+    {
+      "id": "E001-p8-c5",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": " ］ 徐正清 ， 肖艳炜 ， 李群山 ， 等 ． 基于灵敏度及粒子群算法的 输电断面功率越限控制方法对比研究 ［ J ］ ． 电力系统保护 与控制 ， 2020 ， 48 ( 15 ) : 177-186． XU Zhengqing ， XIAO Yanwei ， LI Qunshan ， et al． Comparative study based on sensitivity and particle swarm optimization algo- rithm for power flow over-limit control method of transmission section ［ J ］ ． Power System Protection and Control ， 2020 ， 48 ( 15 ) : 177-186． ［ 15 ］ 徐岩 ， 郅静 ， 樊世通 ． 基于功率灵敏度和经济补偿最小化的 线路过负荷紧急控制方法 ［ J ］ ． 电力自动化设备 ， 2017 ， 37 ( 1 ) : 118-123． XU Yan ， ZHI Jing ， FAN Shitong． Line overload emergency control based on power sensitivity and minimized economic compensation ［ J ］ ． Electric Power Automation Equipment ， 2017 ， 37 ( 1 ) : 118-123． ［ 16 ］ ＲEDDY S S． Multi-objective based congestion management u- sing generation rescheduling and load shedding ［ J ］ ． IEEE Transactions on Power Systems ， 2017 ， 32 ( 2 ) : 852-863． ［ 17 ］ 王健 ， 李国平 ． 基于改进和声搜索算法线路过载控制策略 研究 ［ J ］ ． 电气传动 ， 2021 ， 51 ( 12 ) : 23-27． WANG Jian ， LI Guoping． Ｒesearch on line overload control strategy based on improved harmony search algorithm ［ J ］ ． E- lectric Drive ， 2021 ， 51 ( 12 ) : 23-27． ［ 18 ］ 孙淑琴 ， 颜文丽 ， 吴晨悦 ， 等 ． 基于原 - 对偶内点法的输电断 面有功安"
+    },
+    {
+      "id": "E001-p5-c1",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "图 1 IEEE 39 节点系统拓扑 Fig．1 The topology of IEEE 39-bus system 备用容量 ， 以满足高比例新能源电力系统的备用需 求 。 在该运行方式下 ， 对 IEEE 39 节点系统的机组 有功出力限值进行修正 ， 设置机组 G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 参与潮流控制的有功 出力上限分别为 290 MW 、 300 MW 、 220 MW 、 240 MW 、 300 MW 、 450 MW 、 450 MW 、 530 MW 、 1 100 MW 。 采用文献 ［ 24-25 ］ 提出的基于拓扑聚合的输电 断面搜索方法对当前运行方式下的 IEEE 39 节点系 统进行关键输电断面辨识 ， 确定当前存在内部线路 过载的输电断面为线路 l 1 — 39 、 l 2 — 3 、 l 17 — 27 的集合 。 该 输电断面内的过载线路 l 以及重载线路 m 的潮流分 布情况如表 1 所示 。 从表 1 可以看出 ， 过载线路 l 1 — 39 的潮流越限量为 72．40 MW ， 潮流控制策略的目 的是将过载线路 l 1 — 39 的有功潮流控制在 250 MW 以 下 ， 同时系统中其他线路不产生新的潮流越限 。 表 1 关键线路集的潮流运行情况 Table 1 Power flow operation of key line set 集合 线路 功率 /MW 热稳定功率 极限 /MW 过载率 L 1 — 39 322．40 250 1．289 6 M 1 — 2 275．84 300 0．919 5 2 — 3 611．08 630 0．970 0 8 — 9 426．38 450 0．947 5 9 — 39 502．61 550 0．913 8 选取可以参与消除输电断面潮流越限的机组 节点 ( G30 、 G32 、 G33 、 G34 、 G35 、 G36 、 G37 、 G38 、 G39 ) 和执行切负荷操作的负荷节点 ( D4 、 D7 、 D20 、 D21 、 D24 、 D27 ) 。 负荷节点分为 3 类 ， 第 1 类为 D7 、 D24 ， 第 2 类为 D21 、 D27 ， 第 3 类为 D4 、 D20 ， 其对应 的"
+    },
+    {
+      "id": "E002-p2-c3",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "areas for each contingency and by modeling only their cor- responding constraints. In the rest of this paper we will use the acronym ISCOPF-NC (iterative security-constrained op- timal power ﬂow with network compression) to denote the proposed approach. Importantly, and in contrast to most results reported for large- scale SCOPF problems,the implementation of our ISCOPF-NC uses a nonlinear AC network model in both pre-contingency and post-contingency states, optimizes both active/reactive powers ﬂows jointly, and treats the discrete variables. It exploits also recent developments in the context of nonlinear programming solvers [12]. We demonstrate the approach validity for both a national power system (with 2563 buses and 1297 contingencies) as well as the whole European Transmission Network (ETN) that contains 9241 buses and considers 12 000 contingencies. We further implement the method using appropriate parallel dedicated computing architectures. The rest of the paper is organized as follows. Section II provides an abstract formulation of the SCOPF problem and describes the contingency ﬁltering and network compression approaches "
+    },
+    {
+      "id": "E002-p8-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1201 Fig. 3. Generators active powers (MW) in both full case (dashed line) and com- pressed case (continuous line). general trend of the objective function is respected. The differ- ence between both solutions in terms of generators active power is of 11.4 MW in average with a maximum value of 39.6 MW. Furthermore, 57 generators out of 98 have a deviation of less than 10 MW. Hence, althoughﬁnal values of active powers are slightly different, this approximated solution can be deemed ac- ceptable especially given the number of generators involved in optimization and theirﬁnal output. We can conclude that the trade-off between accuracy and speed due to the ISCOPF-NC method approximation is accept- able as it allows reducing signiﬁcantly the computational time offering a national system operator the possibility to use the al- gorithm not only in day-ahead but also in intra-d"
+    },
+    {
+      "id": "E001-p9-c5",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "ion method． In order to prevent the surge of computation caused by too large search space ， a multi-objective selecting optimization model of the first layer scheduling nodes is established to optimize the scheduling nodes involved in the adjustment． On this basis ， the second layer power flow regulation optimization model is constructed to obtain the accurate output adjustment of the scheduling nodes． The above model realizes the accurate dispatching of power flow out of limit on the transmission section． The simulation results of IEEE 39-bus system and a provincial power grid verify the rapidity and accuracy of the proposed method． Keywords : line overload ; transmission section ; cascading trips ; power flow control ; positive and negative comprehensive sensiti- vity index ; double layer optimization ( 编辑 方晶 ) 511 谢大为 等 : 基于正负综合灵敏度的输电断面双层优化潮流控制策略"
+    },
+    {
+      "id": "E001-p7-c2",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "调整量近似等 于 G40 的出力减少调整量 ， 总出力调整量为 793 MW ， 有效避免平衡机组过度参与潮流调整 。 通过 制定的潮流控制策略对潮流越限的输电断面 T1 进 行调整控制 ， 得到的线路潮流调整结果如表 7 所示 。 表 7 实际电网中关键线路调整结果 Table 7 Adjustment results of key lines in the actual power grid MW 线路编号 调整前功率 调整后功率 热稳定功率极限 5307 1 336 1 249 1 250 5308 1 337 1 246 1 250 5703 278 276 300 5367 517 445 500 5368 516 444 500 由表 7 可知 ， 根据文中方法制定的潮流控制策 略 ， 在 09 : 27 开始对输电断面 T1 进行潮流调整 。 经 过潮流调整后 ， 输电断面 T1 内的过载线路 l 5307 、 l 5308 的有功潮流分别由越限时的 1 336 MW 、 1 337 WM 逐渐调整为 1 249 MW 、 1 246 WM ; 09 : 30 ， 输电断面 T1 的有功潮流调整为 3 390 MW ， 低于其自身的极 限传输功率 ， 潮流越限量被消除 ; 09 : 40 左右 ， 调度 节点的潮流调整结束 。 通过潮流调整 ， 输电断面 T1 在其极限传输功率的范围内安全运行 ， 且所有线路 的有功潮流均在热稳定功率极限内 ， 可实现电网的 安全稳定运行 。 通过 IEEE 39 节点系统和某省级电网的输电断 面潮流控制分析可以看出 : 文中提出的基于正负综 合灵敏度的输电断面双层优化潮流控制方法能够 快速制定出符合调度目标的潮流越限控制策略 ， 完 成对过载线路的有功安全校正 ， 实现对输电断面潮 流越限的精准调度 。 6 结论 针对灵敏度分析方法精确度不高以及直接优 化类方法计算速度过慢等缺陷 ， 文中提出一种基于 正负综合灵敏度的输电断面双层优化潮流控制策 略 ， 该方法具有以下优点 : ( 1 ) 该方法充分考虑节点对过载及重载线路潮 流的整体控制作用 ， 提出节点的正负综合灵敏度指 标 。 同时为减少计算量 ， 剔除对关键线路集潮流控 制效果较差的节点 。 ( 2 ) 该方法采用双层优化思想 ， 首先构建第一 层调度节点多目标筛选优化模型 ， 快速选择参与潮 流控制的调度节点 ， 有效避免搜索空间过大导致计 算量激增的问题 。 然后构建第二层潮流调控优化 模型 ， 计算所选调度节点的精确出力调整量 ， 实现 对输电断面潮流越限的精准调度 。 致 谢 本文得到国网安徽省电力有限公司科技项目 ( B31200200005 "
+    },
+    {
+      "id": "E002-p10-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1203 [8] F. Capitanescu, M. Glavic, D. Ernst, and L. Wehenkel, “Contingency ﬁltering techniques for preventive security-constrained optimal power ﬂow,” IEEE Trans. Power Syst., vol. 22, no. 4, pp. 1690–1697, Nov. 2007. [9] F. Capitanescu and L. Wehenkel, “A new iterative approach to the corrective security-constrained optimal power ﬂow problem,” IEEE Trans. Power Syst., vol. 23, no. 4, pp. 1533–1541, Nov. 2008. [10] K. Karoui, H. Crisciu, A. Szekut, and M. Stubbe, “Large scale security constrained optimal powerﬂow,” inProc. 16th Power Syst. Computa- tion Conf., Glasgow, U.K., Jul. 14–18, 2008. [11] P. Dimo, Nodal Analysis of Power Systems. Tunbridge Wells, Kent, U.K.: Abacus Press, 1975. [12] R. H. Byrd, M. E. Hribar, and J. Nocedal, “An interior point algorithm for large-scale non-linear programming,”SIAM J. Optimiz., vol. 9, pp. 877–900, Apr. 1999. [ 1 3 ] K .K a r o u"
+    },
+    {
+      "id": "E001-p9-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "ons based on topology converg- ing adjacency matrix ［ J ］ ． IEEE Access ， 2020 ( 8 ) : 108235- 108246． ［ 25 ］ 张大波 ， 王博欣 ， 郭怀新 ， 等 ． 基于拓扑聚合的输电断面辨 识方法与断面传输极限的研究 ［ J ］ ． 电力系统保护与控制 ， 2022 ， 50 ( 5 ) : 33-42． ZHANG Dabo ， WANG Boxin ， GUO Huaixin ， et al． A method of identifying a transmission section based on topology aggregation and the transmission limit of the section ［ J ］ ． Power System Protection and Control ， 2022 ， 50 ( 5 ) : 33-42． 作者简介 : 谢大为 谢大为 ( 1978 ) ， 男 ， 硕士 ， 高级工程师 ， 从 事电力系统分析控制相关工作 ( E-mail : dwxie @ 163．com ) ; 王博欣 ( 1996 ) ， 男 ， 硕士 ， 从事电网智能调 度相关工作 ; 王京景 ( 1983 ) ， 男 ， 博士 ， 高级工程师 ， 从 事电网调度相关工作 。 Double layer optimal power flow control strategy of transmission section based on positive and negative comprehensive sensitivity XIE Dawei 1 ， WANG Boxin 2 ， 3 ， WANG Jingjing 1 ， PENG Wei 1 ， MA Yinghao 2 ， ZHANG Dabo 2 ( 1． State Grid Anhui Electric Power Co． ， Ltd． ， Hefei 230022 ， China ; 2． Anhui Province Key Laboratory of Ｒenewable Energy Utilization and Energy Saving ( Hefei University of Technology ) ， Hefei 230009 ， China ; 3． State Grid Ｒongcheng Power Supply Company of Shandong Electric Power Company ， Ｒongcheng 264"
+    },
+    {
+      "id": "E001-p1-c3",
+      "paper": "E001",
+      "file": "基于正负综合灵敏度的输电断面双层优化潮流.pdf",
+      "text": "敏度分析方法将节点有功注入与线路有功 潮流间的非线性关系简化为线性关系 ， 当仅依靠灵 敏度关系通过多个控制节点来调整线路潮流时误 差较大 ， 难以达到实际电网的潮流控制精度要求 。 在输电断面潮流控制策略中 ， 文献 ［ 14 ］ 对比了灵敏 度分析方法和粒子群优化算法 ， 验证了基于粒子群 算法的输电断面潮流越限控制方法可以消除因简 化的灵敏度线性关系导致的潮流误差 ， 并且调节效 率高 。 直接优化类方法 ［ 15-18 ］ 直接利用潮流计算建 立数学模型 ， 充分考虑符合电力系统安全运行的各 类要求 ， 得到的潮流控制策略有较好的安全性和经 701"
+    },
+    {
+      "id": "E005-p3-c3",
+      "paper": "E005",
+      "file": "Proximal_Jacobian_Distribution_Optimal_Power_Flow_in_a_Distributed_Cyber-Physical_Environment.pdf",
+      "text": "E (8) P2 jk + Q2 jk ≤ vjljk, ∀(j,k)∈E (9) and (3) ,(4),(5),(6),(7). B. Parallel–Distributed DOPF Model To enable distributed optimal energy management, the power distribution system, represented by G,m a yb e virtually partitioned into a set P of control areas, each of them represented by a subgraph Gp = (Np,Ep),w h e r eEp = {(i,j) ∈ E : j ∈ Np}. See Table I for a comprehensive TABLE I NOMENCLATURE AND DEFINITIONS Fig. 2. Detail of a partitioned power system showing two control areas. Subgraphs represent control areas, and their nodes correspond to buses in the power system. Fig. 3. Communication graph showin g two control areas and their boundary variables. Nodes in this graph correspond to control areas in the power system. explanation of the nomenclature used. The partition is performed such that ⋃ p∈P Np = N and Ni ⋂ Nj = ∅∀ (i,j) ∈ P. Fig. 2 shows a schematic of a partitioned distribution system. As a ﬁrst step (I) towards a distributed solution technique, problem (DOPF–r) may be reformulated by expressing the system–wide objective function as a sum of local functions, each of them capturing the cost incurred within a control "
+    },
+    {
+      "id": "E002-p6-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1199 (14) (15) where • is the set of system states, indexed by, where 0 denotes the pre-contingency state and denote the post- contingency states; • is the set of buses in state; • is the set of branches in state; • is the set of generators in state; • is the set of shunt banks in state; • is the set of phase shifter transformers in state; • is the set of on load tap changer transformers in state ; • is the set of generators connected to busin state ; • is the set of loads connected to busin state ; • is the set of nodes adjacent to busin state ; • is the set of discrete step positions of shunt bank; • is the set of discrete angle values of phase shifter; • is the set of discrete ratio values of LTC transformer ; • and are respectively the active and reactive powers of generator in state ; • is the initial active power of generator in pre- contingency state; • and are re"
+    },
+    {
+      "id": "E002-p4-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1197 lution provided by the SCOPF module, some contingencies lead to violations ofconstraints (branch ﬂows or voltage limits). The so identiﬁed contingencies are calledcritical contingencies. If the set of critical contingencies is empty an acceptable solution of the SCOPF problem is found and computations terminate. Notice that because we use the network compression method within the SCOPF (see Section II-C), it may be possible that when running the SA module at the optimal solution provided by the SCOPF, some of the potentially binding contingencies (those already included in SCOPF) still lead to small constraint violations. If these violations are above a given tolerance,the compression factor used in the NC module (see Section II-C) will be reduced for the concerned contingencies for the subsequent loops. 4) A contingencyﬁlter (CF) module (see Section II-B) selects a"
+    },
+    {
+      "id": "E003-p1-c5",
+      "paper": "E003",
+      "file": "An_Efficient_Universal_AC_DC_Branch_Model_for_Optimal_Power_Flow_Studies_in_Hybrid_AC_DC_Systems.pdf",
+      "text": "hybrid AC/DC[9]. Although the hybrid AC/DC power system is more ﬂexible, it is also more complex. One of the most important means for de- termining optimal operating points in power systems is Optimal Power Flow (OPF). OPF is extremely important in operational and grid planning as well as in techno-economic studies. In OPF, the output power of the generators, their voltages, and other control settings such as transformer tap settings and VSC settings are determined by optimizing an objective function such as the total generation cost[10], while satisfying the system constraints. 0885-8950 © 2024 IEEE. All rights reserved, including rights for text and data mining, and training of artiﬁcial intelligence and similar technologies. Personal use is permitted, but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information. Authorized licensed use limited to: Zhejiang University. Downloaded on November 05,2026 at 10:23:22 UTC from IEEE Xplore. Restrictions apply."
+    },
+    {
+      "id": "E002-p4-c6",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "to deal with such kind of trivially parallelizable problems [22]: • either launching automatically N instances of the exe- cutable with different inputs mastered by a workload management system; • or introducing distributed memory parallelization directly in the executable code. This latter approach has been chosen for the security assess- ment. The contingencyﬁlter, which computational effort is neg- ligible compared to SA, is embedded in the security assessment tool, and exchanges information with the SA with as less as pos- sible I/O interactions. Using the message passing interface (MPI), a master process controls all input data and output results operations and dis- tributes tasks among slave processes, which perform computa- tions and send results back to the master process, without any communication between them. Authorized licensed use limited to: Zhejiang University. Downloaded on November 05,2026 at 10:29:02 UTC from IEEE Xplore. Restrictions apply."
+    },
+    {
+      "id": "E002-p2-c1",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "PLATBROOD et al.: A GENERIC APPROACH FOR SOLVING NONLINEAR-DISCRETE SECURITY-CONSTRAINED OPTIMAL POWER FLOW PROBLEMS 1195 system operators, the scientiﬁc literature reporting on experi- ments using SCOPF solvers on large-scale systems is still quite limited. Indeed most publications reporting on SCOPF algo- rithms provide only results obtained on small to medium sized power systems, rarely exceeding 1000 buses, except of the following works: [7] uses an SLP approach for a 12 965-bus system, [18] uses a SLP for the 3551-bus UK system, [19] relies on the IPM for a 2746-bus Polish system, [20] em- ploys a conic programming for a 2383-bus Polish system, and [21] provides experiments withthe IPM for a 3012-bus Polish system, and a 8387-bus European grid model. However, other than [18], these works rely on acontinuous relaxation of the discrete variables. B. Paper Contribution and Organization We reported in [17] preliminary results with our iterative method, and speciﬁcally how some modules"
+    },
+    {
+      "id": "E002-p9-c3",
+      "paper": "E002",
+      "file": "A_Generic_Approach_for_Solving_Nonlinear-Discrete_Security-Constrained_Optimal_Power_Flow_Problems_in_Large-Scale_Systems.pdf",
+      "text": "lgorithm can be used in the context of day- ahead operational planning in large scale systems comparable in size with the European network. The algorithm can even be used in intraday or close to real-time for systems of medium size such as the national network. Results obtained with the prototype implementing the IS- COPF-NC algorithm have shown that the major gains in perfor- mances could be expected by improving the resolution of the SCOPF problem. Gains can alsobe expected by accelerating the update of the SCOPF problem deﬁnition but this is related to a better implementation of the prototype, for instance by min- imizing ﬁles exchanges. Note that, in the absence of knowledge about the grid to optimize, our algorithm starts “from scratch.” However, faster convergence is expected if system operator knowledge about binding/critical contingencies is used, the algorithm being more likely to converge in one-two loops. Also real-world SCOPF problems generally model only relevant system thermal con- straints for each contingency which further reduces the number of constraints. Likewise, as in real-time the operating state is not likely "
+    },
+    {
+      "id": "E005-p1-c1",
+      "paper": "E005",
+      "file": "Proximal_Jacobian_Distribution_Optimal_Power_Flow_in_a_Distributed_Cyber-Physical_Environment.pdf",
+      "text": "IEEE JOURNAL ON EMERGING AND SELECTED TOPICS IN CIRCUITS AND SYSTEMS, VOL. 7, NO. 2, JUNE 2017 319 Proximal Jacobian Distribution Optimal Power Flow in a Distributed Cyber-Physical Environment Miguel Carrasco, Fernando Mancilla-David, Member, IEEE, Alejandro Angulo, Member, IEEE, Jorge Weston, and P. Papantoni-Kazakos, Life Fellow, IEEE Abstract— Distributed optimal dispatch strategies are attract- ing attention to exploit the fast and continuous control capa- bilities of converter-interfaced small-scale generators connected to power distribution systems. However, their impact on the supporting cyber structure and their scalability to ensure real- time performance need further study. In this paper, a proximal Jacobian distributed optimal power ﬂow model for the dispatch of converter-based power distribution systems is proposed, which features a favorable convergence behavior. A suitable cyber architecture to realize such model is developed through this paper. The corresponding cyber co"
+    }
+  ]
+}
